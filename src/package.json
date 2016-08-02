@@ -1,20 +1,35 @@
 {
+	 "app_name": "clever",
   "main": "app.html",
-  "name": "Clever16",
+  "name": "Clever",
   "version": "0.1.0",
-  "app-id": "com.aluxian.clever16",
+  "app-id": "com.aluxian.clever",
+  "author": "Serg <s.kanunnikov@it-tula.ru>",
   "chromium-args": "--disable-setuid-sandbox",
   "window": {
-    "width": 800,
-    "height": 600,
-    "title": "Clever16",
-    "icon": "icons/icon.png",
-    "toolbar": false,
-    "show": false
+    "icon": "favicon.png",
+    "kiosk": false,
+    "show": true,
+    "width": 980,
+    "visible": true,
+    "title": "Пульт оператора",
+    "mac_icon": "favicon.png",
+    "resizable": false,
+    "exe_icon": "favicon.png",
+    "always-on-top": false,
+    "fullscreen": false,
+    "frame": true,
+    "height": 700,
+    "show_in_taskbar": true,
+    "transparent": false,
+    "kiosk_emulation": false,
+    "as_desktop": false,
+    "toolbar": true
   },
   "webkit": {
     "plugin": true
   },
+  "js-flags": "--harmony_proxies --harmony_collections",
   "dependencies": {
     "async": "^1.0.0",
     "auto-launch": "^0.1.18",
@@ -22,11 +37,11 @@
     "request": "^2.56.0",
     "semver": "^4.3.5"
   },
-  "manifestUrl": "https://raw.githubusercontent.com/Aluxian/nwjs-clever16/master/src/package.json",
+  "manifestUrl": "https://github.com/Kanunik71/clever/tree/master/src/package.json",
   "packages": {
-    "osx64": "https://github.com/Aluxian/nwjs-clever16/releases/download/v0.1.0/Clever16.dmg",
-    "win32": "https://github.com/Aluxian/nwjs-clever16/releases/download/v0.1.0/Clever16Setup.exe",
-    "linux32": "https://github.com/Aluxian/nwjs-clever16/releases/download/v0.1.0/Clever16_linux32.deb",
-    "linux64": "https://github.com/Aluxian/nwjs-clever16/releases/download/v0.1.0/Clever16_linux64.deb"
+    "osx64": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter.dmg",
+    "win32": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/StarterSetup.exe",
+    "linux32": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter_linux32.deb",
+    "linux64": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter_linux64.deb"
   }
 }

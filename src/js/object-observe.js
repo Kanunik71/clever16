@@ -1,5 +1,66 @@
-'use strict';
+/*!
+ * Object.observe polyfill - v0.2.4
+ * by Massimo Artizzu (MaxArt2501)
+ *
+ * https://github.com/MaxArt2501/object-observe
+ *
+ * Licensed under the MIT License
+ * See LICENSE for details
+ */
 
+// Some type definitions
+/**
+ * This represents the data relative to an observed object
+ * @typedef  {Object}                     ObjectData
+ * @property {Map<Handler, HandlerData>}  handlers
+ * @property {String[]}                   properties
+ * @property {*[]}                        values
+ * @property {Descriptor[]}               descriptors
+ * @property {Notifier}                   notifier
+ * @property {Boolean}                    frozen
+ * @property {Boolean}                    extensible
+ * @property {Object}                     proto
+ */
+/**
+ * Function definition of a handler
+ * @callback Handler
+ * @param {ChangeRecord[]}                changes
+*/
+/**
+ * This represents the data relative to an observed object and one of its
+ * handlers
+ * @typedef  {Object}                     HandlerData
+ * @property {Map<Object, ObservedData>}  observed
+ * @property {ChangeRecord[]}             changeRecords
+ */
+/**
+ * @typedef  {Object}                     ObservedData
+ * @property {String[]}                   acceptList
+ * @property {ObjectData}                 data
+*/
+/**
+ * Type definition for a change. Any other property can be added using
+ * the notify() or performChange() methods of the notifier.
+ * @typedef  {Object}                     ChangeRecord
+ * @property {String}                     type
+ * @property {Object}                     object
+ * @property {String}                     [name]
+ * @property {*}                          [oldValue]
+ * @property {Number}                     [index]
+ */
+/**
+ * Type definition for a notifier (what Object.getNotifier returns)
+ * @typedef  {Object}                     Notifier
+ * @property {Function}                   notify
+ * @property {Function}                   performChange
+ */
+/**
+ * Function called with Notifier.performChange. It may optionally return a
+ * ChangeRecord that gets automatically notified, but `type` and `object`
+ * properties are overridden.
+ * @callback Performer
+ * @returns {ChangeRecord|undefined}
+ */
 
 
 Object.observe || (function(O, A, root, _undefined) { 
@@ -679,66 +740,3 @@ Object.observe || (function(O, A, root, _undefined) {
     };
 
 })(Object, Array, this); 
-
-
-
-
-var Store = require('jfs');
-var path = require('path');
-var gui = window.require('nw.gui');
-
-var DEFAULT_SETTINGS = {
-  launchOnStartup: false,
-  checkUpdateOnLaunch: false,
-  openLinksInBrowser: true,
-  asMenuBarAppOSX: false,
-  windowState: {},
-};
-
-var db = new Store(path.join(gui.App.dataPath, 'preferences.json'));
-var settings = db.getSync('settings');
-var watchers = {};
-
-// Watch changes to the storage
-settings.watch = function(name, callback) {
-  if (!Array.isArray(watchers[name])) {
-    watchers[name] = [];
-  }
-
-  watchers[name].push(callback);
-};
-
-// Save settings every time a change is made and notify watchers
-Object.observe(settings, function(changes) {
-  db.save('settings', settings, function(err) {
-    if (err) {
-      console.error('Could not save settings', err);
-    }
-  });
-
-  changes.forEach(function(change) {
-    var newValue = change.object[change.name];
-    var keyWatchers = watchers[change.name];
-
-    // Call all the watcher functions for the changed key
-    if (keyWatchers && keyWatchers.length) {
-      for (var i = 0; i < keyWatchers.length; i++) {
-        try {
-          keyWatchers[i](newValue);
-        } catch(ex) {
-          console.error(ex);
-          keyWatchers.splice(i--, 1);
-        }
-      }
-    }
-  });
-});
-
-// Ensure the default values exist
-Object.keys(DEFAULT_SETTINGS).forEach(function(key) {
-  if (!settings.hasOwnProperty(key)) {
-    settings[key] = DEFAULT_SETTINGS[key];
-  }
-});
-
-module.exports = settings;

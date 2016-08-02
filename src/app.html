@@ -1,11 +1,195 @@
 <!doctype html>
-<html>
-  <head>
-    <title>Clever16</title>
-    <link rel="stylesheet" type="text/css" href="app.css">
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <script src="app.js"></script>
-  </body>
-</html>
+<html lang="ru-RU">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon"/>
+  
+  
+  <meta name="robots" content="index, follow"/>
+  <title>Пульт оператора</title>
+  <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>
+  
+</head>
+<body>
+  <div class="preloader">
+    <div class="preloader_img"></div>
+  </div>
+  <div class="relat auth_form_parent hide">
+    <div id="auth_form">
+      <div class="auth_form_cont"><img src="images/logo_login.png" alt="CleverSite" class="auth_form_logo"/>
+        <form id="auth_form_form" action="" method="POST" autocomplete="false">
+          <div class="auth_form_form_f_1">
+            <div class="auth_form_form_block login">
+              <div class="ico"></div>
+              <input type="email" value="" name="login" placeholder="Email" required="" class="auth_input"/>
+            </div>
+            <div class="auth_form_form_block password">
+              <div class="ico"></div>
+              <input type="password" value="" name="password" placeholder="Пароль" required="" class="auth_input"/>
+            </div>
+            <button type="submit" name="submit" class="btn auth_smb submit disabled_submit">Войти</button>
+            <div class="auth_form_cont_text"></div>
+          </div>
+          <div class="auth_form_form_f_2 hide">
+            <div class="auth_form_form_f_2_t">Выполняется вход на сервер...</div>
+            <div name="submit" class="btn auth_smb submit auth_reset">Отменить</div>
+          </div>
+          <div class="clear"></div>
+          <form></form>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div id="content" class="width hide">
+    <div class="dialog_block_list"></div>
+    <div class="dialog_window hide"></div>
+    <header id="header" class="width">
+      <div class="header_cont">
+        <div class="header_l header_l_td"><a href="http://cleversite.ru/" target="_blank" class="logocont"><img src="images/logo.png" alt="CleverSite"/></a></div>
+        <div class="header_c header_l_td">
+          <div class="top_s">
+            <div class="top_status_conteiner">
+              <div class="top_status on">
+                <div class="top_status_l"></div>
+                <div class="top_status_r"></div>
+                <div class="cleversite_animate status_circle"></div>
+              </div>
+            </div>
+            <div class="top_text"></div>
+          </div>
+        </div>
+        <div class="header_r header_l_td"><a href="javascript:void(0);" class="property_top"><span class="ico cleversite_animate"></span><span class="icotext cleversite_animate">Настройки</span></a></div>
+      </div>
+    </header>
+    <div class="content_block">
+      <div class="content_left">
+        <div class="content_left_tab_list">
+          <div class="content_left_tab_block">
+            <div data="clients" class="content_left_tab act">Клиенты</div>
+            <div data="operators" class="content_left_tab">Операторы</div>
+          </div>
+        </div>
+        <div class="content_left_blocks">
+          <div id="clients" class="content_left_block"></div>
+          <div id="operators" class="content_left_block hide"></div>
+        </div>
+      </div>
+      <div class="content_right">
+        <div class="content_info">В этом окне вы сможете общаться с посетителями сайта, которые напишут онлайн-консультанту</div>
+        <div class="content_dialog hide">
+          <div class="content_top">
+            <div data="give_thread" class="content_top_ico innact ico1 cleversite_animate">Передать
+              <div class="operator_give_list hide"></div>
+            </div>
+            <div data="blocked" class="content_top_ico innact ico2 cleversite_animate">Блокировать</div>
+            <div data="send_file" class="content_top_ico innact ico3 cleversite_animate">Передать файл</div>
+            <div data="send_to_mail" class="content_top_ico innact ico4 fright cleversite_animate">Отправить на почту</div>
+            <div class="clear"></div>
+          </div>
+          <div class="content_middle">
+            <div class="content_middle_text">
+              <div class="content_middle_text_name"></div>
+              <div class="content_middle_text_info"></div>
+            </div>
+            <div class="content_middle_ico">
+              <div class="ico"></div>
+            </div>
+            <div class="client_info hide">
+              <div class="client_info_block">
+                <div class="client_info_block_line1">
+                  <div class="client_info_name">
+                    <input data="client_name" disabled="disabled" type="text" value="" class="import"/>
+                  </div>
+                  <div class="client_info_icon"><span></span></div>
+                  <div class="clear"></div>
+                </div>
+                <div class="client_info_block_line2">
+                  <div class="client_info_block_line2_scroll">
+                    <div class="client_info_text"><b data="site" class="import"></b></div>
+                    <div class="client_info_text">Страница начала диалога: <br/><a data="begin" class="import"></a></div>
+                    <div class="client_info_text">Источник перехода: <br/><span data="source" class="import"></span></div>
+                    <div class="client_info_text">Местоположение:<br/><span data="location" class="import"></span></div>
+                    <div class="client_info_text">IP-адрес: <span data="address" class="import"></span></div>
+                    <div class="client_info_text">Провайдер: <span data="provider" class="import"></span></div>
+                    <div class="client_info_text">Браузер: <span data="browser" class="import"></span></div>
+                    <div class="client_info_text">Количество посещений: <span data="visits" class="import"></span></div>
+                    <div class="client_info_text">Количество диалогов: <span data="dialogs" class="import"></span></div>
+                    <div class="client_info_text">Количество просмотренных страниц за посещение: <span data="scan_pages" class="import"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content_data">
+            <div class="show_history hide"><span>История переписки</span></div>
+            <div class="content_section">
+              <div id="data_scroll">
+                <div id="data"></div>
+              </div>
+            </div>
+            <div class="fast_message_block hide">
+              <div class="fast_message_block_scroll">
+                <div class="fast_message_block_scroll_data">
+                  <div class="fast_message_block_close"></div>
+                  <div class="fast_message_block_line">Здравствуйте! Чем я могу помочь?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content_bottom">
+            <div class="content_bottom_dialog">
+              <div class="content_bottom_textarea">
+                <div id="msgwnd" contenteditable="true" placeholder="Напишите ваше сообщение" tabindex="0" maxlength="1000" rows="4"></div>
+              </div>
+              <div class="content_bottom_right">
+                <div class="content_bottom_right_fast btn gray_sv">Фразы</div>
+                <div class="content_bottom_right_send btn submit disabled_submit">Отправить</div>
+              </div>
+              <div class="clear"></div>
+            </div>
+            <div class="content_bottom_noopen_dialog"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <footer id="footer" class="width"></footer>
+    <div class="notifylist"></div>
+    <input id="uploadFiles" type="file" style="display: none" name="uploadFiles" multiple=""/>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="./app.js"></script>
+  
+ 
+
+  <script type="text/javascript" src="js/jquery-2.2.2.min.js"></script>
+  <script type="text/javascript" src="js/jquery.cookie.js"></script>
+  <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+  <script type="text/javascript" src="js/scrollbar/jquery.scrollbar.js"></script>
+  <script type="text/javascript" src="js/rangy/rangy-core.js"></script>
+  <script type="text/javascript" src="js/undo/undo.js"></script>
+  <script type="text/javascript" src="js/medium/medium.min.js"></script>
+  <script type="text/javascript" src="js/socket.io.js"></script>
+  <script type="text/javascript" src="js/custom.js"></script>
+  <script type="text/javascript" src="js/sergDesctop.js"></script>
+  
+  
+</body>

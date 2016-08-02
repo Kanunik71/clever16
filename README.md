@@ -1,6 +1,6 @@
-# NW.js Starter
+# NW.js Clever16
 
-[![Join the chat at https://gitter.im/Aluxian/nwjs-starter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Aluxian/nwjs-starter?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/Aluxian/nwjs-clever16](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Aluxian/nwjs-clever16?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Get help on Codementor](https://cdn.codementor.io/badges/get_help_github.svg)](https://www.codementor.io/aluxian)
 
 This is a sample project to get you up and running with [NW.js](http://nwjs.io/).
@@ -84,7 +84,7 @@ Use these to create the .tiff images for the OS X menu bar:
 
 ## Contributions
 
-Contributions are welcome! For feature requests and bug reports please [submit an issue](https://github.com/Aluxian/nwjs-starter/issues).
+Contributions are welcome! For feature requests and bug reports please [submit an issue](https://github.com/Aluxian/nwjs-clever16/issues).
 
 ## License
 

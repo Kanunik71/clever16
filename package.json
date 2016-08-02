@@ -1,10 +1,10 @@
 {
-  "name": "starter",
+  "name": "clever16",
   "version": "0.1.0",
-  "description": "NW.js starter project powered by Gulp.",
+  "description": "NW.js clever16 project powered by Gulp.",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Aluxian/nwjs-starter.git"
+    "url": "git@github.com:Aluxian/nwjs-clever16.git"
   },
   "scripts": {
     "postinstall": "(cd src && npm install)"

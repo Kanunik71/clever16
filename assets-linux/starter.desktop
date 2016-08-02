@@ -1,9 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=Starter
-Icon=starter
-Exec=/opt/starter/Starter
-Comment=Starter
+Name=Clever16
+Icon=clever16
+Exec=/opt/clever16/Clever16
+Comment=Clever16
 Categories=GNOME;GTK;Development;Documentation;
 Terminal=false

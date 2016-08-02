@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Link to the binary
-ln -sf /opt/starter/Starter /usr/local/bin/starter
+ln -sf /opt/clever16/Clever16 /usr/local/bin/clever16
 
 # Launcher icon
-desktop-file-install /opt/starter/starter.desktop
+desktop-file-install /opt/clever16/clever16.desktop

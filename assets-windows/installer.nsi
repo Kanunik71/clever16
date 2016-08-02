@@ -1,23 +1,23 @@
 !include "MUI2.nsh"
 
-Name "Starter"
+Name "Clever16"
 BrandingText "aluxian.com"
 
 # set the icon
 !define MUI_ICON "icon.ico"
 
 # define the resulting installer's name:
-OutFile "..\dist\StarterSetup.exe"
+OutFile "..\dist\Clever16Setup.exe"
 
 # set the installation directory
-InstallDir "$PROGRAMFILES\Starter\"
+InstallDir "$PROGRAMFILES\Clever16\"
 
 # app dialogs
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_INSTFILES
 
-!define MUI_FINISHPAGE_RUN_TEXT "Start Starter"
-!define MUI_FINISHPAGE_RUN "$INSTDIR\Starter.exe"
+!define MUI_FINISHPAGE_RUN_TEXT "Start Clever16"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\Clever16.exe"
 
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_LANGUAGE "English"
@@ -32,15 +32,15 @@ Section
   SetOutPath $INSTDIR
 
   # specify the files to go in the output path
-  File /r ..\build\Starter\win32\*
+  File /r ..\build\Clever16\win32\*
 
   # create the uninstaller
-  WriteUninstaller "$INSTDIR\Uninstall Starter.exe"
+  WriteUninstaller "$INSTDIR\Uninstall Clever16.exe"
 
   # create shortcuts in the start menu and on the desktop
-  CreateShortCut "$SMPROGRAMS\Starter.lnk" "$INSTDIR\Starter.exe"
-  CreateShortCut "$SMPROGRAMS\Uninstall Starter.lnk" "$INSTDIR\Uninstall Starter.exe"
-  CreateShortCut "$DESKTOP\Starter.lnk" "$INSTDIR\Starter.exe"
+  CreateShortCut "$SMPROGRAMS\Clever16.lnk" "$INSTDIR\Clever16.exe"
+  CreateShortCut "$SMPROGRAMS\Uninstall Clever16.lnk" "$INSTDIR\Uninstall Clever16.exe"
+  CreateShortCut "$DESKTOP\Clever16.lnk" "$INSTDIR\Clever16.exe"
 
 SectionEnd
 
@@ -51,8 +51,8 @@ Section "Uninstall"
   RMDir /r $INSTDIR
 
   # delete the shortcuts
-  Delete "$SMPROGRAMS\Starter.lnk"
-  Delete "$SMPROGRAMS\Uninstall Starter.lnk"
-  Delete "$DESKTOP\Starter.lnk"
+  Delete "$SMPROGRAMS\Clever16.lnk"
+  Delete "$SMPROGRAMS\Uninstall Clever16.lnk"
+  Delete "$DESKTOP\Clever16.lnk"
 
 SectionEnd

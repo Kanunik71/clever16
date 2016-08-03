@@ -1,9 +1,9 @@
 {
-	 "app_name": "clever",
+	 "app_name": "clever16",
   "main": "app.html",
-  "name": "Clever",
+  "name": "Clever16",
   "version": "0.1.0",
-  "app-id": "com.aluxian.clever",
+  "app-id": "com.aluxian.clever16",
   "author": "Serg <s.kanunnikov@it-tula.ru>",
   "chromium-args": "--disable-setuid-sandbox",
   "window": {

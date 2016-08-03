@@ -37,11 +37,11 @@
     "request": "^2.56.0",
     "semver": "^4.3.5"
   },
-  "manifestUrl": "https://github.com/Kanunik71/clever/tree/master/src/package.json",
+  "manifestUrl": "https://github.com/Kanunik71/clever16/tree/master/src/package.json",
   "packages": {
-    "osx64": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter.dmg",
-    "win32": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/StarterSetup.exe",
-    "linux32": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter_linux32.deb",
-    "linux64": "https://github.com/Kanunik71/clever/tree/master/releases/v0.1.0/Starter_linux64.deb"
+		"osx64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter.dmg",
+		"win32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/StarterSetup.exe",
+		"linux32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter_linux32.deb",
+		"linux64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter_linux64.deb"
   }
 }

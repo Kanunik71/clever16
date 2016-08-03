@@ -39,9 +39,9 @@
   },
   "manifestUrl": "http://nodejs01.cleversite.ru:3003/src/package.json",
   "packages": {
-		"osx64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter.dmg",
+		"osx64": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16.dmg",
 		"win32": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16Setup.exe",
-		"linux32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter_linux32.deb",
-		"linux64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter_linux64.deb"
+		"linux32": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16_linux32.deb",
+		"linux64": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16_linux64.deb"
   }
 }

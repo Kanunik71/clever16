@@ -41,6 +41,7 @@
   "packages": {
 		"osx64": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16.dmg",
 		"win32": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16Setup.exe",
+		"win64": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16Setup.exe",
 		"linux32": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16_linux32.deb",
 		"linux64": "http://nodejs01.cleversite.ru:3003/releases/v0.1.1/Clever16_linux64.deb"
   }

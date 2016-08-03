@@ -2,7 +2,7 @@
 	 "app_name": "clever16",
   "main": "app.html",
   "name": "Clever16",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "app-id": "com.aluxian.clever16",
   "author": "Serg <s.kanunnikov@it-tula.ru>",
   "chromium-args": "--disable-setuid-sandbox",
@@ -39,9 +39,9 @@
   },
   "manifestUrl": "https://github.com/Kanunik71/clever16/tree/master/src/package.json",
   "packages": {
-		"osx64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter.dmg",
-		"win32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/StarterSetup.exe",
-		"linux32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter_linux32.deb",
-		"linux64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.0/Starter_linux64.deb"
+		"osx64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter.dmg",
+		"win32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/StarterSetup.exe",
+		"linux32": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter_linux32.deb",
+		"linux64": "https://github.com/Kanunik71/clever16/tree/master/releases/v0.1.1/Starter_linux64.deb"
   }
 }

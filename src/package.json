@@ -1,6 +1,6 @@
 {
 	 "app_name": "clever16",
-  "main": "app.html",
+  "main": "index.html",
   "name": "Clever16",
   "version": "0.1.1",
   "app-id": "com.aluxian.clever16",

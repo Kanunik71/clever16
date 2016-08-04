@@ -175,13 +175,16 @@ cursor:pointer;
 .top_s .top_status_conteiner .top_status.on .status_circle {left:30px;}
 .top_s .top_text {width:50%;float:left;padding:0px 0px 0 8px;line-height:14px;font-size:14px;color:#404040;}
 
-.exit_top{float:right;padding:21px 17px 0 0;}
-.exit_top .ico{background:url(../images/exit_top.png) 0 0 no-repeat;width:18px;height:17px;}
-.exit_top .icotext{padding-left:7px;padding-top:2px;padding-right:5px;}
+
+
+
+.exit_top{float:right;padding:14px 16px 0 0;display:none;}
+.exit_top .ico{background:url(../images/exit_top.png) 0 center no-repeat;width:18px;height:28px;}
+.exit_top .icotext{padding-left:10px;line-height:28px;font-size:14px;color:#404040;}
 
 .property_top{float:right;padding:14px 16px 0 0;display:none;}
 .property_top .ico{background:url(../images/property.png) 0 0 no-repeat;width:27px;height:28px;}
-.property_top .icotext{padding-left:10px;line-height:28px;font-size:14px;color:#404040;}
+.property_top .icotext{padding-left:10px;line-height:28px;font-size:14px;color:#404040;height:28px;}
 .property_top:hover .ico{background:url(../images/property_act.png) 0 0 no-repeat;}
 .property_top:hover .icotext{color:#7ab51d;}
 
@@ -408,8 +411,9 @@ cursor:pointer;
 
 
 
-#content .dialog_window {position:absolute;left:50%;top:50%;background:#f2f1f1;border-top:4px solid #e2e0e0;padding:15px 35px 20px;z-index:20;}
+#content .dialog_window {position:absolute;left:50%;top:50%;background:#f2f1f1;border-top:4px solid #e2e0e0;padding:15px 35px 20px;z-index:20;box-shadow:0px 3px 4px rgba(0,0,0,.3);}
 #content .dialog_window.hide {display:none;}
+#content .dialog_window.dialog_window_custom {width:500px;margin:-100px 0 0 -250px;}
 #content .dialog_window.dialog_window_redirect {width:500px;height:275px;margin:-135px 0 0 -250px;}
 #content .dialog_window.dialog_window_block {width:500px;height:275px;margin:-135px 0 0 -250px;}
 #content .dialog_window.dialog_error {width:500px;height:275px;margin:-135px 0 0 -250px;}

@@ -1,3 +1,141 @@
+
+
+window.MODE = 'development';
+var isNodeWebkit = ((/^file:/.test(window.location.protocol)) || (/^chrome-extension:/.test(window.location.protocol))) ? true : false;
+if (isNodeWebkit) {
+    global.isNodeWebkit = isNodeWebkit;
+    window.gui = require('nw.gui');
+    var clipboard = gui.Clipboard.get();
+    gui.App.clearCache();
+    gui.Screen.Init();
+}
+		
+
+
+
+var refresh = new Date().getTime();		
+//var refresh = version;
+
+( function( tools, libs ){
+	
+    // Iterator
+    var require_inner = function( scripts, onEnd ){
+        
+        onEnd = onEnd || function(){};
+        
+        if( !scripts || scripts.length < 1 )return onEnd();
+        
+        var src    = scripts.splice( 0, 1),
+            script = document.createElement( "script" );
+        
+        script.setAttribute( "src", src );
+        
+        tools.addEvent( "load", script, function(){
+            
+            require_inner( scripts, onEnd );
+            
+        } );
+        
+        document.getElementsByTagName( "head" )[ 0 ].appendChild( script );
+        
+    };
+    
+    // Install all scripts with a copy of scripts
+    require_inner( libs.slice(), function(){
+    
+       // alert( "Enjoy :)" );
+    
+    } );
+    
+    // Timeout information
+    /*var ti = setTimeout( function(){
+        
+        if( !window.jQuery)alert( "Timeout !" );
+        
+        clearTimeout( ti );
+        
+    }, 5000 );*/
+
+} )(
+
+    { // Tools
+    
+        addEvent : function( evnt, elem, func ){
+        
+            try{
+
+                if( elem.addEventListener ){
+
+                    elem.addEventListener( evnt, func, false );
+
+                }else if( elem.attachEvent ){
+
+                     var r = elem.attachEvent( "on" + evnt, func );
+
+                }
+
+                return true;
+
+            }catch( e ){
+
+                return false;
+
+            }		    
+
+        }
+    
+    },
+    [ // Scripts
+    
+        'js/jquery-2.2.2.min.js?'+refresh,	
+		'js/jquery.cookie.js?'+refresh,	
+		'js/jquery.mousewheel.js?'+refresh,	
+		'js/scrollbar/jquery.scrollbar.js?'+refresh,	
+		'js/rangy/rangy-core.js?'+refresh,	
+		'js/undo/undo.js?'+refresh,	
+		'js/medium/medium.min.js?'+refresh,	
+		'js/socket.io.js?'+refresh,	
+		'js/sergDesctop.js?'+refresh,	
+		'js/custom.js?'+refresh,	
+        
+    ]
+
+);		
+		
+		
+		
+/*		
+var addHeadScript = function(src) {
+    var po = document.createElement('script'); 
+	po.type = 'text/javascript'; 
+	//po.async = true;
+    po.src = src;
+	document.getElementsByTagName('head')[0].appendChild(po);
+};
+var scriptList = [
+	'js/jquery-2.2.2.min.js?'+version,	
+	'js/jquery.cookie.js?'+version,	
+	'js/jquery.mousewheel.js?'+version,	
+	'js/scrollbar/jquery.scrollbar.js?'+version,	
+	'js/rangy/rangy-core.js?'+version,	
+	'js/undo/undo.js?'+version,	
+	'js/medium/medium.min.js?'+version,	
+	'js/socket.io.js?'+version,	
+	'js/sergDesctop.js?'+version,	
+	'js/custom.js?'+version,	
+];
+scriptList.forEach(function(item, i, arr) {
+	addHeadScript(item);
+});
+*/
+
+
+
+
+
+if(isNodeWebkit) {
+
+
 var d = require('domain').create();
 d.on('error', (er) => {
   // The error won't crash the process, but what it does is worse!
@@ -404,4 +542,4 @@ var menus = {
 
 
 
-
+}

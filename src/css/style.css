@@ -439,6 +439,8 @@ cursor:pointer;
 .notifylist .notify.answer{height:325px;}
 .notifylist .notify.new{height:255px;}
 .notifylist .notify.new.answer{height:355px;}
+.notifylist .notify.noignore{height:185px;}
+.notifylist .notify.noignore.answer{height:285px;}
 .notifylist.notifyDesctop .notify{margin: 0;}
 .notifylist .notify .name{font-size:18px;color:#404040;line-height:22px;margin:0 0 15px 0;}
 .notifylist .notify .text_top{font-size:15px;color:#404040;line-height:20px;margin:0 0 10px 0;}

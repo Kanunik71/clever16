@@ -85,7 +85,7 @@ $(document).ready(function() {
 			});
 
 			if(isNodeWebkit) {
-				$('.property_top').show();
+				//$('.property_top').show();
 			} else {
 				$('.exit_top').show();
 			}
@@ -701,7 +701,18 @@ $(document).ready(function() {
 
 		this.actionThread = function(threadJid) {
 
-			window.focus();
+		
+			if(isNodeWebkit) {
+			
+				var win = gui.Window.get();
+				win.show();
+				win.focus();
+			
+			} else {
+			
+				window.focus();
+			
+			}
 
 			self.threadJid = threadJid;
 			var threadUser = self.roster[threadJid];
@@ -1516,41 +1527,10 @@ $(document).ready(function() {
 
 					if(showMainNotify) {
 						if(isNodeWebkit) {
+						
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-
-									/*
-									var htmlText = '<div id="notification" class="notifylist notifyDesctop">'+
-										'<div class="notify new" data-jid="'+jid+'"><div class="name">Новый диалог</div><div class="text_top">'+self.myNameList[jid]+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">Ответить</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">Быстрый ответ</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Игнорировать</button></div></div>'+
-									'</div>';
-									var notif = new DesktopNotification('Новое сообщение', {
-										//icon: icon,
-										htmlBody: htmlText,
-										//ease: DesktopNotification.ease.easeInOutElastic,
-										easeTime:500,
-										width:500,
-										height:260
-									});
-									notif.show();
-									notif.on('chat.click', function(){
-										if(!$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').size()) {
-											self.acceptDialogSend(jid);
-											self.actionThread(jid);
-										} else {
-											self.sendMessageJid(jid, $(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').find('textarea').val());
-											self.closeNotify(jid);
-										}
-									})
-									notif.on('answer.click', function(){
-										self.acceptDialogSend(jid);
-										self.genereteFastAnswerForm(jid);
-									})
-									notif.on('ignore.click', function(){
-										self.ignoreDialog(jid);
-									})
-									self.notifyAppList[jid] = notif;
-									*/
-
-									var notify = sergDesctop.add(
+									
+								var notify = sergDesctop.add(
 									{
 										width:500,
 										height:260,
@@ -1578,16 +1558,15 @@ $(document).ready(function() {
 											self.ignoreDialog(jid);
 										});
 
-										self.notifyAppList[jid] = notify;
-
 									}
 								);
-
+								self.notifyAppList[jid] = notify;
 
 
 							} else {
-									$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+a);
+								self.notifyAppList[jid].addText(a);
 							}
+							
 						} else {
 							
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
@@ -1611,6 +1590,7 @@ $(document).ready(function() {
 									self.ignoreDialog(jid);
 								});
 							} else {
+								
 								$('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+a);
 							}
 						}
@@ -1632,39 +1612,57 @@ $(document).ready(function() {
 				if(type == 'messageDialog') {
 					if(showMainNotify) {
 						if(isNodeWebkit) {
-
+							
+							
+							
+							
+							
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-								//var u = self.userExtraData[jid];
-								var htmlText = '<div id="notification" class="notifylist notifyDesctop">'+
-									'<div class="notify" data-jid="'+jid+'"><div class="name">'+self.myNameList[jid]+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button onclick="window.emit(\'chat.click\')" class="chat btn submit">К чату</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">Быстрый ответ</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Игнорировать</button></div></div>'+
-								'</div>';
-								var notif = new DesktopNotification('Новое сообщение', {
-									//icon: icon,
-									htmlBody: htmlText,
-									ease: DesktopNotification.ease.easeInOutElastic,
-									easeTime:500,
-									width:500,
-									height:235
-								});
-								notif.show();
-								notif.on('chat.click', function(){
-									if(!$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').size()) {
-										self.actionThread(jid);
-									} else {
-										self.sendMessageJid(jid, $(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').find('textarea').val());
-										self.closeNotify(jid);
+								
+								var notify = sergDesctop.add(
+									{
+										width:500,
+										height:235,
+										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
+											'<div class="notify" data-jid="'+jid+'"><div class="name">'+self.myNameList[jid]+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button onclick="window.emit(\'chat.click\')" class="chat btn submit">К чату</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">Быстрый ответ</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Игнорировать</button></div></div>'+
+										'</div>'
+									},
+									function() {
+										notify.show();
+
+										notify.on('chat.click', function() {
+											if(!$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').size()) {
+												self.actionThread(jid);
+											} else {
+												self.sendMessageJid(jid, $(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').find('textarea').val());
+												self.closeNotify(jid);
+											}
+										});
+										notify.on('answer.click', function() {
+											self.genereteFastAnswerForm(jid);
+										});
+										notify.on('ignore.click', function() {
+											self.closeNotify(jid);
+										});
+
 									}
-								})
-								notif.on('answer.click', function(){
-									self.genereteFastAnswerForm(jid);
-								})
-								notif.on('ignore.click', function(){
-									self.closeNotify(jid);
-								})
-								self.notifyAppList[jid] = notif;
+								);
+								self.notifyAppList[jid] = notify;
+
+
 							} else {
-								$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+a);
+								self.notifyAppList[jid].addText(a);
 							}
+							
+					
+							
+							
+							
+							
+							
+							
+							
+							
 
 						} else {
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
@@ -1702,37 +1700,45 @@ $(document).ready(function() {
 				if(type == 'noIgnore') {
 					if(showMainNotify) {
 						if(isNodeWebkit) {
+						
+						
+						
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-									//var u = self.userExtraData[jid];
-									var htmlText = '<div id="notification" class="notifylist notifyDesctop">'+
-										'<div class="notify" data-jid="'+jid+'"><div class="name">'+self.myNameList[jid]+'</div><div class="text">Вы не можете игнорировать этот диалог, т.к. вы единственный оставшийся оператор</div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">К чату</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">Быстрый ответ</button></div></div>'+
-									'</div>';
-									var notif = new DesktopNotification('Новое сообщение', {
-										//icon: icon,
-										htmlBody: htmlText,
-										ease: DesktopNotification.ease.easeInOutElastic,
-										easeTime:500,
+								
+								var notify = sergDesctop.add(
+									{
 										width:500,
-										height:260,
-										styles: style,
-									});
-									notif.show();
-									notif.on('chat.click', function(){
-										if(!$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').size()) {
-											self.acceptDialogSend(jid);
-											self.actionThread(jid);
-										} else {
-											self.sendMessageJid(jid, $(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').find('textarea').val());
-											self.closeNotify(jid);
-										}
-									})
-									notif.on('answer.click', function(){
-										self.genereteFastAnswerForm(jid);
-									});
-									self.notifyAppList[jid] = notif;
+										height:185,
+										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
+											'<div class="notify noignore" data-jid="'+jid+'"><div class="name">'+self.myNameList[jid]+'</div><div class="text">Вы не можете игнорировать этот диалог, т.к. вы единственный оставшийся оператор</div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">К чату</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">Быстрый ответ</button></div></div>'+
+										'</div>'
+									},
+									function() {
+										notify.show();
+
+										notify.on('chat.click', function() {
+											if(!$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').size()) {
+												self.acceptDialogSend(jid);
+												self.actionThread(jid);
+											} else {
+												self.sendMessageJid(jid, $(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.fastanswer_block').find('textarea').val());
+												self.closeNotify(jid);
+											}
+										});
+										notify.on('answer.click', function() {
+											self.genereteFastAnswerForm(jid);
+										});
+
+									}
+								);
+								self.notifyAppList[jid] = notify;
+
+
 							} else {
-									$(self.notifyAppList[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+a);
+								self.notifyAppList[jid].addText(a);
 							}
+						
+					
 						} else {
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
 								//var u = self.userExtraData[jid];
@@ -1770,31 +1776,37 @@ $(document).ready(function() {
 						self.closeNotify(jid);
 
 						if(isNodeWebkit) {
+						
+						
+						
 							//if(typeof self.notifyAppList[jid] == 'undefined') {
+								
+								var notify = sergDesctop.add(
+									{
+										width:500,
+										height:235,
+										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
+											'<div class="notify" data-jid="'+jid+'"><div class="name">Перевод диалога</div><div class="text"><b>От оператора:</b> '+self.myNameList[jid]+'<br/><b>От клиента:</b> '+self.myNameList[a.contact]+'<br/><br/><b>Комментарий</b>:<br/>'+a.comment+'</div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">Принять</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Отклонить</button></div></div>'+
+										'</div>'
+									},
+									function() {
+										notify.show();
 
-								var htmlText = '<div id="notification" class="notifylist notifyDesctop">'+
-									'<div class="notify" data-jid="'+jid+'"><div class="name">Перевод диалога</div><div class="text"><b>От оператора:</b> '+self.myNameList[jid]+'<br/><b>От клиента:</b> '+self.myNameList[a.contact]+'<br/><br/><b>Комментарий</b>:<br/>'+a.comment+'</div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">Принять</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Отклонить</button></div></div>'+
-								'</div>';
-								var notif = new DesktopNotification('Перевод диалога', {
-									//icon: icon,
-									htmlBody: htmlText,
-									ease: DesktopNotification.ease.easeInOutElastic,
-									easeTime:500,
-									width:500,
-									height:235
-								});
-								notif.show();
-								notif.on('chat.click', function(){
-									self.giveRedirectMeAnsver(a.contact, jid, 'ok');
-									self.closeNotify(jid);
-								})
-								notif.on('ignore.click', function(){
-									self.giveRedirectMeAnsver(a.contact, jid, 'cancel');
-									self.closeNotify(jid);
-								})
-								self.notifyAppList[jid] = notif;
-								//console.log('show' + jid);
+										notify.on('chat.click', function() {
+											self.giveRedirectMeAnsver(a.contact, jid, 'ok');
+											self.closeNotify(jid);
+										});
+										notify.on('ignore.click', function() {
+											self.giveRedirectMeAnsver(a.contact, jid, 'cancel');
+											self.closeNotify(jid);
+										});
+
+									}
+								);
+								self.notifyAppList[jid] = notify;
+						
 							//}
+							
 						} else {
 
 
@@ -1827,22 +1839,28 @@ $(document).ready(function() {
 						self.closeNotify(jid);
 
 						if(isNodeWebkit) {
-								var htmlText = '<div id="notification" class="notifylist notifyDesctop">'+
-									'<div class="notify" data-jid="'+jid+'"><div class="name">Перевод диалога</div><div class="text"><b>От оператора:</b> '+self.myNameList[jid]+'<br/><b>От клиента:</b> '+self.myNameList[a.contact]+'<br/><br/>Запрос на перевод отменен</div><div class="btns"><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Закрыть</button></div></div>'+
-								'</div>';
-								var notif = new DesktopNotification('Новое сообщение', {
-									//icon: icon,
-									htmlBody: htmlText,
-									ease: DesktopNotification.ease.easeInOutElastic,
-									easeTime:500,
-									width:500,
-									height:205
-								});
-								notif.show();
-								notif.on('ignore.click', function(){
-									self.closeNotify(jid);
-								})
-								self.notifyAppList[jid] = notif;
+						
+						
+								var notify = sergDesctop.add(
+									{
+										width:500,
+										height:205,
+										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
+											'<div class="notify" data-jid="'+jid+'"><div class="name">Перевод диалога</div><div class="text"><b>От оператора:</b> '+self.myNameList[jid]+'<br/><b>От клиента:</b> '+self.myNameList[a.contact]+'<br/><br/>Запрос на перевод отменен</div><div class="btns"><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Закрыть</button></div></div>'+
+										'</div>'
+									},
+									function() {
+										notify.show();
+
+										notify.on('ignore.click', function() {
+											self.closeNotify(jid);
+										});
+
+									}
+								);
+								self.notifyAppList[jid] = notify;
+						
+
 						} else {
 
 							//if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {

@@ -103,32 +103,6 @@ var refresh = new Date().getTime();
 );		
 		
 		
-		
-/*		
-var addHeadScript = function(src) {
-    var po = document.createElement('script'); 
-	po.type = 'text/javascript'; 
-	//po.async = true;
-    po.src = src;
-	document.getElementsByTagName('head')[0].appendChild(po);
-};
-var scriptList = [
-	'js/jquery-2.2.2.min.js?'+version,	
-	'js/jquery.cookie.js?'+version,	
-	'js/jquery.mousewheel.js?'+version,	
-	'js/scrollbar/jquery.scrollbar.js?'+version,	
-	'js/rangy/rangy-core.js?'+version,	
-	'js/undo/undo.js?'+version,	
-	'js/medium/medium.min.js?'+version,	
-	'js/socket.io.js?'+version,	
-	'js/sergDesctop.js?'+version,	
-	'js/custom.js?'+version,	
-];
-scriptList.forEach(function(item, i, arr) {
-	addHeadScript(item);
-});
-*/
-
 
 
 
@@ -519,7 +493,7 @@ var menus = {
 	windowBehaviour.setNewWinPolicy(win);
 
 	// Add a context menu
-	menus.injectContextMenu(win, window, document);
+	//menus.injectContextMenu(win, window, document);
 	
 	
 	

@@ -234,43 +234,52 @@ if(isNodeWebkit) {
 			};
 			var winData = {
 				isShow: false,
-				win: {}
+				win: {},
+				promise: {},
 			};
 			var idWin = id++;
 	
 			self.pool[idWin] = winData;
 			
 			
-			
-			
-			var link = window.location.origin+"/js/desktopNotification.html";
-			gui.Window.open(link, winOpt, function(win) {
-				//win.resizeTo(options.width, options.height);
-				
-				win.on('loaded', function(){
-					Emitter(this.window);
 
-					win.window.document.body.innerHTML = options.htmlBody;
+			winData.promise = new Promise(function(resolve, reject) {
 
-					win.window.on('chat.click', function() {
-						//console.log(34343);
-					});
-					win.window.on('answer.click', function() {
-						//console.log(34343);
-					});
-					win.window.on('ignore.click', function() {
-						//console.log(34343);
-					});
+				var link = window.location.origin+"/js/desktopNotification.html";
+				gui.Window.open(link, winOpt, function(win) {
+					//win.resizeTo(options.width, options.height);
 					
-					if(cb) {
-						cb();
-					}
-					
+					win.on('loaded', function(){
+						Emitter(this.window);
+
+						win.window.document.body.innerHTML = options.htmlBody;
+
+						win.window.on('chat.click', function() {
+							//console.log(34343);
+						});
+						win.window.on('answer.click', function() {
+							//console.log(34343);
+						});
+						win.window.on('ignore.click', function() {
+							//console.log(34343);
+						});
+						
+						/*winData.promise.then(function(result) {
+						
+						});*/
+						
+						resolve();
+						
+						if(cb) {
+							cb();
+						}
+						
+					});
+
+					winData.win = win;
 				});
-
-				winData.win = win;
-			});
 			
+			});
 			
 			
 			/*
@@ -328,6 +337,18 @@ if(isNodeWebkit) {
 			winData.close = function(cb) {
 				winData.win.close();
 				self.close(idWin);
+				if(cb) {
+					cb();
+				}
+			}
+			
+			winData.addText = function(text, cb) {
+				//winData.win.close();
+				//self.close(idWin);
+				winData.promise.then(function() {
+					$(winData.win.window.document.body).find('.notifylist').find('.notify').find('.text').find('textarea').append("\n\r"+text);
+					return Promise.resolve();
+				});
 				if(cb) {
 					cb();
 				}
@@ -391,12 +412,15 @@ if(isNodeWebkit) {
 	
 	
 	
-	window.generateNotify = function generate() {
+	
+	var jid = 'serg';
+	this.list = {};
+	window.generateNotify = function generate(jid) {
 		var notify = sergDesctop.add(
 			{
 				height: 200, 
 				htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
-					'<div class="notify new" data-jid=""><div class="name">Новый диалог</div><div class="text_top">jjj</div><div class="text"><textarea>kk</textarea></div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">Ответить</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\');console.log(3434343);">Быстрый ответ</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Игнорировать</button></div></div>'+
+					'<div class="notify new" data-jid="'+jid+'"><div class="name">Новый диалог</div><div class="text_top">jjj</div><div class="text"><textarea>kk</textarea></div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">Ответить</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\');console.log(3434343);">Быстрый ответ</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">Игнорировать</button></div></div>'+
 				'</div>'
 			}, 
 			function() {
@@ -413,12 +437,24 @@ if(isNodeWebkit) {
 						console.log(55);
 					});
 				});
-				
 				//console.log(notify);
-				
 			}
 		);
+		self.list[jid] = notify;
 	}
+	
+	//window.generateNotify(jid);
+	
+
+	
+	//setTimeout(function() {
+		//console.log(self.list[jid].win.window.document.body);
+		//$(self.list[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+'65656565656565');
+		//self.list[jid].addText(44444);
+		//self.list[jid].addText(55555);
+		//self.list[jid].addText(6666);
+		//console.log($(self.list[jid].win.window.document.body).find('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea'));
+//}, 2000);
 	
 	
 	

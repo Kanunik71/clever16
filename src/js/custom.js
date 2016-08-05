@@ -401,14 +401,14 @@ $(document).ready(function() {
 		this.socket.on('message', function(msg) {
 
 			console.log(msg);
-			
+
 			if(msg.type=='version') {//проверка версии
 				if(msg.ver != version) {
 					self.generateDialogEvent(null, 'versionUpdate', null, null);
 				}
 			}
-			
-			
+
+
 			if(msg.type=='xmpp') {//xmpp
 
 				if(msg.act=='connect') {//успешное соединение
@@ -701,17 +701,17 @@ $(document).ready(function() {
 
 		this.actionThread = function(threadJid) {
 
-		
+
 			if(isNodeWebkit) {
-			
+
 				var win = gui.Window.get();
 				win.show();
 				win.focus();
-			
+
 			} else {
-			
+
 				window.focus();
-			
+
 			}
 
 			self.threadJid = threadJid;
@@ -865,7 +865,7 @@ $(document).ready(function() {
 				dateStr += self.coorect0(curr_date) + '.' + self.coorect0(curr_month) + '.' + curr_year + ' ';
 			}
 			dateStr += self.coorect0(d.getHours()) + ':' + self.coorect0(d.getMinutes());
-			
+
 			obj.message = self.reconvert_link(obj.message);
 
 			var str = '';
@@ -1527,9 +1527,9 @@ $(document).ready(function() {
 
 					if(showMainNotify) {
 						if(isNodeWebkit) {
-						
+
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-									
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -1566,9 +1566,9 @@ $(document).ready(function() {
 							} else {
 								self.notifyAppList[jid].addText(a);
 							}
-							
+
 						} else {
-							
+
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
 								//var u = self.userExtraData[jid];
 								$('.notifylist').append('<div class="notify new" data-jid="'+jid+'"><div class="name">Новый диалог</div><div class="text_top">'+self.myNameList[jid]+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit">Ответить</button><button class="answer btn gray_sv">Быстрый ответ</button><button class="ignore btn cancel">Игнорировать</button></div></div>');
@@ -1590,7 +1590,7 @@ $(document).ready(function() {
 									self.ignoreDialog(jid);
 								});
 							} else {
-								
+
 								$('.notifylist').find('.notify[data-jid="'+jid+'"]').find('.text').find('textarea').append("\n\r"+a);
 							}
 						}
@@ -1612,13 +1612,13 @@ $(document).ready(function() {
 				if(type == 'messageDialog') {
 					if(showMainNotify) {
 						if(isNodeWebkit) {
-							
-							
-							
-							
-							
+
+
+
+
+
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-								
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -1653,16 +1653,16 @@ $(document).ready(function() {
 							} else {
 								self.notifyAppList[jid].addText(a);
 							}
-							
-					
-							
-							
-							
-							
-							
-							
-							
-							
+
+
+
+
+
+
+
+
+
+
 
 						} else {
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
@@ -1700,11 +1700,11 @@ $(document).ready(function() {
 				if(type == 'noIgnore') {
 					if(showMainNotify) {
 						if(isNodeWebkit) {
-						
-						
-						
+
+
+
 							if(typeof self.notifyAppList[jid] == 'undefined') {
-								
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -1737,8 +1737,8 @@ $(document).ready(function() {
 							} else {
 								self.notifyAppList[jid].addText(a);
 							}
-						
-					
+
+
 						} else {
 							if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
 								//var u = self.userExtraData[jid];
@@ -1776,11 +1776,11 @@ $(document).ready(function() {
 						self.closeNotify(jid);
 
 						if(isNodeWebkit) {
-						
-						
-						
+
+
+
 							//if(typeof self.notifyAppList[jid] == 'undefined') {
-								
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -1804,9 +1804,9 @@ $(document).ready(function() {
 									}
 								);
 								self.notifyAppList[jid] = notify;
-						
+
 							//}
-							
+
 						} else {
 
 
@@ -1839,8 +1839,8 @@ $(document).ready(function() {
 						self.closeNotify(jid);
 
 						if(isNodeWebkit) {
-						
-						
+
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -1859,7 +1859,7 @@ $(document).ready(function() {
 									}
 								);
 								self.notifyAppList[jid] = notify;
-						
+
 
 						} else {
 
@@ -1915,10 +1915,10 @@ $(document).ready(function() {
 
 
 		this.generateDialogEvent = function(jid, type, attr1, attr2) {
-		
-			
+
+
 			if(type == 'versionUpdate') {
-				
+
 					var u = self.userExtraData[jid];
 
 					$('.dialog_window').addClass('dialog_window_custom').removeClass('hide').html('<div class="dialog_window_h">Версия приложения устарела</div><div class="dialog_window_t">Вам необходимо перезапуститься в ближайшее время, для стабильной работы приложения</div><div class="dialog_window_btns"><div class="dialog_window_btn btn submit">Перезапустить</div><div class="dialog_window_btn btn gray_sv">Закрыть</div></div>');
@@ -1931,7 +1931,7 @@ $(document).ready(function() {
 					});
 
 			}
-			
+
 
 			if(type == 'closeAllDialogs') {
 
@@ -2565,9 +2565,9 @@ $(document).ready(function() {
 			}
 		}
 
-		
+
 		$('a[target=_blank]').on('click', function(){
-		   
+
 		   return false;
 		});
 

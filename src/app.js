@@ -108,7 +108,7 @@ var refresh = new Date().getTime();
 
 
 if(isNodeWebkit) {
-
+	
 
 var d = require('domain').create();
 d.on('error', (er) => {
@@ -120,11 +120,9 @@ d.on('error', (er) => {
 });
 d.run(() => {
 	
-	
 
 	
-	
-  var gui = require('nw.gui');
+	var gui = require('nw.gui');
 	var win = gui.Window.get();
 
 	var platform = require('./components/platform');
@@ -143,7 +141,9 @@ var dispatcher = require('./components/dispatcher');
 var platform = require('./components/platform');
 var settings = require('./components/settings');
 var updater = require('./components/updater');
+	
 
+	
 var menus = {
   settingsItems: function(win, keep) {
     var self = this;
@@ -335,7 +335,7 @@ var menus = {
 
   loadTrayIcon: function(win) {
     if (win.tray) {
-      win.tray.remove();
+      //win.tray.remove();
       win.tray = null;
     }
 
@@ -429,10 +429,7 @@ var menus = {
 	
 	
 	
-	
-	
-	
-	
+
 	
 	
 	
@@ -449,6 +446,8 @@ var menus = {
 	
 	
 	
+		
+
 	
 	
 	
@@ -466,6 +465,7 @@ var menus = {
 	dispatcher.addEventListener('win.confirm', function(data) {
 	  data.callback(data.win.window.confirm(data.message));
 	});
+	
 
 	// Window state
 	windowBehaviour.restoreWindowState(win);
@@ -483,7 +483,10 @@ var menus = {
 	}
 
 	// Load the app menus
-	menus.loadMenuBar(win)
+	menus.loadMenuBar(win);
+	
+		
+	
 	if (platform.isWindows) {
 	  menus.loadTrayIcon(win);
 	}
@@ -493,10 +496,16 @@ var menus = {
 	windowBehaviour.setNewWinPolicy(win);
 
 	// Add a context menu
-	//menus.injectContextMenu(win, window, document);
+	menus.injectContextMenu(win, window, document);
+	
+	console.log(3);
 	
 	
 	
+	win.on('close', function() {
+		//win.tray.remove();
+		win.close(true);
+	});
 	
 	
 

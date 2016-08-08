@@ -148,12 +148,13 @@ var menus = {
   settingsItems: function(win, keep) {
     var self = this;
     return [{
-      label: 'Reload',
+      label: 'Перезагрузка',
       click: function() {
         windowBehaviour.saveWindowState(win);
         win.reload();
       }
-    }, {
+    }, 
+	/*{
       type: 'checkbox',
       label: 'Open Links in the Browser',
       setting: 'openLinksInBrowser',
@@ -161,7 +162,8 @@ var menus = {
         settings.openLinksInBrowser = this.checked;
         windowBehaviour.setNewWinPolicy(win);
       }
-    }, {
+    },*/
+	{
       type: 'separator'
     }, {
       type: 'checkbox',
@@ -181,7 +183,7 @@ var menus = {
       }
     }, {
       type: 'checkbox',
-      label: 'Launch on Startup',
+      label: 'Автозапуск',
       setting: 'launchOnStartup',
       platforms: ['osx', 'win'],
       click: function() {
@@ -212,12 +214,12 @@ var menus = {
       }
     }, {
       type: 'checkbox',
-      label: 'Check for Update on Launch',
+      label: 'Обновление при запуске',
       setting: 'checkUpdateOnLaunch'
     }, {
       type: 'separator'
     }, {
-      label: 'Check for Update',
+      label: 'Проверить обновления',
       click: function() {
         updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
           if (error || newVersionExists) {
@@ -231,7 +233,7 @@ var menus = {
         });
       }
     }, {
-      label: 'Launch Dev Tools',
+      label: 'Запуск Dev Tools',
       click: function() {
         win.showDevTools();
       }
@@ -307,14 +309,14 @@ var menus = {
     }));
 
     menu.append(new gui.MenuItem({
-      label: 'Show Clever16',
+      label: 'Открыть Clever16',
       click: function() {
         win.show();
       }
     }));
 
     menu.append(new gui.MenuItem({
-      label: 'Quit Clever16',
+      label: 'Выход из Clever16',
       click: function() {
         win.close(true);
       }
@@ -323,9 +325,9 @@ var menus = {
     // Watch the items that have a 'setting' property
     menu.items.forEach(function(item) {
       if (item.setting) {
-        settings.watch(item.setting, function(value) {
-          item.checked = value;
-        });
+			settings.watch(item.setting, function(value) {
+			item.checked = value;
+			});
       }
     });
 
@@ -335,12 +337,12 @@ var menus = {
 
   loadTrayIcon: function(win) {
     if (win.tray) {
-      //win.tray.remove();
-      win.tray = null;
+		//win.tray.remove();
+		win.tray = null;
     }
 
     var tray = new gui.Tray({
-      icon: 'images/icon_' + (platform.isOSX ? 'menubar.tiff' : 'tray.png')
+		icon: 'images/icon_' + (platform.isOSX ? 'menubar.tiff' : 'tray.png')
     });
 
     tray.on('click', function() {
@@ -360,7 +362,7 @@ var menus = {
 
     if (targetElement.tagName.toLowerCase() == 'input') {
       menu.append(new gui.MenuItem({
-        label: "Cut",
+        label: "Вырезать",
         click: function() {
           clipboard.set(targetElement.value);
           targetElement.value = '';
@@ -368,21 +370,21 @@ var menus = {
       }));
 
       menu.append(new gui.MenuItem({
-        label: "Copy",
+        label: "Копировать",
         click: function() {
           clipboard.set(targetElement.value);
         }
       }));
 
       menu.append(new gui.MenuItem({
-        label: "Paste",
+        label: "Вставить",
         click: function() {
           targetElement.value = clipboard.get();
         }
       }));
     } else if (targetElement.tagName.toLowerCase() == 'a') {
       menu.append(new gui.MenuItem({
-        label: "Copy Link",
+        label: "Копировать ссылку",
         click: function() {
           clipboard.set(targetElement.href);
         }
@@ -391,7 +393,7 @@ var menus = {
       var selection = window.getSelection().toString();
       if (selection.length > 0) {
         menu.append(new gui.MenuItem({
-          label: "Copy",
+          label: "Копировать",
           click: function() {
             clipboard.set(selection);
           }
@@ -442,21 +444,6 @@ var menus = {
 	var windowBehaviour = require('./components/window-behaviour');
 	var dispatcher = require('./components/dispatcher');
 
-	
-	
-	
-	
-		
-
-	
-	
-	
-	
-	// Ensure there's an app shortcut for toast notifications to work on Windows
-	if (platform.isWindows) {
-		//gui.App.createShortcut(process.env.APPDATA + "\\Microsoft\\Windows\\Start Menu\\Programs\\Clever16.lnk");   //old version< new 0.16.0
-	}
-
 	// Add dispatcher events
 	dispatcher.addEventListener('win.alert', function(data) {
 	  data.win.window.alert(data.message);
@@ -478,8 +465,8 @@ var menus = {
 
 	// Run as menu bar app
 	if (settings.asMenuBarAppOSX) {
-	  win.setShowInTaskbar(false);
-	  menus.loadTrayIcon(win);
+		win.setShowInTaskbar(false);
+		menus.loadTrayIcon(win);
 	}
 
 	// Load the app menus
@@ -488,22 +475,29 @@ var menus = {
 		
 	
 	if (platform.isWindows) {
-	  menus.loadTrayIcon(win);
+		menus.loadTrayIcon(win);
 	}
 
 	// Adjust the default behaviour of the main window
 	windowBehaviour.set(win);
 	windowBehaviour.setNewWinPolicy(win);
 
+	
+	
 	// Add a context menu
 	menus.injectContextMenu(win, window, document);
 	
-	console.log(3);
+
+	
+	
+	
 	
 	
 	
 	win.on('close', function() {
-		//win.tray.remove();
+		for (key in chat.notifyAppList) {
+		  chat.notifyAppList[key].close();
+		}
 		win.close(true);
 	});
 	

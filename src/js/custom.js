@@ -504,7 +504,7 @@ $(document).ready(function() {
 										var item = {
 											jid: from,
 											name: messasge.find('data').find('client_name').text(),
-										}
+											}
 										self.addItemToList('#clients', item, 0, false);
 
 										if(self.threadJid == from) {

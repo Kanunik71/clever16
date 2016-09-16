@@ -31,7 +31,29 @@ window.configApp = {
 }
 
 				
-		
+
+			if(isNodeWebkit) {
+				var AutoLaunch = require('auto-launch');
+				var launcher = new AutoLaunch({
+					name: 'Clever16',
+					//isHidden: true // hidden on launch - only works on a mac atm
+				});
+				launcher.isEnabled(function(enabled) {
+					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
+						launcher.enable(function(error) {
+							if (error) {
+								console.error(error);
+							}
+						});
+					} else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
+						launcher.disable(function(error) {
+							if (error) {
+								console.error(error);
+							}
+						});
+					}
+				});
+			}		
 	
 		
 
@@ -409,8 +431,6 @@ var menus = {
 	   */
 	  restoreWindowState: function(win) {
 		var state = window.configApp.windowState;
-		console.log(window);
-		console.log(22);
 
 		if (state.mode == 'maximized') {
 			win.maximize();

@@ -3934,13 +3934,13 @@ $(document).ready(function() {
 					isHidden: true // hidden on launch - only works on a mac atm
 				});
 				launcher.isEnabled(function(enabled) {
-					if(desktop.prop_autoStart == 1 && !enabled) {
+					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
 						launcher.enable(function(error) {
 							if (error) {
 								console.error(error);
 							}
 						});
-					} else if (desktop.prop_autoStart == 0 && enabled){
+					} else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
 						launcher.disable(function(error) {
 							if (error) {
 								console.error(error);

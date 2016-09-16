@@ -182,7 +182,7 @@ var menus = {
 	menu.append(new gui.MenuItem({
       label: 'Выход из Clever16',
       click: function() {
-        win.close(true);
+        win.close();
       }
     }));
 
@@ -208,7 +208,7 @@ var menus = {
     menu.append(new gui.MenuItem({
       label: 'Выход из Clever16',
       click: function() {
-        win.close(true);
+        win.close();
       }
     }));
 
@@ -340,7 +340,7 @@ var menus = {
 		  win.on('close', function(quit) {
 			if (quit) {
 			  this.saveWindowState(win);
-			  win.close(true);
+			  win.close();
 			} else {
 			  win.hide();
 			}

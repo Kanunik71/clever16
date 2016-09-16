@@ -261,6 +261,10 @@ $(document).ready(function() {
 				$.cookie('pult_login', '');
 				$.cookie('pult_password', '');
 
+				if(isNodeWebkit) {
+					win.close();
+				}
+				
 				event.preventDefault();
 			});
 			

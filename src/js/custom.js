@@ -4,6 +4,7 @@ console.log('new App 0.1.1');
 
 if (isNodeWebkit) {
 	var gui = require('nw.gui');
+	var win = gui.Window.get();
 }
 	
 $(document).ready(function() {
@@ -3715,6 +3716,21 @@ $(document).ready(function() {
 					$('.property').find('.property_right').find('.property_block').addClass('hide');
 					$('.property').find('.property_right').find('.property_block[data="'+ $(this).attr('data') +'"]').removeClass('hide');
 				}
+			});
+			
+			$('.property').find('.property_line_update').find('.btn').on('click', function() {
+				var updater = require('./components/updater');
+				//updater.checkAndPrompt(gui.App.manifest, win);
+				updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
+					if (error || newVersionExists) {
+						updater.prompt(win, false, error, newVersionExists, newManifest);
+					} else {
+						dispatcher.trigger('win.alert', {
+							win: win,
+							message: 'You’re using the latest version: ' + gui.App.manifest.version
+						});
+					}
+				});
 			});
 			
 			

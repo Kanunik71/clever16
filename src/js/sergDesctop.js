@@ -232,12 +232,16 @@ if(isNodeWebkit) {
 				resizable: options.resizable,
 				focus: options.focus,
 			};
+			
+			var idWin = id++;
+			
 			var winData = {
 				isShow: false,
 				win: {},
 				promise: {},
+				id: idWin,
 			};
-			var idWin = id++;
+			
 	
 			self.pool[idWin] = winData;
 			

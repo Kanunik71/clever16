@@ -6,15 +6,29 @@
   
   
   <meta name="robots" content="index, follow"/>
-  <title>Пульт оператора</title>
+  <title></title>
   <link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection"/>
+  <link rel="stylesheet" href="css/scroll.css" type="text/css" media="screen, projection"/>
+  <link rel="stylesheet" href="css/ui.css" type="text/css" media="screen, projection"/>
   
 </head>
 <body>
-  <div class="preloader">
-    <div class="preloader_img"></div>
-  </div>
-  <div class="relat auth_form_parent hide">
+	
+	
+
+	
+	
+	<div class="preloader">
+		<div class="preloader_img"></div>
+	</div>
+	
+	
+	
+	
+	
+
+  
+<div class="relat auth_form_parent hide">
     <div id="auth_form">
       <div class="auth_form_cont"><img src="images/logo_login.png" alt="CleverSite" class="auth_form_logo"/>
         <form id="auth_form_form" action="" method="POST" autocomplete="false">
@@ -27,139 +41,367 @@
               <div class="ico"></div>
               <input type="password" value="" name="password" placeholder="Пароль" required="" class="auth_input"/>
             </div>
-            <button type="submit" name="submit" class="btn auth_smb submit disabled_submit">Войти</button>
+            <button type="submit" name="submit" class="btn auth_smb submit disabled_submit">Enter</button>
             <div class="auth_form_cont_text"></div>
           </div>
           <div class="auth_form_form_f_2 hide">
-            <div class="auth_form_form_f_2_t">Выполняется вход на сервер...</div>
-            <div name="submit" class="btn auth_smb submit auth_reset">Отменить</div>
+            <div class="auth_form_form_f_2_t">Logging in to the server ...</div>
+            <div name="submit" class="btn auth_smb submit auth_reset">Cancel</div>
           </div>
           <div class="clear"></div>
           <form></form>
         </form>
       </div>
     </div>
-  </div>
-  <div id="content" class="width hide">
-    <div class="dialog_block_list"></div>
-    <div class="dialog_window hide"></div>
+</div>
+  
+  
+  
+  
+  
+  
+<div id="content" class="width hide">
+ 
     <header id="header" class="width">
-      <div class="header_cont">
-        <div class="header_l header_l_td"><a href="http://cleversite.ru/" target="_blank" class="logocont"><img src="images/logo.png" alt="CleverSite"/></a></div>
-        <div class="header_c header_l_td">
-          <div class="top_s">
-            <div class="top_status_conteiner">
-              <div class="top_status on">
-                <div class="top_status_l"></div>
-                <div class="top_status_r"></div>
-                <div class="cleversite_animate status_circle"></div>
-              </div>
-            </div>
-            <div class="top_text"></div>
-          </div>
-        </div>
-        <div class="header_r header_l_td">
-			<a href="javascript:void(0);" class="property_top"><span class="ico cleversite_animate"></span><span class="icotext cleversite_animate">Настройки</span></a>
-			<a href="javascript:void(0);" class="exit_top"><span class="ico cleversite_animate"></span><span class="icotext cleversite_animate">Выход</span></a>
+		<div class="relat">
+			<div class="left_block">
+				<div class="main_user clr">
+					<div class="avatar"></div>
+					<div class="name"></div>
+					<div class="status">
+						 <div class="top_status_conteiner">
+							<div class="switch top_status on">
+								<div class="switch_l"></div>
+								<div class="switch_r"></div>
+								<div class="cleversite_animate circle"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="right_block">
+				<div class="user_block_top">
+					<div class="user_block hide">
+						<div class="avatar orange"></div>
+						<div class="name"></div>
+					</div>
+					<div class="user_info hide">
+						<div class="text">
+							
+						</div>
+						<div class="extended">
+							<div><span data="begin-text">Page the dialogue:</span> <br/><a data="begin" class="import"></a></div>
+							<div><span data="source-text">Transition source:</span> <br/><span data="source" class="import"></span></div>
+							<div><span data="location-text">Location:</span> <span data="location" class="import"></span></div>
+							<div><span data="address-text">IP-address:</span> <span data="address" class="import"></span></div>
+							<div><span data="provider-text">Service:</span> <span data="provider" class="import"></span></div>
+							<div><span data="browser-text">Browser:</span> <span data="browser" class="import"></span></div>
+							<div><span data="visits-text">Number of visits:</span> <span data="visits" class="import"></span></div>
+							<div><span data="dialogs-text">Number of dialogues:</span> <span data="dialogs" class="import"></span></div>
+							<div><span data="scan_pages-text">The number of pages viewed per visit:</span> <span data="scan_pages" class="import"></span></div>
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="menu top_menu">
+					<ul>
+						<li class="disabled" data="transfer">Transfer dialog</li>
+						<li class="disabled" data="block">Block</li>
+						<li class="disabled" data="send_email">Send email</li>
+						<li class="" data="operators">Operators</li>
+						<li class="" data="clients">Clients</li>
+						<li class="sep"></li>
+						<li data="property">Property</li>
+						<li data="exit">Exit</li>
+					</ul>
+				</div>
+			</div>
 		</div>
-      </div>
     </header>
+	
     <div class="content_block">
-      <div class="content_left">
-        <div class="content_left_tab_list">
-          <div class="content_left_tab_block">
-            <div data="clients" class="content_left_tab act">Клиенты</div>
-            <div data="operators" class="content_left_tab">Операторы</div>
-          </div>
-        </div>
-        <div class="content_left_blocks">
-          <div id="clients" class="content_left_block"></div>
-          <div id="operators" class="content_left_block hide"></div>
-        </div>
-      </div>
-      <div class="content_right">
-        <div class="content_info">В этом окне вы сможете общаться с посетителями сайта, которые напишут онлайн-консультанту</div>
-        <div class="content_dialog hide">
-          <div class="content_top">
-            <div data="give_thread" class="content_top_ico innact ico1 cleversite_animate">Передать
-              <div class="operator_give_list hide"></div>
-            </div>
-            <div data="blocked" class="content_top_ico innact ico2 cleversite_animate">Блокировать</div>
-            <div data="send_file" class="content_top_ico innact ico3 cleversite_animate">Передать файл</div>
-            <div data="send_to_mail" class="content_top_ico innact ico4 fright cleversite_animate">Отправить на почту</div>
-            <div class="clear"></div>
-          </div>
-          <div class="content_middle">
-            <div class="content_middle_text">
-              <div class="content_middle_text_name"></div>
-              <div class="content_middle_text_info"></div>
-            </div>
-            <div class="content_middle_ico">
-              <div class="ico"></div>
-            </div>
-            <div class="client_info hide">
-              <div class="client_info_block">
-                <div class="client_info_block_line1">
-                  <div class="client_info_name">
-                    <input data="client_name" disabled="disabled" type="text" value="" class="import"/>
-                  </div>
-                  <div class="client_info_icon"><span></span></div>
-                  <div class="clear"></div>
-                </div>
-                <div class="client_info_block_line2">
-                  <div class="client_info_block_line2_scroll">
-                    <div class="client_info_text"><b data="site" class="import"></b></div>
-                    <div class="client_info_text">Страница начала диалога: <br/><a data="begin" class="import"></a></div>
-                    <div class="client_info_text">Источник перехода: <br/><span data="source" class="import"></span></div>
-                    <div class="client_info_text">Местоположение:<br/><span data="location" class="import"></span></div>
-                    <div class="client_info_text">IP-адрес: <span data="address" class="import"></span></div>
-                    <div class="client_info_text">Провайдер: <span data="provider" class="import"></span></div>
-                    <div class="client_info_text">Браузер: <span data="browser" class="import"></span></div>
-                    <div class="client_info_text">Количество посещений: <span data="visits" class="import"></span></div>
-                    <div class="client_info_text">Количество диалогов: <span data="dialogs" class="import"></span></div>
-                    <div class="client_info_text">Количество просмотренных страниц за посещение: <span data="scan_pages" class="import"></span></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content_data">
-            <div class="show_history hide"><span>История переписки</span></div>
-            <div class="content_section">
-              <div id="data_scroll">
-                <div id="data"></div>
-              </div>
-            </div>
-            <div class="fast_message_block hide">
-              <div class="fast_message_block_scroll">
-                <div class="fast_message_block_scroll_data">
-                  <div class="fast_message_block_close"></div>
-                  <div class="fast_message_block_line">Здравствуйте! Чем я могу помочь?</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="content_bottom">
-            <div class="content_bottom_dialog">
-              <div class="content_bottom_textarea">
-                <div id="msgwnd" contenteditable="true" placeholder="Напишите ваше сообщение" tabindex="0" maxlength="1000" rows="4"></div>
-              </div>
-              <div class="content_bottom_right">
-                <div class="content_bottom_right_fast btn gray_sv">Фразы</div>
-                <div class="content_bottom_right_send btn submit disabled_submit">Отправить</div>
-              </div>
-              <div class="clear"></div>
-            </div>
-            <div class="content_bottom_noopen_dialog"></div>
-          </div>
-        </div>
+		<div class="content_left">
+			<div class="user_list">
+				<div data="clients" class="content_left_block"></div>
+				<div data="operators" class="content_left_block hide"></div>
+			</div>
+		</div>
+		<div class="content_right">
+			<div class="content_info">In this window you will be able to communicate with site visitors who write online consultant</div>
+			
+			
+			<div class="content_dialog hide">
+
+				<div class="content_data">
+			  
+					<div class="show_history hide"><span>History</span></div>
+				
+					<div class="content_section">
+						<div id="data_scroll">
+							<div id="data">
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="content_bottom">
+					<div class="content_bottom_dialog">
+						<div class="content_bottom_textarea">
+							<div class="fast_phrase">/..</div>
+							
+							<div id="msgwnd" contenteditable="true" placeholder="Write your message" tabindex="0" maxlength="1000" rows="4"></div>
+
+							<div class="btns">
+								<div class="file disabled"></div>
+								<div class="smile disabled"></div>
+							</div>
+						</div>
+						
+						<div class="send disabled"></div>
+						
+						<div class="smiles_list hide">
+							<div class="smiles_list_cont clr">
+							</div>
+						</div>
+						<div class="phrase_list hide">
+							<div class="phrase_list_cont clr">
+								<div class="block clr">
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class="content_bottom_noopen_dialog"></div>
+				</div>
+			  
+			 
+			  
+			</div>
       </div>
     </div>
     <div class="clear"></div>
     <footer id="footer" class="width"></footer>
-    <div class="notifylist"></div>
+    
     <input id="uploadFiles" type="file" style="display: none" name="uploadFiles" multiple=""/>
-  </div>
+	
+	
+	
+	
+	
+	<div class="notifylist"></div>
+
+
+	
+	<div class="property width hide">
+		<div class="property_cont">
+			<div class="property_left">
+				<ul>
+					<li class="act" data="status"><span>Status</span></li>
+					<li data="phrases"><span>Phrases</span></li>
+					<li data="lang"><span>Lang</span></li>
+					<li data="notify"><span>Notifications</span></li>
+					<li data="autostart"><span>Autostart</span></li>
+					<li data="spelling"><span>Spelling</span></li>
+					<li data="visual"><span>Visual</span></li>
+					<li data="report"><span>Report</span></li>
+					<li data="about"><span>About</span></li>
+				</ul>
+			</div>
+			<div class="property_right">
+				<div class="property_block" data="status">
+			
+			
+					<div class="property_sv">
+						<div class="property_line_status clr">
+							<div class="property_sv_l">Time without user <br/> to change the status of minutes:</div>
+							<div class="property_sv_r">
+								<select name="prop_awayTime" class="select">
+									<option value="0">Never</option>
+									<option value="1">1</option>
+									<option value="3">3</option>
+									<option value="5">5</option>
+									<option value="15">15</option>
+									<option value="30">30</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					
+					<div class="property_sv">
+						<div class="property_line_checkbox">
+							<div class="checkbox">
+								<input type="checkbox" value="1" name="prop_closeThreadChangeStatus" id="prop_closeThreadChangeStatus" />
+								<label for="prop_closeThreadChangeStatus">Close the open dialogs with customers <br/> status change</label>
+							</div>
+						</div>
+					</div>
+	
+					
+				</div>
+				<div class="property_block hide" data="phrases">
+					<div class="property_sv">
+						<div class="property_phraseList">
+							<div class="property_phraseList_scroll">
+								<div class="block">
+								</div>
+							</div>
+						</div>
+						
+						<div class="property_phraseEnter">
+							<div class="property_phraseEnter_textarea">
+								<textarea name="phrase_text" placeholder="Enter a flash message , and then click Add"></textarea>
+							</div>
+							<div class="property_phraseEnter_submit disabled">
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="property_block hide" data="lang">
+					<div class="property_sv">
+						<div class="property_line_checkbox">
+							<div class="checkbox bolder">
+								<input type="radio" value="ru" name="prop_lang" id="prop_lang_rus" />
+								<label for="prop_lang_rus">Russian</label>
+							</div>
+						</div>
+						<div class="property_line_checkbox">
+							<div class="checkbox bolder">
+								<input type="radio" value="en" name="prop_lang" id="prop_lang_en" />
+								<label for="prop_lang_en">English</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="property_block hide" data="notify">
+					<div class="property_sv">
+						<div class="property_line_checkbox">
+							<div class="checkbox bolder">
+								<input type="checkbox" value="1" name="prop_enableSound" id="prop_enableSound" />
+								<label for="prop_enableSound">Use sound notifications about events</label>
+							</div>
+						</div>
+					</div>
+			
+	
+			
+					<div class="property_sv">
+						<div class="property_line_file_sound">
+							<div class="property_sv_text" data="clients">Messages from the client</div>
+							<div class="property_sv_select">
+								<select name="prop_soundClient_file" class="select">
+									<option value="0">No (no sound)</option>
+									<option value="1">Notification 1</option>
+									<option value="2">Notification 2</option>
+								</select>
+							</div>
+							<div class="property_sv_play"><div class="block"><div class="ico"></div></div></div>
+						</div>
+					</div>
+					
+					
+					
+					<div class="property_sv">
+						<div class="property_line_file_sound">
+							<div class="property_sv_text" data="operators">Messages from the operator</div>
+							<div class="property_sv_select">
+								<select name="prop_soundOperator_file" class="select">
+									<option value="0">No (no sound)</option>
+									<option value="1">Notification 1</option>
+									<option value="2">Notification 2</option>
+								</select>
+							</div>
+							<div class="property_sv_play"><div class="block"><div class="ico"></div></div></div>
+						</div>
+					</div>
+				</div>
+				<div class="property_block hide" data="autostart">
+					<div class="property_sv">
+						<div class="property_line_checkbox">
+							<div class="checkbox">
+								<input type="checkbox" value="1" name="prop_autoStart" id="prop_autoStart" />
+								<label for="prop_autoStart">Start automatically</label>
+							</div>
+						</div>
+						<div class="property_line_checkbox">
+							<div class="checkbox">
+								<input type="checkbox" value="1" name="prop_autoIn" id="prop_autoIn" />
+								<label for="prop_autoIn">log in automatically</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="property_block hide" data="spelling">spell</div>
+				<div class="property_block hide" data="visual">
+					<div class="property_sv">
+						<div class="property_line_visual">
+							<input type="hidden" name="prop_theme" value="1" />
+							<div class="property_line_visual_name">Тема оформления</div>
+							<div class="list">
+								<div class="el clr" data="1">
+									<div class="pic"><img src="/images/theme/theme_1.jpg" alt="" /></div>
+									<div class="name">Светлая</div>
+								</div>
+								<div class="el clr" data="2">
+									<div class="pic"><img src="/images/theme/theme_2.jpg" alt="" /></div>
+									<div class="name">Темная</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="property_block hide" data="report">
+					<div class="property_sv">
+						<div class="property_line_checkbox">
+							<div class="checkbox">
+								<input type="checkbox" value="1" name="prop_sendReport" id="prop_sendReport" />
+								<label for="prop_sendReport">Send crash reports</label>
+							</div>
+						</div>
+						<div class="property_line_checkbox_info">Automatically send crash reports to developers of application Cleversite</div>
+					</div>
+				</div>
+				
+				<div class="property_block hide" data="about">
+					<div class="property_sv">
+						<div class="property_line_about">
+							<div class="logo"></div>
+							<div class="version"><span data="text">Version app:</span> <span data="version"></span></div>
+						</div>
+					</div>
+					<!--
+					<div class="property_sv">
+						<div class="property_line_update">
+							<div class="btn submit">Проверить наличие обновлений</div>
+						</div>
+					</div>
+					-->
+				</div>
+			</div>
+			<div class="property_bottom">
+				<div class="btn_list">
+					<div class="btn submit"></div>
+					<div class="btn gray_sv"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+
+
+
+
+
+
+
+	
+</div>
+  
+  
+  
+
   
   
   
@@ -168,12 +410,8 @@
   
   
   
-  
-  
-  
-  
-  <script>var version = '0.1.1';//Обязательно следить за public/package.js!! чтобы версии совпадали</script>
-  <script type="text/javascript" src="./app.js"></script>
+<script>var version = '0.1.2';//Обязательно следить за public/package.js!! чтобы версии совпадали</script>
+<script type="text/javascript" src="./app.js"></script>
  
  
   

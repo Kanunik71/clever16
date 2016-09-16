@@ -14,23 +14,18 @@ module.exports = {
    * - on Windows they're in the tray icon's menu
    * - on all 3 platform, they're also in the right-click context menu
    */
+  
+
   settingsItems: function(win, keep) {
     var self = this;
     return [{
-      label: 'Reload',
+      label: 'Перезагрузка',
       click: function() {
         windowBehaviour.saveWindowState(win);
         win.reload();
       }
-    }, {
-      type: 'checkbox',
-      label: 'Open Links in the Browser',
-      setting: 'openLinksInBrowser',
-      click: function() {
-        settings.openLinksInBrowser = this.checked;
-        windowBehaviour.setNewWinPolicy(win);
-      }
-    }, {
+    }, 
+	{
       type: 'separator'
     }, {
       type: 'checkbox',
@@ -50,15 +45,15 @@ module.exports = {
       }
     }, {
       type: 'checkbox',
-      label: 'Launch on Startup',
+      label: 'Автозапуск',
       setting: 'launchOnStartup',
       platforms: ['osx', 'win'],
       click: function() {
         settings.launchOnStartup = this.checked;
 
         var launcher = new AutoLaunch({
-          name: 'Clever16',
-          isHidden: true // hidden on launch - only works on a mac atm
+			name: 'Clever16',
+			isHidden: true // hidden on launch - only works on a mac atm
         });
 
         launcher.isEnabled(function(enabled) {
@@ -81,12 +76,12 @@ module.exports = {
       }
     }, {
       type: 'checkbox',
-      label: 'Check for Update on Launch',
+      label: 'Обновление при запуске',
       setting: 'checkUpdateOnLaunch'
     }, {
       type: 'separator'
     }, {
-      label: 'Check for Update',
+      label: 'Проверить обновления',
       click: function() {
         updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
           if (error || newVersionExists) {
@@ -100,7 +95,7 @@ module.exports = {
         });
       }
     }, {
-      label: 'Launch Dev Tools',
+      label: 'Запуск Dev Tools',
       click: function() {
         win.showDevTools();
       }
@@ -129,9 +124,6 @@ module.exports = {
     });
   },
 
-  /**
-   * Create the menu bar for the given window, only on OS X.
-   */
   loadMenuBar: function(win) {
     if (!platform.isOSX) {
       return;
@@ -165,9 +157,7 @@ module.exports = {
     win.menu = menu;
   },
 
-  /**
-   * Create the menu for the tray icon.
-   */
+
   createTrayMenu: function(win) {
     var menu = new gui.Menu();
 
@@ -181,14 +171,14 @@ module.exports = {
     }));
 
     menu.append(new gui.MenuItem({
-      label: 'Show Clever16',
+      label: 'Открыть Clever16',
       click: function() {
         win.show();
       }
     }));
 
     menu.append(new gui.MenuItem({
-      label: 'Quit Clever16',
+      label: 'Выход из Clever16',
       click: function() {
         win.close(true);
       }
@@ -197,26 +187,24 @@ module.exports = {
     // Watch the items that have a 'setting' property
     menu.items.forEach(function(item) {
       if (item.setting) {
-        settings.watch(item.setting, function(value) {
-          item.checked = value;
-        });
+			settings.watch(item.setting, function(value) {
+			item.checked = value;
+			});
       }
     });
 
     return menu;
   },
 
-  /**
-   * Create the tray icon.
-   */
+
   loadTrayIcon: function(win) {
     if (win.tray) {
-      win.tray.remove();
-      win.tray = null;
+		//win.tray.remove();
+		win.tray = null;
     }
 
     var tray = new gui.Tray({
-      icon: 'images/icon_' + (platform.isOSX ? 'menubar.tiff' : 'tray.png')
+		icon: 'images/icon_' + (platform.isOSX ? 'menubar.tiff' : 'tray.png')
     });
 
     tray.on('click', function() {
@@ -230,15 +218,13 @@ module.exports = {
     win.tray = tray;
   },
 
-  /**
-   * Create a context menu for the window and document.
-   */
+
   createContextMenu: function(win, window, document, targetElement) {
     var menu = new gui.Menu();
 
     if (targetElement.tagName.toLowerCase() == 'input') {
       menu.append(new gui.MenuItem({
-        label: "Cut",
+        label: "Вырезать",
         click: function() {
           clipboard.set(targetElement.value);
           targetElement.value = '';
@@ -246,21 +232,21 @@ module.exports = {
       }));
 
       menu.append(new gui.MenuItem({
-        label: "Copy",
+        label: "Копировать",
         click: function() {
           clipboard.set(targetElement.value);
         }
       }));
 
       menu.append(new gui.MenuItem({
-        label: "Paste",
+        label: "Вставить",
         click: function() {
           targetElement.value = clipboard.get();
         }
       }));
     } else if (targetElement.tagName.toLowerCase() == 'a') {
       menu.append(new gui.MenuItem({
-        label: "Copy Link",
+        label: "Копировать ссылку",
         click: function() {
           clipboard.set(targetElement.href);
         }
@@ -269,7 +255,7 @@ module.exports = {
       var selection = window.getSelection().toString();
       if (selection.length > 0) {
         menu.append(new gui.MenuItem({
-          label: "Copy",
+          label: "Копировать",
           click: function() {
             clipboard.set(selection);
           }
@@ -284,9 +270,7 @@ module.exports = {
     return menu;
   },
 
-  /**
-   * Listen for right clicks and show a context menu.
-   */
+
   injectContextMenu: function(win, window, document) {
     document.body.addEventListener('contextmenu', function(event) {
       event.preventDefault();
@@ -294,4 +278,10 @@ module.exports = {
       return false;
     }.bind(this));
   }
+
+  
+  
+  
+  
+  
 };

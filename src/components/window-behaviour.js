@@ -82,20 +82,24 @@ module.exports = {
       state.height = win.height;
     }
 
-    settings.windowState = state;
+		
+    window.configApp.windowState = state;
+	localStorage.setItem('windowState', JSON.stringify(state));
   },
 
   /**
    * Restore the window size and position.
    */
   restoreWindowState: function(win) {
-    var state = settings.windowState;
+    var state = window.configApp.windowState;
+	console.log(window);
+	console.log(22);
 
     if (state.mode == 'maximized') {
-      win.maximize();
+		win.maximize();
     } else {
-      win.resizeTo(state.width, state.height);
-      win.moveTo(state.x, state.y);
+		win.resizeTo(state.width, state.height);
+		win.moveTo(state.x, state.y);
     }
 
     win.show();

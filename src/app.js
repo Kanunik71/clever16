@@ -5,6 +5,10 @@ var isNodeWebkit = ((/^file:/.test(window.location.protocol)) || (/^chrome-exten
 if (isNodeWebkit) {
     global.isNodeWebkit = isNodeWebkit;
     window.gui = require('nw.gui');
+	
+	
+
+	
     var clipboard = gui.Clipboard.get();
     gui.App.clearCache();
     gui.Screen.Init();
@@ -12,98 +16,79 @@ if (isNodeWebkit) {
 		
 
 
+	
+window.configApp = {
+	local: localStorage.getItem("locale") || 'ru',
+	desktop: localStorage.getItem("desktop") ? JSON.parse(localStorage.getItem("desktop")) : ({
+		prop_autoStart: 1,
+		prop_autoIn: 1,
+		prop_sendReport: 1,
+	}),
+	prop: {},
+	fastPhrase: {},
+	windowState: localStorage.getItem("windowState") ? JSON.parse(localStorage.getItem("windowState")) : {},
+	dev: false
+}
+
+				
+		
+	
+		
+
 
 var refresh = new Date().getTime();		
 //var refresh = version;
 
-( function( tools, libs ){
-	
-    // Iterator
+
+
+(function(tools, libs){
     var require_inner = function( scripts, onEnd ){
-        
         onEnd = onEnd || function(){};
-        
         if( !scripts || scripts.length < 1 )return onEnd();
-        
-        var src    = scripts.splice( 0, 1),
-            script = document.createElement( "script" );
-        
-        script.setAttribute( "src", src );
-        
-        tools.addEvent( "load", script, function(){
-            
+        var src  = scripts.splice( 0, 1),
+            script = document.createElement("script");
+        script.setAttribute("src", src);
+        tools.addEvent("load", script, function(){
             require_inner( scripts, onEnd );
-            
-        } );
-        
-        document.getElementsByTagName( "head" )[ 0 ].appendChild( script );
-        
+        });
+        document.getElementsByTagName("head")[0].appendChild(script);
     };
-    
-    // Install all scripts with a copy of scripts
-    require_inner( libs.slice(), function(){
-    
-       // alert( "Enjoy :)" );
-    
-    } );
-    
-    // Timeout information
-    /*var ti = setTimeout( function(){
-        
-        if( !window.jQuery)alert( "Timeout !" );
-        
-        clearTimeout( ti );
-        
-    }, 5000 );*/
-
-} )(
-
-    { // Tools
-    
-        addEvent : function( evnt, elem, func ){
-        
+    require_inner( libs.slice(), function(){});
+})(
+    { 
+        addEvent : function(evnt, elem, func ){
             try{
-
                 if( elem.addEventListener ){
-
                     elem.addEventListener( evnt, func, false );
-
                 }else if( elem.attachEvent ){
-
                      var r = elem.attachEvent( "on" + evnt, func );
-
                 }
-
                 return true;
-
             }catch( e ){
-
                 return false;
-
             }		    
-
         }
-    
     },
-    [ // Scripts
-    
+    [ 
         'js/jquery-2.2.2.min.js?'+refresh,	
 		'js/jquery.cookie.js?'+refresh,	
 		'js/jquery.mousewheel.js?'+refresh,	
+		'js/lang.js?'+refresh,	
 		'js/scrollbar/jquery.scrollbar.js?'+refresh,	
 		'js/rangy/rangy-core.js?'+refresh,	
 		'js/undo/undo.js?'+refresh,	
+		'js/jscolor.min.js?'+refresh,	
 		'js/medium/medium.min.js?'+refresh,	
 		'js/socket.io.js?'+refresh,	
 		'js/sergDesctop.js?'+refresh,	
+		'js/jquery-ui.min.js?'+refresh,	
 		'js/custom.js?'+refresh,	
-        
     ]
-
 );		
 		
 		
-
+	
+	
 
 
 
@@ -112,11 +97,7 @@ if(isNodeWebkit) {
 
 var d = require('domain').create();
 d.on('error', (er) => {
-  // The error won't crash the process, but what it does is worse!
-  // Though we've prevented abrupt process restarting, we are leaking
-  // resources like crazy if this ever happens.
-  // This is no better than process.on('uncaughtException')!
-  console.log('error, but oh well', er.message);
+	console.log('error, but oh well', er.message);
 });
 d.run(() => {
 	
@@ -125,172 +106,85 @@ d.run(() => {
 	var gui = require('nw.gui');
 	var win = gui.Window.get();
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	var platform = require('./components/platform');
 	var updater = require('./components/updater');
+	
+	
+	
+
+
+var gui = window.require('nw.gui');
+var clipboard = gui.Clipboard.get();
+var AutoLaunch = require('auto-launch');
+//var windowBehaviour = require('./components/window-behaviour');
+var dispatcher = require('./components/dispatcher');
+var platform = require('./components/platform');
+//var settings = require('./components/settings');
+var updater = require('./components/updater');
+	
+
+	
+	
+
+// проверка обновлений
+/*
+updater.checkAndPrompt(gui.App.manifest, win);
+updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
+    if (error || newVersionExists) {
+		updater.prompt(win, false, error, newVersionExists, newManifest);
+    } else {
+		dispatcher.trigger('win.alert', {
+            win: win,
+            message: 'You’re using the latest version: ' + gui.App.manifest.version
+        });
+    }
+});
+*/
 	
 	
 	
 	
 	
 //var menus = require('./components/menus');
-var gui = window.require('nw.gui');
-var clipboard = gui.Clipboard.get();
-var AutoLaunch = require('auto-launch');
-var windowBehaviour = require('./components/window-behaviour');
-var dispatcher = require('./components/dispatcher');
-var platform = require('./components/platform');
-var settings = require('./components/settings');
-var updater = require('./components/updater');
-	
-
-	
 var menus = {
-  settingsItems: function(win, keep) {
-    var self = this;
-    return [{
-      label: 'Перезагрузка',
-      click: function() {
-        windowBehaviour.saveWindowState(win);
-        win.reload();
-      }
-    }, 
-	/*{
-      type: 'checkbox',
-      label: 'Open Links in the Browser',
-      setting: 'openLinksInBrowser',
-      click: function() {
-        settings.openLinksInBrowser = this.checked;
-        windowBehaviour.setNewWinPolicy(win);
-      }
-    },*/
-	{
-      type: 'separator'
-    }, {
-      type: 'checkbox',
-      label: 'Run as Menu Bar App',
-      setting: 'asMenuBarAppOSX',
-      platforms: ['osx'],
-      click: function() {
-        settings.asMenuBarAppOSX = this.checked;
-        win.setShowInTaskbar(!this.checked);
-
-        if (this.checked) {
-          self.loadTrayIcon(win);
-        } else if (win.tray) {
-          win.tray.remove();
-          win.tray = null;
-        }
-      }
-    }, {
-      type: 'checkbox',
-      label: 'Автозапуск',
-      setting: 'launchOnStartup',
-      platforms: ['osx', 'win'],
-      click: function() {
-        settings.launchOnStartup = this.checked;
-
-        var launcher = new AutoLaunch({
-          name: 'Clever16',
-          isHidden: true // hidden on launch - only works on a mac atm
-        });
-
-        launcher.isEnabled(function(enabled) {
-          if (settings.launchOnStartup && !enabled) {
-            launcher.enable(function(error) {
-              if (error) {
-                console.error(error);
-              }
-            });
-          }
-
-          if (!settings.launchOnStartup && enabled) {
-            launcher.disable(function(error) {
-              if (error) {
-                console.error(error);
-              }
-            });
-          }
-        });
-      }
-    }, {
-      type: 'checkbox',
-      label: 'Обновление при запуске',
-      setting: 'checkUpdateOnLaunch'
-    }, {
-      type: 'separator'
-    }, {
-      label: 'Проверить обновления',
-      click: function() {
-        updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
-          if (error || newVersionExists) {
-            updater.prompt(win, false, error, newVersionExists, newManifest);
-          } else {
-            dispatcher.trigger('win.alert', {
-              win: win,
-              message: 'You’re using the latest version: ' + gui.App.manifest.version
-            });
-          }
-        });
-      }
-    }, {
-      label: 'Запуск Dev Tools',
-      click: function() {
-        win.showDevTools();
-      }
-    }].map(function(item) {
-      // If the item has a 'setting' property, use some predefined values
-      if (item.setting) {
-        if (!item.hasOwnProperty('checked')) {
-          item.checked = settings[item.setting];
-        }
-
-        if (!item.hasOwnProperty('click')) {
-          item.click = function() {
-            settings[item.setting] = item.checked;
-          };
-        }
-      }
-
-      return item;
-    }).filter(function(item) {
-      // Remove the item if the current platform is not supported
-      return !Array.isArray(item.platforms) || (item.platforms.indexOf(platform.type) != -1);
-    }).map(function(item) {
-      var menuItem = new gui.MenuItem(item);
-      menuItem.setting = item.setting;
-      return menuItem;
-    });
-  },
-
+  
+  
   loadMenuBar: function(win) {
+	
     if (!platform.isOSX) {
-      return;
+		return;
     }
 
     var menu = new gui.Menu({
-      type: 'menubar'
+		type: 'menubar'
     });
+	menu.createMacBuiltin('Clever16');
 
-    menu.createMacBuiltin('Clever16');
-    var submenu = menu.items[0].submenu;
-
-    submenu.insert(new gui.MenuItem({
-      type: 'separator'
-    }), 1);
-
-    // Add the main settings
-    this.settingsItems(win, true).forEach(function(item, index) {
-      submenu.insert(item, index + 2);
-    });
-
-    // Watch the items that have a 'setting' property
-    submenu.items.forEach(function(item) {
-      if (item.setting) {
-        settings.watch(item.setting, function(value) {
-          item.checked = value;
-        });
+	menu.append(new gui.MenuItem({
+		label: 'Открыть Clever16',
+		click: function() {
+			win.show();
+		}
+    }));
+	
+	menu.append(new gui.MenuItem({
+      label: 'Выход из Clever16',
+      click: function() {
+        win.close(true);
       }
-    });
+    }));
 
     win.menu = menu;
   },
@@ -299,14 +193,10 @@ var menus = {
   createTrayMenu: function(win) {
     var menu = new gui.Menu();
 
-    // Add the main settings
-    this.settingsItems(win, true).forEach(function(item) {
-      menu.append(item);
-    });
 
-    menu.append(new gui.MenuItem({
+    /*menu.append(new gui.MenuItem({
       type: 'separator'
-    }));
+    }));*/
 
     menu.append(new gui.MenuItem({
       label: 'Открыть Clever16',
@@ -322,14 +212,6 @@ var menus = {
       }
     }));
 
-    // Watch the items that have a 'setting' property
-    menu.items.forEach(function(item) {
-      if (item.setting) {
-			settings.watch(item.setting, function(value) {
-			item.checked = value;
-			});
-      }
-    });
 
     return menu;
   },
@@ -337,7 +219,6 @@ var menus = {
 
   loadTrayIcon: function(win) {
     if (win.tray) {
-		//win.tray.remove();
 		win.tray = null;
     }
 
@@ -346,7 +227,7 @@ var menus = {
     });
 
     tray.on('click', function() {
-      win.show();
+		win.show();
     });
 
     tray.tooltip = 'Clever16';
@@ -357,6 +238,7 @@ var menus = {
   },
 
 
+  
   createContextMenu: function(win, window, document, targetElement) {
     var menu = new gui.Menu();
 
@@ -401,21 +283,26 @@ var menus = {
       }
     }
 
-    this.settingsItems(win, false).forEach(function(item) {
-      menu.append(item);
-    });
-
     return menu;
   },
 
 
   injectContextMenu: function(win, window, document) {
     document.body.addEventListener('contextmenu', function(event) {
-      event.preventDefault();
-      this.createContextMenu(win, window, document, event.target).popup(event.x, event.y);
-      return false;
+	
+		event.preventDefault();
+		var m = this.createContextMenu(win, window, document, event.target);
+		if(m.items.length != 0) {
+			m.popup(event.x, event.y);
+		}
+		return false;
+	  
     }.bind(this));
   }
+  
+  
+  
+  
 };
 
 	
@@ -436,21 +323,119 @@ var menus = {
 	
 	
 	
-	
-	
-	
-	
-	var settings = require('./components/settings');
-	var windowBehaviour = require('./components/window-behaviour');
-	var dispatcher = require('./components/dispatcher');
 
+	
+	
+	var windowBehaviour = {
+	  set: function(win) {
+		// Show the window when the dock icon is pressed
+		gui.App.removeAllListeners('reopen');
+		gui.App.on('reopen', function() {
+		  win.show();
+		});
+
+		// Don't quit the app when the window is closed
+		if (!platform.isLinux) {
+		  win.removeAllListeners('close');
+		  win.on('close', function(quit) {
+			if (quit) {
+			  this.saveWindowState(win);
+			  win.close(true);
+			} else {
+			  win.hide();
+			}
+		  }.bind(this));
+		}
+	  },
+
+	  /**
+	   * Change the new window policy to open links in the browser or another window.
+	   */
+	  setNewWinPolicy: function(win) {
+		win.removeAllListeners('new-win-policy');
+		win.on('new-win-policy', function(frame, url, policy) {
+			gui.Shell.openExternal(url);
+			policy.ignore();
+		});
+	  },
+
+	  /**
+	   * Listen for window state events.
+	   */
+	  bindWindowStateEvents: function(win) {
+		win.removeAllListeners('maximize');
+		win.on('maximize', function() {
+		  win.sizeMode = 'maximized';
+		});
+
+		win.removeAllListeners('unmaximize');
+		win.on('unmaximize', function() {
+		  win.sizeMode = 'normal';
+		});
+
+		win.removeAllListeners('minimize');
+		win.on('minimize', function() {
+		  win.sizeMode = 'minimized';
+		});
+
+		win.removeAllListeners('restore');
+		win.on('restore', function() {
+		  win.sizeMode = 'normal';
+		});
+	  },
+
+	  /**
+	   * Store the window state.
+	   */
+	  saveWindowState: function(win) {
+		var state = {
+		  mode: win.sizeMode || 'normal'
+		};
+
+		if (state.mode == 'normal') {
+		  state.x = win.x;
+		  state.y = win.y;
+		  state.width = win.width;
+		  state.height = win.height;
+		}
+
+			
+		window.configApp.windowState = state;
+		localStorage.setItem('windowState', JSON.stringify(state));
+	  },
+
+	  /**
+	   * Restore the window size and position.
+	   */
+	  restoreWindowState: function(win) {
+		var state = window.configApp.windowState;
+		console.log(window);
+		console.log(22);
+
+		if (state.mode == 'maximized') {
+			win.maximize();
+		} else {
+			win.resizeTo(state.width, state.height);
+			win.moveTo(state.x, state.y);
+		}
+
+		win.show();
+	  }
+	};
+	
+	
+	
+	
+	
+
+	
 	// Add dispatcher events
 	dispatcher.addEventListener('win.alert', function(data) {
 	  data.win.window.alert(data.message);
 	});
 
 	dispatcher.addEventListener('win.confirm', function(data) {
-	  data.callback(data.win.window.confirm(data.message));
+		data.callback(data.win.window.confirm(data.message));
 	});
 	
 
@@ -458,21 +443,15 @@ var menus = {
 	windowBehaviour.restoreWindowState(win);
 	windowBehaviour.bindWindowStateEvents(win);
 
-	// Check for update
-	if (settings.checkUpdateOnLaunch) {
-	  updater.checkAndPrompt(gui.App.manifest, win);
-	}
 
-	// Run as menu bar app
-	if (settings.asMenuBarAppOSX) {
-		win.setShowInTaskbar(false);
-		menus.loadTrayIcon(win);
-	}
+	// Run as menu bar app MAC
+	//win.setShowInTaskbar(false);
+	//menus.loadTrayIcon(win);
+	
+	
 
 	// Load the app menus
 	menus.loadMenuBar(win);
-	
-		
 	
 	if (platform.isWindows) {
 		menus.loadTrayIcon(win);
@@ -488,16 +467,21 @@ var menus = {
 	menus.injectContextMenu(win, window, document);
 	
 
-	
-	
-	
-	
-	
+
 	
 	win.on('close', function() {
 		for (key in chat.notifyAppList) {
-		  chat.notifyAppList[key].close();
+			chat.notifyAppList[key].close();
 		}
+		
+		for (key1 in chat.notifyList) {
+			for (key2 in chat.notifyList[key1]) {
+				chat.notifyList[key1][key2].close();
+			}
+		}
+		
+		windowBehaviour.saveWindowState(win);
+		
 		win.close(true);
 	});
 	
@@ -505,11 +489,11 @@ var menus = {
 
 	// Reload the app periodically until it loads
 	var reloadIntervalId = setInterval(function() {
-	  if (win.window.navigator.onLine) {
-		clearInterval(reloadIntervalId);
-	  } else {
-		win.reload();
-	  }
+		if (win.window.navigator.onLine) {
+			clearInterval(reloadIntervalId);
+		} else {
+			win.reload();
+		}
 	}, 10 * 1000);
 	
 	

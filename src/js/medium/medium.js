@@ -241,10 +241,12 @@ Medium.prototype = {
 		) {
 			if (el.placeHolderActive) return;
 
+			
 			if (!el.innerHTML.match('<' + s.tags.paragraph)) {
-				el.innerHTML = '';
+				//el.innerHTML = '';
 			}
 
+			
 			// We need to add placeholders
 			if (s.placeholder.length > 0) {
 				if (!placeholder.setup) {

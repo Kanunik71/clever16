@@ -5,7 +5,7 @@
   "version": "0.1.2",
   "app-id": "com.aluxian.clever16",
   "author": "Serg <s.kanunnikov@it-tula.ru>",
-  "chromium-args": "--disable-setuid-sandbox",
+  "chromium-args": "--disable-setuid-sandbox --enable-spell-checking",
   "window": {
     "icon": "favicon.png",
     "kiosk": false,

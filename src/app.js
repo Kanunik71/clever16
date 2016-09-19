@@ -30,6 +30,7 @@ window.configApp = {
 	}),
 	prop: {},
 	fastPhrase: {},
+	user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : ({login: '', password: ''}),
 	windowState: localStorage.getItem("windowState") ? JSON.parse(localStorage.getItem("windowState")) : {},
 	dev: false
 }
@@ -88,7 +89,8 @@ var refresh = new Date().getTime();
 		'js/rangy/rangy-core.js?'+refresh,
 		'js/undo/undo.js?'+refresh,
 		'js/jscolor.min.js?'+refresh,
-		'js/medium/medium.min.js?'+refresh,
+		//'js/medium/medium.min.js?'+refresh,
+		'js/medium/medium.js?'+refresh,
 		'js/socket.io.js?'+refresh,
 		'js/sergDesctop.js?'+refresh,
 		'js/jquery-ui.min.js?'+refresh,
@@ -322,7 +324,7 @@ var menus = {
       }
     }
 
-
+/*
     menu.append(new gui.MenuItem({
       label: "Launch Dev Tools",
       click: function() {
@@ -330,7 +332,7 @@ var menus = {
       }
     }));
 
-
+*/
 
 
     return menu;
@@ -338,7 +340,7 @@ var menus = {
 
 
   injectContextMenu: function(win, window, document) {
-    document.body.addEventListener('contextmenu', function(event) {
+    /*document.body.addEventListener('contextmenu', function(event) {
 
 		event.preventDefault();
 		var m = this.createContextMenu(win, window, document, event.target);
@@ -347,7 +349,8 @@ var menus = {
 		}
 		return false;
 
-    }.bind(this));
+    }.bind(this));*/
+	
   }
 
 
@@ -512,8 +515,14 @@ var menus = {
 
 
 	// Add a context menu
-	menus.injectContextMenu(win, window, document);
-
+	//menus.injectContextMenu(win, window, document);
+	document.addEventListener("contextmenu", function(e) {
+		e.preventDefault();
+		var m = menus.createContextMenu(win, window, document, e.target);
+		if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target.isContentEditable) {
+			m.popup(e.x, e.y);
+		}
+	});
 
 
 

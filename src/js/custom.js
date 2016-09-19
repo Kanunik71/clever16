@@ -171,13 +171,15 @@ $(document).ready(function() {
 
 
 
+			
+			
 			new Medium({
 				element: document.getElementById('msgwnd'),
 				mode: Medium.richMode,
 				attributes: null,
 				tags: null
 			});
-
+			
 
 
 
@@ -214,7 +216,7 @@ $(document).ready(function() {
 			$('.content_bottom_dialog').find('.btns').find('.smile').on('mouseenter', function() {
 				$('.smiles_list').addClass('act');
 				$('.smiles_list').removeClass('hide');
-				self.caretAtEnd($('.content_bottom_dialog').find('#msgwnd'));
+				//self.caretAtEnd($('.content_bottom_dialog').find('#msgwnd'));
 			}).on('mouseleave', function() {
 				$('.smiles_list').removeClass('act');
 				setTimeout(function() {
@@ -258,8 +260,7 @@ $(document).ready(function() {
 
 				self.closePult(1);
 
-				$.cookie('pult_login', '');
-				$.cookie('pult_password', '');
+				//localStorage.setItem('user', JSON.stringify({login: '', password: ''}));
 
 				if(isNodeWebkit) {
 					win.close();
@@ -412,7 +413,6 @@ $(document).ready(function() {
 				var t = $('#msgwnd').html();
 				if(t != '') {
 					$('.content_bottom_dialog').find('.send').removeClass('disabled');
-
 				} else {
 					$('.content_bottom_dialog').find('.send').addClass('disabled');
 				}
@@ -491,15 +491,16 @@ $(document).ready(function() {
 
 				self.socket.emit('message', {type: 'disconnect'});
 
-				$.cookie('pult_login', '');
-				$.cookie('pult_password', '');
+				localStorage.setItem('user', JSON.stringify({login: '', password: ''}));
+				
 			});
 
 			//автоматическая авторизация
 			var _in = false;
 			if(window.configApp.desktop.prop_autoIn) {
-				if($.cookie('pult_login') && $.cookie('pult_password')) {
-					self.connecting_main($.cookie('pult_login'), $.cookie('pult_password'));
+				
+				if(window.configApp.user.login != '' && window.configApp.user.password != '') {
+					self.connecting_main(window.configApp.user.login, window.configApp.user.password);
 					_in = true;
 				}
 			}
@@ -525,8 +526,7 @@ $(document).ready(function() {
 
 			self.socket.emit('message', {type: 'connect', login: login, password: password});
 
-			//$.cookie('pult_login', login);
-			//$.cookie('pult_password', password);
+		
 
 		},
 
@@ -563,8 +563,7 @@ $(document).ready(function() {
 
 				if(msg.act=='connect') {//успешное соединение
 
-					$.cookie('pult_login', msg.login);
-					$.cookie('pult_password', msg.password);
+					localStorage.setItem('user', JSON.stringify({login: msg.login, password: msg.password}));
 
 					self.user.jid = msg.login+'@'+self.domen;
 
@@ -858,8 +857,7 @@ $(document).ready(function() {
 
 
 					if(status == 2) {//ошибка авторазации
-						$.cookie('pult_login', '');
-						$.cookie('pult_password', '');
+						localStorage.setItem('user', JSON.stringify({login: '', password: ''}));
 					}
 
 
@@ -3692,10 +3690,10 @@ $(document).ready(function() {
 
 
 			$('.property_left').find('li[data="spelling"]').addClass('hide');
+			$('.property_left').find('li[data="report"]').addClass('hide');
 
 			if(!isNodeWebkit) {
 				$('.property_left').find('li[data="autostart"]').addClass('hide');
-				$('.property_left').find('li[data="report"]').addClass('hide');
 			}
 
 			$('.top_menu').find('li[data="property"]').click(function() {
@@ -3935,14 +3933,12 @@ $(document).ready(function() {
 							if (error) {
 								console.error(error);
 							}
-							console.log('auto_launch start');
 						});
 					} else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
 						launcher.disable(function(error) {
 							if (error) {
 								console.error(error);
 							}
-							console.log('auto_launch stop');
 						});
 					}
 				});
@@ -4264,8 +4260,7 @@ $(document).ready(function() {
 
 		self.caretAtEnd = function(el) {
 			el.focus();
-			if (typeof window.getSelection != "undefined"
-					&& typeof document.createRange != "undefined") {
+			if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
 				var range = document.createRange();
 				range.selectNodeContents(el[0]);
 				range.collapse(false);

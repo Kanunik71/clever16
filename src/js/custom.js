@@ -3928,19 +3928,21 @@ $(document).ready(function() {
 
 			desktop.prop_autoStart = (window.configApp.desktop.prop_autoStart = $('.property').find('input[name="prop_autoStart"]').prop('checked') ? 1 : 0);
 			if(isNodeWebkit) {
-			
+
 				launcher.isEnabled(function(enabled) {
 					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
 						launcher.enable(function(error) {
 							if (error) {
 								console.error(error);
 							}
+							console.log('auto_launch start');
 						});
 					} else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
 						launcher.disable(function(error) {
 							if (error) {
 								console.error(error);
 							}
+							console.log('auto_launch stop');
 						});
 					}
 				});

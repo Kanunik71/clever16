@@ -6,8 +6,12 @@ if (isNodeWebkit) {
     global.isNodeWebkit = isNodeWebkit;
     window.gui = require('nw.gui');
 	
-	
-
+	function getCurrentApplicationPath() {
+		if (global.process.platform === 'darwin') {
+			return global.process.execPath.split('.app/Content')[0] + '.app';
+		}
+		return null;
+	};
 	
     var clipboard = gui.Clipboard.get();
     gui.App.clearCache();
@@ -34,10 +38,14 @@ window.configApp = {
 
 			if(isNodeWebkit) {
 				var AutoLaunch = require('auto-launch');
-				var launcher = new AutoLaunch({
+				const AutoLaunch = new AutoLaunch({
 					name: 'Clever16',
-					//isHidden: true // hidden on launch - only works on a mac atm
+					path: getCurrentApplicationPath(),
+					isHidden: false,
 				});
+
+				AutoLaunch.removeNwjsLoginItem();
+				
 				launcher.isEnabled(function(enabled) {
 					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
 						launcher.enable(function(error) {
@@ -53,8 +61,14 @@ window.configApp = {
 						});
 					}
 				});
+
 			}		
 	
+		
+		
+		
+		
+		
 		
 
 

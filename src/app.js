@@ -5,22 +5,22 @@ var isNodeWebkit = ((/^file:/.test(window.location.protocol)) || (/^chrome-exten
 if (isNodeWebkit) {
     global.isNodeWebkit = isNodeWebkit;
     window.gui = require('nw.gui');
-	
+
 	function getCurrentApplicationPath() {
 		if (global.process.platform === 'darwin') {
 			return global.process.execPath.split('.app/Content')[0] + '.app';
 		}
 		return null;
 	};
-	
+
     var clipboard = gui.Clipboard.get();
     gui.App.clearCache();
     gui.Screen.Init();
 }
-		
 
 
-	
+
+
 window.configApp = {
 	local: localStorage.getItem("locale") || 'ru',
 	desktop: localStorage.getItem("desktop") ? JSON.parse(localStorage.getItem("desktop")) : ({
@@ -34,45 +34,19 @@ window.configApp = {
 	dev: false
 }
 
-				
-
-			if(isNodeWebkit) {
-				var AutoLaunch = require('auto-launch');
-				const AutoLaunch = new AutoLaunch({
-					name: 'Clever16',
-					path: getCurrentApplicationPath(),
-					isHidden: false,
-				});
-
-				AutoLaunch.removeNwjsLoginItem();
-				
-				launcher.isEnabled(function(enabled) {
-					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
-						launcher.enable(function(error) {
-							if (error) {
-								console.error(error);
-							}
-						});
-					} else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
-						launcher.disable(function(error) {
-							if (error) {
-								console.error(error);
-							}
-						});
-					}
-				});
-
-			}		
-	
-		
-		
-		
-		
-		
-		
 
 
-var refresh = new Date().getTime();		
+
+
+
+
+
+
+
+
+
+
+var refresh = new Date().getTime();
 //var refresh = version;
 
 
@@ -91,7 +65,7 @@ var refresh = new Date().getTime();
     };
     require_inner( libs.slice(), function(){});
 })(
-    { 
+    {
         addEvent : function(evnt, elem, func ){
             try{
                 if( elem.addEventListener ){
@@ -102,63 +76,63 @@ var refresh = new Date().getTime();
                 return true;
             }catch( e ){
                 return false;
-            }		    
+            }
         }
     },
-    [ 
-        'js/jquery-2.2.2.min.js?'+refresh,	
-		'js/jquery.cookie.js?'+refresh,	
-		'js/jquery.mousewheel.js?'+refresh,	
-		'js/lang.js?'+refresh,	
-		'js/scrollbar/jquery.scrollbar.js?'+refresh,	
-		'js/rangy/rangy-core.js?'+refresh,	
-		'js/undo/undo.js?'+refresh,	
-		'js/jscolor.min.js?'+refresh,	
-		'js/medium/medium.min.js?'+refresh,	
-		'js/socket.io.js?'+refresh,	
-		'js/sergDesctop.js?'+refresh,	
-		'js/jquery-ui.min.js?'+refresh,	
-		'js/custom.js?'+refresh,	
+    [
+        'js/jquery-2.2.2.min.js?'+refresh,
+		'js/jquery.cookie.js?'+refresh,
+		'js/jquery.mousewheel.js?'+refresh,
+		'js/lang.js?'+refresh,
+		'js/scrollbar/jquery.scrollbar.js?'+refresh,
+		'js/rangy/rangy-core.js?'+refresh,
+		'js/undo/undo.js?'+refresh,
+		'js/jscolor.min.js?'+refresh,
+		'js/medium/medium.min.js?'+refresh,
+		'js/socket.io.js?'+refresh,
+		'js/sergDesctop.js?'+refresh,
+		'js/jquery-ui.min.js?'+refresh,
+		'js/custom.js?'+refresh,
     ]
-);		
-		
-		
-	
-	
+);
+
+
+
+
 
 
 
 if(isNodeWebkit) {
-	
+
 
 var d = require('domain').create();
 d.on('error', (er) => {
 	console.log('error, but oh well', er.message);
 });
 d.run(() => {
-	
 
-	
+
+
 	var gui = require('nw.gui');
 	var win = gui.Window.get();
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 	var platform = require('./components/platform');
 	var updater = require('./components/updater');
-	
-	
-	
+
+
+
 
 
 var gui = window.require('nw.gui');
@@ -169,10 +143,10 @@ var dispatcher = require('./components/dispatcher');
 var platform = require('./components/platform');
 //var settings = require('./components/settings');
 var updater = require('./components/updater');
-	
 
-	
-	
+
+
+
 
 // проверка обновлений
 /*
@@ -188,17 +162,46 @@ updater.check(gui.App.manifest, function(error, newVersionExists, newManifest) {
     }
 });
 */
-	
-	
-	
-	
-	
+
+
+
+
+
+
+  var AutoLaunch = require('auto-launch');
+  window.launcher = new AutoLaunch({
+    name: 'Clever16',
+    path: getCurrentApplicationPath(),
+    isHidden: false,
+  });
+
+  launcher.removeNwjsLoginItem();
+
+  launcher.isEnabled(function(enabled) {
+    if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
+      launcher.enable(function(error) {
+        if (error) {
+          console.error(error);
+        }
+      });
+    } else if (window.configApp.desktop.prop_autoStart == 0 && enabled){
+      launcher.disable(function(error) {
+        if (error) {
+          console.error(error);
+        }
+      });
+    }
+  });
+
+
+
+
 //var menus = require('./components/menus');
 var menus = {
-  
-  
+
+
   loadMenuBar: function(win) {
-	
+
     if (!platform.isOSX) {
 		return;
     }
@@ -214,7 +217,7 @@ var menus = {
 			win.show();
 		}
     }));
-	
+
 	menu.append(new gui.MenuItem({
       label: 'Выход из Clever16',
       click: function() {
@@ -274,7 +277,7 @@ var menus = {
   },
 
 
-  
+
   createContextMenu: function(win, window, document, targetElement) {
     var menu = new gui.Menu();
 
@@ -319,49 +322,60 @@ var menus = {
       }
     }
 
+
+    menu.append(new gui.MenuItem({
+      label: "Launch Dev Tools",
+      click: function() {
+          win.showDevTools();
+      }
+    }));
+
+
+
+
     return menu;
   },
 
 
   injectContextMenu: function(win, window, document) {
     document.body.addEventListener('contextmenu', function(event) {
-	
+
 		event.preventDefault();
 		var m = this.createContextMenu(win, window, document, event.target);
 		if(m.items.length != 0) {
 			m.popup(event.x, event.y);
 		}
 		return false;
-	  
+
     }.bind(this));
   }
-  
-  
-  
-  
+
+
+
+
 };
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
 
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	var windowBehaviour = {
 	  set: function(win) {
 		// Show the window when the dock icon is pressed
@@ -435,7 +449,7 @@ var menus = {
 		  state.height = win.height;
 		}
 
-			
+
 		window.configApp.windowState = state;
 		localStorage.setItem('windowState', JSON.stringify(state));
 	  },
@@ -456,13 +470,13 @@ var menus = {
 		win.show();
 	  }
 	};
-	
-	
-	
-	
-	
 
-	
+
+
+
+
+
+
 	// Add dispatcher events
 	dispatcher.addEventListener('win.alert', function(data) {
 	  data.win.window.alert(data.message);
@@ -471,7 +485,7 @@ var menus = {
 	dispatcher.addEventListener('win.confirm', function(data) {
 		data.callback(data.win.window.confirm(data.message));
 	});
-	
+
 
 	// Window state
 	windowBehaviour.restoreWindowState(win);
@@ -481,12 +495,12 @@ var menus = {
 	// Run as menu bar app MAC
 	//win.setShowInTaskbar(false);
 	//menus.loadTrayIcon(win);
-	
-	
+
+
 
 	// Load the app menus
 	menus.loadMenuBar(win);
-	
+
 	if (platform.isWindows) {
 		menus.loadTrayIcon(win);
 	}
@@ -495,31 +509,31 @@ var menus = {
 	windowBehaviour.set(win);
 	windowBehaviour.setNewWinPolicy(win);
 
-	
-	
+
+
 	// Add a context menu
 	menus.injectContextMenu(win, window, document);
-	
 
 
-	
+
+
 	win.on('close', function() {
 		for (key in chat.notifyAppList) {
 			chat.notifyAppList[key].close();
 		}
-		
+
 		for (key1 in chat.notifyList) {
 			for (key2 in chat.notifyList[key1]) {
 				chat.notifyList[key1][key2].close();
 			}
 		}
-		
+
 		windowBehaviour.saveWindowState(win);
-		
+
 		win.close(true);
 	});
-	
-	
+
+
 
 	// Reload the app periodically until it loads
 	var reloadIntervalId = setInterval(function() {
@@ -529,10 +543,10 @@ var menus = {
 			win.reload();
 		}
 	}, 10 * 1000);
-	
-	
-	
-	
+
+
+
+
 });
 
 

@@ -6,23 +6,23 @@ if (isNodeWebkit) {
 	var gui = require('nw.gui');
 	var win = gui.Window.get();
 }
-	
+
 $(document).ready(function() {
 
 	//localStorage.setItem("test", JSON.stringify({ru: this.ruPhrases,en: this.enPhrases,version: this.version}));
-	
-	
+
+
 	var Chat = function () {
 
         var self = this;
-		
+
 		//данные текущего юзера, для авторизации
         this.user = {login: '', password: '', status: '', autoAway: false, jid: ''};
 		//статус окна пользователя
 		this.windowStatus = "show";
 		//последняя активность в пульте
 		this.lastActive = Date.now();
-		
+
 		//массив Таймаутов (на 1го изера - 1н таймают, использую для удалению юзера из списка через 30 сек, после закрытия диалога)
         this.delayFunc = {
 			redirect: {},
@@ -38,7 +38,7 @@ $(document).ready(function() {
 			redirect: {},
 			redirectCancel: {},
 		};
-		
+
 
 		//список всех операторов и пользователей
         this.userList = {};
@@ -57,12 +57,12 @@ $(document).ready(function() {
 		this.generateNotifyTitleTimeout;
 		//список нотификаций с миганющим Тайтлом
 		this.generateNotifyTitleTimeoutList = {};
-		
-		
-		
+
+
+
 		//this.reconnectTimeout;
 		//this.resource = 'webpult';
-		
+
 		//данные по текущему выбранному диалогу
 		this.thread = {
 			jid: ''
@@ -81,36 +81,36 @@ $(document).ready(function() {
 			this.socket = io('https://nodejs01.cleversite.ru/');
 		}
 
-		
-		
-		//список смайлов 
-		this.smiles = {
-			SM1: ['=)', '<img data="SM1" class="smile" src="/images/smiles/1.png" />'],	
-			SM2: ['=(', '<img data="SM2" class="smile" src="/images/smiles/2.png" />'],	
-			SM3: ['=*(', '<img data="SM3" class="smile" src="/images/smiles/3.png" />'],	
-			SM4: [';)', '<img data="SM4" class="smile" src="/images/smiles/4.png" />'],	
-			SM5: [':-@', '<img data="SM5" class="smile" src="/images/smiles/5.png" />'],	
-			SM6: [':-D', '<img data="SM6" class="smile" src="/images/smiles/6.png" />'],	
-			SM7: [':-[', '<img data="SM7" class="smile" src="/images/smiles/7.png" />'],	
-			SM8: ['=-O', '<img data="SM8" class="smile" src="/images/smiles/8.png" />']	
-		};
-				
-				
-				
 
-				
-		
+
+		//список смайлов
+		this.smiles = {
+			SM1: ['=)', '<img data="SM1" class="smile" src="/images/smiles/1.png" />'],
+			SM2: ['=(', '<img data="SM2" class="smile" src="/images/smiles/2.png" />'],
+			SM3: ['=*(', '<img data="SM3" class="smile" src="/images/smiles/3.png" />'],
+			SM4: [';)', '<img data="SM4" class="smile" src="/images/smiles/4.png" />'],
+			SM5: [':-@', '<img data="SM5" class="smile" src="/images/smiles/5.png" />'],
+			SM6: [':-D', '<img data="SM6" class="smile" src="/images/smiles/6.png" />'],
+			SM7: [':-[', '<img data="SM7" class="smile" src="/images/smiles/7.png" />'],
+			SM8: ['=-O', '<img data="SM8" class="smile" src="/images/smiles/8.png" />']
+		};
+
+
+
+
+
+
         this.init = function () {
-			
-			
+
+
 
 			/*self.resizeThread();
 			$(window).resize(function() {
 				self.resizeThread();
 			});*/
-			
+
 			self.loadLocalize();
-			
+
 			self.scrollingTo('top', '.user_list');
 
 			self.valudate_auth();
@@ -125,22 +125,22 @@ $(document).ready(function() {
 				$('.exit_top').show();
 			}
 			*/
-			
-			
-			
+
+
+
 			$('.menu').on('mouseover', function() {
 				$(this).addClass('hover');
 			}).on('mouseout', function() {
 				$(this).removeClass('hover');
 			});
-			
+
 			$('.user_info').on('mouseover', function() {
 				$(this).addClass('hover');
 			}).on('mouseout', function() {
 				$(this).removeClass('hover');
 			});
 
-			
+
 			if (isNodeWebkit) {
 				gui.Window.get().on("blur",  function(){
 					self.windowStatus = "hide";
@@ -162,43 +162,43 @@ $(document).ready(function() {
 					}
 				});
 			}
-			
+
 			if(typeof Notification != 'undefined') {
 				if (Notification.permission !== "granted") {
 					Notification.requestPermission();
 				}
 			}
-			
-			
-			
+
+
+
 			new Medium({
 				element: document.getElementById('msgwnd'),
 				mode: Medium.richMode,
 				attributes: null,
 				tags: null
 			});
-			
-			
-			
-			
-			
-			
-			
-			
-			
 
-	
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			//smiles
 			for(var key in self.smiles) {
 				$('.smiles_list').find('.smiles_list_cont').append(self.smiles[key][1]);
 			}
 
-			
+
 			$('.content_bottom_dialog').find('.smiles_list').on('mouseenter', function() {
 				$('.smiles_list').removeClass('hide');
 				$('.smiles_list').addClass('act');
@@ -230,19 +230,19 @@ $(document).ready(function() {
 				$('.content_bottom_dialog').find('#msgwnd').append( self.smiles[cl][1] );
 				self.caretAtEnd($('.content_bottom_dialog').find('#msgwnd'));
 			});
-			
+
 			//---------//
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
 			//
-			
-			
+
+
 			$(document).mousemove(function( event ) {
 				self.lastActive = Date.now();
 				if(self.user.autoAway) {
@@ -250,8 +250,8 @@ $(document).ready(function() {
 					self.user.autoAway = false;
 				}
 			});
-			
-			
+
+
 			$('.top_menu').find('li[data="exit"]').click(function() {
 
 				self.socket.emit('message', {type: 'disconnect'});
@@ -264,10 +264,10 @@ $(document).ready(function() {
 				if(isNodeWebkit) {
 					win.close();
 				}
-				
+
 				event.preventDefault();
 			});
-			
+
 			$('.top_menu').find('li[data="operators"]').on('click', function() {
 				if(!$(this).hasClass('act')) {
 					$('.top_menu').find('li[data="clients"]').removeClass('act');
@@ -294,7 +294,7 @@ $(document).ready(function() {
 				self.user.autoAway = false;
 			});
 
-			
+
 
 
 			$('.top_menu').find('li[data="transfer"]').on('click', function() {
@@ -353,12 +353,12 @@ $(document).ready(function() {
 				$('.content_bottom_right_fast').removeClass('hide');
 			});
 
-			
-			
-			
-			
+
+
+
+
 			//-- бычтрые фразы --//
-			
+
 			$('.fast_phrase').on('click', function() {
 				if($('.phrase_list').hasClass('hide')) {
 					self.fastPhrase.open();
@@ -366,17 +366,17 @@ $(document).ready(function() {
 					self.fastPhrase.close();
 				}
 			});
-			
+
 			self.scrollingTo('top', '.phrase_list_cont');
-			
+
 			$(document).on("click", ".phrase_list .phrase", function() {
 				self.fastPhrase.change($(this).attr('data'));
 			});
 
 			//---//
-			
-			
-			
+
+
+
 			/*
 			$('.content_middle_ico').on('click', function() {
 				if($(this).hasClass('act')) {
@@ -394,7 +394,7 @@ $(document).ready(function() {
 				$('.content_middle_ico').removeClass('act');
 			});
 			*/
-			
+
 			$('.show_history').on('click', function() {
 				self.loadClientsHistoryAll(function(jid) {
 					if(jid == self.thread.jid) {
@@ -405,18 +405,18 @@ $(document).ready(function() {
 			});
 
 
-			
-			
+
+
 
 			$('#msgwnd').keydown(function(e) {
 				var t = $('#msgwnd').html();
 				if(t != '') {
 					$('.content_bottom_dialog').find('.send').removeClass('disabled');
-					
+
 				} else {
 					$('.content_bottom_dialog').find('.send').addClass('disabled');
 				}
-				
+
 				if(self.userList[self.user.jid].write.text != t) {
 					if(self.userList[self.user.jid].write.status != 'composing') {
 						if(self.userList[self.user.jid].write.status == 'inactive') {
@@ -424,7 +424,7 @@ $(document).ready(function() {
 						}
 						self.seewriter.send(self.thread.jid, 'composing');
 					}
-					
+
 					if(typeof self.seewriter.delay[self.thread.jid] != undefined) {
 						clearTimeout(self.seewriter.delay[self.thread.jid]);
 					}
@@ -440,15 +440,15 @@ $(document).ready(function() {
 						}, 55000);
 					}, 5000);
 				}
-	
-	
+
+
 				self.upgradeUser(self.user.jid, {
 					write: {
 						text: $('#msgwnd').html()
 					}
 				});
-				
-				
+
+
 				if (e.ctrlKey && e.keyCode == 13) {
 					self.sendMessageThread();
 					return false;
@@ -459,10 +459,10 @@ $(document).ready(function() {
 			});
 
 
-			
 
 
-			
+
+
 
 
 
@@ -547,8 +547,8 @@ $(document).ready(function() {
 		this.socket.on('message', function(msg) {
 
 			console.log(msg);
-			
-			
+
+
 			//проверка версии
 			if(!isNodeWebkit) {
 				if(msg.type=='version') {
@@ -557,8 +557,8 @@ $(document).ready(function() {
 					}
 				}
 			}
-			
-			
+
+
 			if(msg.type=='xmpp') {//xmpp
 
 				if(msg.act=='connect') {//успешное соединение
@@ -573,7 +573,7 @@ $(document).ready(function() {
 					self.socket.emit('message', {type: 'getroster'});
 
 					self.setDefaultProp();
-	
+
 					self.upgradeUser(self.user.jid, {
 						name: self.user.jid,
 						write: {
@@ -594,8 +594,8 @@ $(document).ready(function() {
 						name: msg.nick
 					});
 
-					
-					
+
+
 				} else if(msg.act=='roster_all') {
 
 					$('.auth_form_parent').addClass('hide');
@@ -662,14 +662,14 @@ $(document).ready(function() {
 								var from = messasge.attr("from").split('/')[0];
 								var type = messasge.attr("type");
 								var id = messasge.attr("id");
-								
+
 								var threadId = 0;
 								if(messasge.find('thread').size()) {
 									threadId = messasge.find('thread').text();
 								}
 
-								
-								
+
+
 								if(messasge.find('active').size()) {
 									self.seewriter.writeStatus(from, 'active');
 								}
@@ -682,25 +682,25 @@ $(document).ready(function() {
 								if(messasge.find('inactive').size()) {
 									self.seewriter.writeStatus(from, 'inactive');
 								}
-		
-								
-								
+
+
+
 						if(self.myIgnoreList.indexOf(from) == -1) {
 
 								var proc_body = true;
 								if(messasge.find('data').size()) {
 									if(messasge.find('data').attr('xmlns') == 'cleversite:data:client') {
-								
-										
+
+
 										self.upgradeUser(from, {
 											thread: self.generateClientsDataForXml(messasge.find('data'), threadId, 'open'),
 											name: messasge.find('data').find('client_name').text(),
 											yes_close: false,
 											cntmessage: 0,
 										});
-										
+
 										self.leftItem(from);
-										
+
 
 										if(self.thread.jid == from) {
 											self.generateDialogEvent(from, 'noopen');
@@ -711,10 +711,10 @@ $(document).ready(function() {
 
 											self.removeClient(from);
 											self.myIgnoreList[from];
-											
-											
+
+
 										} else if(messasge.find('data').attr('result') == 'cancel'){
-										
+
 											if(self.thread.jid == from) {
 												self.generateDialogEvent(from, 'noignore');
 											}
@@ -730,12 +730,12 @@ $(document).ready(function() {
 											}
 										}
 										if(messasge.find('data').find('client').size()) {
-						
+
 											self.upgradeUser(messasge.find('data').attr('contact'), {
 												thread: self.generateClientsDataForXml(messasge.find('data').find('client'), threadId, 'open'),
 											});
-											
-											
+
+
 											self.generateNotify('redirect_me', from, {contact: messasge.find('data').attr('contact'), comment: messasge.find('data').attr('comment')});
 										}
 									}
@@ -763,7 +763,7 @@ $(document).ready(function() {
 											proc_body = false;
 										}
 										if(messasge.find('notification').attr('event') == 'composing') {
-											self.seewriter.writeText(from, messasge.find('notification').attr('text'));  
+											self.seewriter.writeText(from, messasge.find('notification').attr('text'));
 											proc_body = false;
 										}
 									}
@@ -796,12 +796,12 @@ $(document).ready(function() {
 												cntmessage: +$('.left_list_line[jid="'+from+'"]').find('.message').text() + 1
 											});
 											self.leftItem(from);
-									
+
 										}
 									}
 									self.addToHistory(from, item, 'before');
 
-								
+
 									if(self.myDialogList.indexOf(from) == -1 && self.userList[from].groups.indexOf('operators') == -1) {
 										self.generateNotify('newDialog', from, item.message);
 									} else {
@@ -840,13 +840,13 @@ $(document).ready(function() {
 					$('.content_bottom_dialog').addClass('hide');
 					$('.content_dialog').addClass('hide');
 					$('.content_info').removeClass('hide');
-					
+
 					$('.top_menu').find('li[data="transfer"]').addClass('disabled');
 					$('.top_menu').find('li[data="block"]').addClass('disabled');
 					$('.top_menu').find('li[data="send_email"]').addClass('disabled');
-					
+
 					$('.property').addClass('hide');
-					
+
 					$('.dialog_window').remove();
 					$('.wall').remove();
 
@@ -863,8 +863,8 @@ $(document).ready(function() {
 					}
 
 
-					
-					
+
+
 					for(var key in self.delayFunc.redirect) {
 						clearTimeout(self.delayFunc.redirect[key]);
 					}
@@ -875,7 +875,7 @@ $(document).ready(function() {
 						redirect: {},
 						removeLeftItem: {},
 					};
-					
+
 					self.user.jid = '';
 					self.thread.jid = '';
 					self.myDialogList = [];
@@ -908,21 +908,21 @@ $(document).ready(function() {
 		this.setStatus = function(s, ignoreForm) {
 
 			if(s == 'away') {
-				
+
 				if(window.configApp.prop.prop_closeThreadChangeStatus == 1) {
 					if(self.myDialogList.length == 0) {
 						self.socket.emit('message', {type: 'presence', status: s});
 						$('.status_circle').parent().removeClass('on').addClass('off');
 						self.user.status = s;
-						
+
 					} else {
 						if(ignoreForm) {
 							self.closeAllThread();
-							
+
 							self.socket.emit('message', {type: 'presence', status: s});
 							$('.status_circle').parent().removeClass('on').addClass('off');
 							self.user.status = s;
-							
+
 						} else {
 							self.generateDialogWindow(false, 'closeAllDialogs');
 						}
@@ -942,11 +942,11 @@ $(document).ready(function() {
         };
 
 
-		
+
 
 		this.actionThread = function(threadJid) {
 
-			
+
 			if (isNodeWebkit) {
 				var win = gui.Window.get();
 				win.show();
@@ -959,52 +959,52 @@ $(document).ready(function() {
 			self.closeNotify(threadJid, ['newMessage','message']);
 
 
-			
+
 			$('.show_history').addClass('hide');
 			//$('.client_info').addClass('hide');
 			$('.content_bottom_noopen_dialog').addClass('hide');
 			$('.content_bottom_dialog').removeClass('hide');
-		
+
 
 
 			//выбрать пункт меню слева
 			$('.left_list_line.act').removeClass('act');
 			$('.left_list_line[jid="'+threadJid+'"]').addClass('act');
-			
+
 			$('.content_left_block').hide();
 			$('.content_left_block[data="'+ $('.left_list_line[jid="'+threadJid+'"]').parent().attr('data') +'"]').show();
-			
-			
+
+
 			//загружаем блок сверху
 
 			self.loadClientsInfo(threadJid);
-			
-		
-				
+
+
+
 			if($.inArray('operators', self.userList[threadJid].groups) != -1) {
-			
+
 				$('.user_block_top').find('.user_info').addClass('hide');
-				
+
 				$('.top_menu').find('li[data="transfer"]').addClass('disabled');
 				$('.top_menu').find('li[data="block"]').addClass('disabled');
 				$('.top_menu').find('li[data="send_email"]').addClass('disabled');
-				
+
 				$('.content_bottom').find('.file').addClass('hide');
-				
+
 				$('.user_block_top').find('.user_block').removeClass('hide');
 				$('.user_block_top').find('.user_info').addClass('hide');
-				
+
 			} else if ($.inArray('clients', self.userList[threadJid].groups) != -1) {
-			
+
 				$('.user_block_top').find('.user_info').removeClass('hide');
-				
+
 				$('.content_bottom').find('.file').removeClass('hide');
-				
+
 				$('.user_block_top').find('.user_block').removeClass('hide');
 				$('.user_block_top').find('.user_info').removeClass('hide');
 			}
 
-			
+
 			//если юзер оффлайн, то ему нельзя писать
 			if(Object.keys(self.userList[threadJid].resources).length == 0) {
 				$('.content_bottom_dialog').addClass('hide');
@@ -1016,14 +1016,14 @@ $(document).ready(function() {
 
 				var begin = null;
 				var end = null;
-				
-				
-				
-			
+
+
+
+
 				if(self.userList[threadJid].history.length > 0) {
 					end = self.date(self.userList[threadJid].history[0].time - 3*1000);//костылек)
 				}
-				
+
 				self.loadClientsHistoryInfo(function(data) {
 					if(data.count > 0 && self.thread.jid == threadJid) {
 						$('.show_history').removeClass('hide');
@@ -1032,7 +1032,7 @@ $(document).ready(function() {
 
 				//если этот диалог клиента еще не принят
 				if(self.myDialogList.indexOf(threadJid) == -1) {
-					
+
 					if(self.userList[threadJid].thread.statusDialog == 'open') {
 						self.generateDialogEvent(threadJid, 'noopen');
 					} else if(self.userList[threadJid].thread.statusDialog == 'close') {
@@ -1047,20 +1047,20 @@ $(document).ready(function() {
 
 				}
 
-				
+
 			}
 
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
 			/*
 			Добавляются сообщения НЕТУДА!Ё!!!!! должны в конец, а они хуй!!!!!! да ещё и свтатус надо писать в self.thread - хотя хуй знает зачем
 			*/
-			
-			
+
+
 			var threadText = '';
 			self.userList[self.thread.jid].history.forEach(function(item, i, arr) {
 				threadText += self.convertToMessage(item);
@@ -1073,7 +1073,7 @@ $(document).ready(function() {
 			threadText +=self.convertToMessage(item);
 			$('#data').html(threadText);
 
-		
+
 			self.upgradeUser(threadJid, {
 				cntmessage: 0
 			});
@@ -1081,12 +1081,12 @@ $(document).ready(function() {
 
 			$('.content_info').addClass('hide');
 			$('.content_dialog').removeClass('hide');
-			
+
 			setTimeout(function() {
 				$('#data').find('.message_block.notshow').not(".write").removeClass('notshow').addClass('show');
 				self.scrollingTo('bottom', '#data_scroll');;
 			}, 333);
-			
+
 			self.resizeThread();
         };
 
@@ -1096,23 +1096,23 @@ $(document).ready(function() {
 				$('.content_bottom_textarea').find('#msgwnd').attr('disabled', 'disabled');
 
 				var text = self.convertTextForElToXmpp($('.content_bottom_textarea').find('#msgwnd'));
-				
+
 				self.sendMessageJid(self.thread.jid, text);
 
 				$('.content_bottom_textarea').find('#msgwnd').html('').removeAttr("disabled").focus();
 				$('.content_bottom_dialog').find('.send').addClass('disabled');
-				
+
 					if(typeof self.seewriter.delay[self.thread.jid] != undefined) {
 						clearTimeout(self.seewriter.delay[self.thread.jid]);
 					}
 					self.seewriter.send(self.thread.jid, 'inactive');
-				
+
 			}
         };
 
-		
-		
-		
+
+
+
 		this.convertTextForElToXmpp = function(el) {
 			for(var key in self.smiles) {
 				el.find('.smile[data="'+key+'"]').replaceWith(self.smiles[key][0]);
@@ -1125,28 +1125,28 @@ $(document).ready(function() {
 			});
 			return text;
 		}
-		
-		
-		
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		this.sendMessageJid = function(jid, text) {
-		
-		
+
+
 				//text
-		
+
 				var item = {
 					to: jid,
 					from: self.user.jid,
@@ -1176,7 +1176,7 @@ $(document).ready(function() {
 			var curr_now_date = d_now.getDate();
 			var curr_now_month = d_now.getMonth();
 			var curr_now_year = d_now.getFullYear();
-				
+
 			var d = new Date(dt);
 			var curr_date = d.getDate();
 			var curr_month = d.getMonth();
@@ -1185,10 +1185,10 @@ $(document).ready(function() {
 				dateStr += self.coorect0(curr_date) + '.' + self.coorect0(curr_month) + '.' + curr_year + ' ';
 			};
 			dateStr += self.coorect0(d.getHours()) + ':' + self.coorect0(d.getMinutes());
-				
+
 			return dateStr;
 		};
-		
+
 		this.convertToMessage = function(obj) {
 			var dateStr = '';
 			var mtype = '';
@@ -1198,12 +1198,12 @@ $(document).ready(function() {
 			if(obj.time) {
 				dateStr = self.convertDate(obj.time);
 			};
-			
+
 			obj.message = self.reconvert_link(obj.message);
 
 			var str = '';
 			str = '<div class="message_block clr notshow '+mtype+' '+ ((obj.from != self.user.jid)?'me':'') +'" data="'+obj.id+'">'+
-					'<div class="message_block_ugol">'+ 
+					'<div class="message_block_ugol">'+
 						( (obj.from != self.user.jid) ? '<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="11px" height="12px" version="1.1" style="display:block;shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 3 3" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="x0020_1"><path d="M1 0c1,1 1,2 2,3 -1,0 -2,0 -3,0 1,-1 1,-2 1,-3z"></path></g></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="13px" height="10px" version="1.1" style="display:block;shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" viewBox="0 0 5 4" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="x0020_1"><path d="M0 0c1,0 2,0 3,0 0,2 0,3 2,4 -3,0 -3,0 -5,-1 0,-1 0,-2 0,-3z"></path></g></svg>' )+
 					'</div>'+
 					'<div class="message_block_text">'+
@@ -1221,27 +1221,27 @@ $(document).ready(function() {
 
 
 
-	
+
 
 
 		this.upgradeList = function(roster) {
 
-				
-							
+
+
 				if (Object.keys(roster).length != 0) {
-					self.roster = roster;	
-					
-					
+					self.roster = roster;
+
+
 					var jidList = [];
-						
-						
+
+
 							for (var key in roster) {
 								if(roster[key].jid) {
-									
-									
-										
-										
-										
+
+
+
+
+
 										self.upgradeUser(roster[key].jid, {
 											groups: roster[key].groups,
 											subscription: roster[key].subscription,
@@ -1252,11 +1252,11 @@ $(document).ready(function() {
 												name: self.userList[key].thread.client_name
 											});
 										}
-										
-											
-			
-										
-										
+
+
+
+
+
 										var stat = 'off';
 										if (Object.keys(roster[key].resources).length != 0) {
 											for (var i in roster[key].resources) {
@@ -1274,44 +1274,44 @@ $(document).ready(function() {
 											resources: roster[key].resources,
 										});
 
-										
-										
-										
+
+
+
 										if($.inArray('operators', roster[key].groups) != -1) {
 											if(!$('.content_left_block[data="operators"]').find('div[jid="'+roster[key].jid+'"]').size()) {
-		
+
 												var cntmessage = 0;
 												self.userList[roster[key].jid].history.forEach(function(item, i, arr) {
 													if(item.see == false) {
 														cntmessage++;
 													}
 												});
-												
+
 												self.upgradeUser(roster[key].jid, {
 													cntmessage: cntmessage,
 													yes_close: false
 												});
-				
+
 											}
 											self.leftItem(roster[key].jid);
 										}
-										
+
 										if($.inArray('clients', roster[key].groups) != -1) {
-											
+
 											self.leftItem(roster[key].jid)
-											
+
 										}
-			
-			
-			
+
+
+
 										if(roster[key].subscription == 'both') {
 											jidList.push(roster[key].jid);
 										}
-										
-										
-										
-										
-									
+
+
+
+
+
 								}
 							}
 
@@ -1331,19 +1331,19 @@ $(document).ready(function() {
 								}
 							});
 							//self.resizeThread();
-							
+
 			}
         };
-		
-		
-		
+
+
+
 		this.getColorUser = function() {
 			var a = ['orange','blue','violet','red','green'];
 			return a[Math.floor(Math.random()*a.length)];
 		}
 
 		this.upgradeUser = function(jid, data) {
-	
+
 			if(self.userList[jid] == undefined) {
 				self.userList[jid] = {
 					jid: jid,
@@ -1381,14 +1381,14 @@ $(document).ready(function() {
 					history: [],
 				};
 			}
-			
-	
+
+
 			if(data) {
-			
+
 				if(typeof data.name != 'undefined') {
 					self.userList[jid].name = data.name;
 				}
-				
+
 				if(typeof data.groups != 'undefined') {
 					self.userList[jid].groups = data.groups;
 				}
@@ -1413,7 +1413,7 @@ $(document).ready(function() {
 				if(typeof data.resources != 'undefined') {
 					self.userList[jid].resources = data.resources;
 				}
-				
+
 				if(typeof data.write != 'undefined') {
 					if(typeof data.write.status != 'undefined') {
 						self.userList[jid].write.status = data.write.status;
@@ -1425,7 +1425,7 @@ $(document).ready(function() {
 						self.userList[jid].write.time = data.write.time;
 					}
 				}
-				
+
 				if(typeof data.thread != 'undefined') {
 					if(typeof data.thread.statusDialog != 'undefined') {
 						self.userList[jid].thread.statusDialog = data.thread.statusDialog;
@@ -1471,31 +1471,31 @@ $(document).ready(function() {
 					}
 				}
 			}
-		
+
 		}
-		
-		
-		
-		
-		
+
+
+
+
+
 		this.leftItem = function(jid) {
-		
-				
+
+
 				var user = self.userList[jid];
-				
-		
-				
+
+
+
 				var block = '';
 				if($.inArray('operators', user.groups) != -1) {
 					block = 'operators';
 				} else if($.inArray('clients', user.groups) != -1) {
 					block = 'clients';
 				}
-				
+
 				if(block == 'operators' || (block == 'clients' && user.thread.statusDialog == 'open' && user.subscription == 'both')) {
-				
+
 				if(!$('.left_list_line[jid="'+jid+'"]').size()) {
-				
+
 					$('.content_left_block[data="'+block+'"]').append('<div class="left_list_line" jid="'+jid+'">'+
 																		'<div class="user_block clr">'+
 																			'<div class="left">'+
@@ -1515,12 +1515,12 @@ $(document).ready(function() {
 																		'</div>'+
 																	'</div>'
 																	);
-				
-				
+
+
 					self.delayFunc.removeLeftItem[jid] != 'undefined' ? clearTimeout(self.delayFunc.removeLeftItem[jid]) : '';
-					
+
 				} else {
-				
+
 					//так же, если при передачи открыт список, там тоже надо статус менять
 					if(user.status == 'on') {
 						$('.left_list_line[jid="'+jid+'"]').find('.status').addClass('on').removeClass('off away');
@@ -1532,12 +1532,12 @@ $(document).ready(function() {
 						$('.left_list_line[jid="'+jid+'"]').find('.status').addClass('away').removeClass('on off');
 						$('.dialog_window').find('.operator_give_list').find('.operator_give_list_line[data="'+jid+'"]').find('operator_give_list_status').addClass('away').removeClass('on off');
 					}
-					
-					
-						
-					
-					
-					
+
+
+
+
+
+
 					if(!user.yes_close) {
 						$('.left_list_line[jid="'+jid+'"]').find('.close').addClass('hide');
 					}
@@ -1550,9 +1550,9 @@ $(document).ready(function() {
 						$('.left_list_line[jid="'+jid+'"]').find('.message').removeClass('hide').html(user.cntmessage);
 						$('.left_list_line[jid="'+jid+'"]').find('.close').addClass('hide');
 					}
-					
+
 					$('.left_list_line[jid="'+jid+'"]').find('.date').html(user.lastTimeMessage);
-					
+
 					if(user.write.status == 'active') {
 						$('.left_list_line[jid="'+jid+'"]').find('.write').addClass('hide').removeClass('composing paused inactive').addClass('active');
 						$('.left_list_line[jid="'+jid+'"]').find('.text').removeClass('hide').html(user.lastMessage);
@@ -1566,14 +1566,14 @@ $(document).ready(function() {
 						$('.left_list_line[jid="'+jid+'"]').find('.write').addClass('hide').removeClass('active paused composing').addClass('inactive');
 						$('.left_list_line[jid="'+jid+'"]').find('.text').removeClass('hide').html(user.lastMessage);
 					}
-					
-				
+
+
 				}
-			
+
 			}
 		}
-		
-		
+
+
 
 
 
@@ -1588,7 +1588,7 @@ $(document).ready(function() {
 					}
 				}
 
-	
+
 
 				setTimeout(function() {
 					$('#data').find('.message_block.notshow').not(".write").removeClass('notshow').addClass('show');
@@ -1597,7 +1597,7 @@ $(document).ready(function() {
 			}
         };
 		this.addToHistory = function(jid, item, where) {
-			
+
 			var doublevar = false;
 			if(self.userList[jid].history == undefined) {
 				self.userList[jid].history= [];
@@ -1610,11 +1610,11 @@ $(document).ready(function() {
 			}
 
 			if(!doublevar) {
-				
+
 				item.message = self.convertTextForWeb(item.message);
-				
+
 				if(where == 'back') {//вставка в начало
-				
+
 					if(self.userList[jid].history.length == 0) {
 						self.upgradeUser(jid, {
 							lastTimeMessage: self.convertDate(item.time, 'min'),
@@ -1622,20 +1622,20 @@ $(document).ready(function() {
 						});
 						self.leftItem(jid);
 					}
-				
+
 					self.userList[jid].history.unshift(item);
 
 				} else if(where == 'before'){//вставка в конец
-					
-					
+
+
 					self.upgradeUser(jid, {
 						lastTimeMessage: self.convertDate(item.time, 'min'),
 						lastMessage: item.message
 					});
 					self.leftItem(jid);
-					
+
 					self.userList[jid].history.push(item);
-					
+
 				}
 			}
         };
@@ -1644,9 +1644,9 @@ $(document).ready(function() {
 
 		this.generateClientsDataForXml = function(data, threadId, statusDialog) {
 			var o = {};
-			
+
 			if(typeof data != 'undefined') {
-	
+
 				o.client_name = data.find('client_name').text();
 				o.site = data.find('site').text();
 				o.page = data.find('page').text();
@@ -1659,17 +1659,17 @@ $(document).ready(function() {
 				o.visits = data.find('visits').text();
 				o.dialogs = data.find('dialogs').text();
 				o.scan_pages = data.find('scan_pages').text();
-				
+
 			}
-			
+
 			if(typeof threadId != 'undefined') {
 				o.threadId = threadId;
 			}
-			
+
 			if(typeof statusDialog != 'undefined') {
 				o.statusDialog = statusDialog;
 			}
-			
+
 			return o;
 		}
 
@@ -1689,23 +1689,23 @@ $(document).ready(function() {
 					$(data).find('message').find('data[xmlns="cleversite:data:dialogs:opened"]').find('message').each(function() {
 						//добавляем клиента в список тех, с кем наш оператор ведёт диалог
 						self.myDialogList.push($(this).attr('from'));
-						
+
 						self.upgradeUser($(this).attr('from'), {
 							thread: self.generateClientsDataForXml($(this).find('data[xmlns="cleversite:data:client"]'), $(this).find('thread').text(), 'open'),
 							yes_close: true,
 							name: $(this).find('client_name').text()
 						});
-						
+
 						self.leftItem($(this).attr('from'));
-						
+
 						self.loadClientsHistory(null, $(this).attr('from'), null, null, $(this).find('thread').text());
-												
-						
+
+
 
 
 					});
 					$(data).find('message').find('data[xmlns="cleversite:data:dialogs:new"]').find('message').each(function() {
-						
+
 						self.upgradeUser($(this).attr('from'), {
 							thread: self.generateClientsDataForXml($(this).find('data[xmlns="cleversite:data:client"]'), $(this).find('thread').text(),  'open'),
 							yes_close: false,
@@ -1730,13 +1730,13 @@ $(document).ready(function() {
 
 
 		self.loadClientsInfo = function(jid) {
-			
+
 			$('.user_block_top').find('.user_block').find('.avatar');
 			$('.user_block_top').find('.user_block').find('.name').html(self.userList[jid].name);
-	
-			
+
+
 			if(self.userList[jid].thread.threadId) {
-			
+
 				$('.import[data="client_name"]').val(self.userList[jid].name);
 				$('.import[data="site"]').html(self.filterSite(self.userList[jid].thread.site));
 
@@ -1756,9 +1756,9 @@ $(document).ready(function() {
 					self.userList[jid].name + ' ' + '<b>'+self.filterSite(self.userList[jid].thread.site)+'</b>' + '<br/>' +
 					window.langClever.lang[window.configApp.local].user_info_top.visits + self.userList[jid].thread.visits + window.langClever.lang[window.configApp.local].user_info_top.countPage +self.userList[jid].thread.scan_pages
 				);
-			 
+
 			}
-			
+
 		}
 
 
@@ -1905,31 +1905,31 @@ $(document).ready(function() {
 			if(self.thread.jid == jid) {
 				$('.content_bottom_dialog').removeClass('hide');
 				$('.content_bottom_noopen_dialog').addClass('hide');
-				
+
 				$('.top_menu').find('li[data="transfer"]').removeClass('disabled');
 				$('.top_menu').find('li[data="block"]').removeClass('disabled');
 				$('.top_menu').find('li[data="send_email"]').removeClass('disabled');
 			}
-			
+
 
 			self.upgradeUser(jid, {
 				yes_close: true
 			});
 			self.leftItem(jid);
-			
+
 		}
-		
-		
+
+
 		this.closeAllThread = function() {
 			self.myDialogList.forEach(function(item, i, arr) {
 				self.closeThread(item, true);
 			});
 		};
-				
-		
-		
+
+
+
 		this.closeThread = function(jid, send) {
-			
+
 			self.seewriter.writeStatus(jid, 'inactive');
 			self.upgradeUser(jid, {
 				yes_close: false,
@@ -1938,27 +1938,27 @@ $(document).ready(function() {
 				}
 			});
 			self.leftItem(jid);
-			
 
-			
+
+
 			if(self.thread.jid == jid) {
 				$('.content_bottom_dialog').addClass('hide');
 				$('.content_bottom_noopen_dialog').removeClass('hide');
-				
+
 				$('.top_menu').find('li[data="transfer"]').addClass('disabled');
 				$('.top_menu').find('li[data="block"]').addClass('disabled');
 				$('.top_menu').find('li[data="send_email"]').addClass('disabled');
-				
+
 				$('.user_block_top').find('.user_block').addClass('hide');
 				$('.user_block_top').find('.user_info').addClass('hide');
-				
+
 				self.generateDialogEvent(jid, 'closethread');
 			}
 
 			self.closeNotify(jid, ['message', 'newMessage', 'noIgnore', 'redirect', 'redirectCancel']);
-			
-			
-			
+
+
+
 			var myDialogNumber = self.myDialogList.indexOf(jid);
 			if(myDialogNumber == -1) {
 				self.removeClient(jid);
@@ -1990,7 +1990,7 @@ $(document).ready(function() {
 
 				} else {
 
-					
+
 					self.delayFunc.removeLeftItem[jid] = setTimeout(function() {
 						if(self.userList[jid].thread.statusDialog == 'close') {
 							self.removeClient(jid);
@@ -2001,7 +2001,7 @@ $(document).ready(function() {
 
 
 			}
-			
+
 
 
 		}
@@ -2056,7 +2056,7 @@ $(document).ready(function() {
 			var filename = 'notify_1';
 			var typeSound = '';
 			var enableSound = true;
-			
+
 			if(jid) {
 				if(self.userList[jid].groups.indexOf('operators') != -1) {
 					typeSound = 'operator';
@@ -2078,37 +2078,37 @@ $(document).ready(function() {
 					filename = 'notify_3';
 				}
 			}
-			
-			
-			
+
+
+
 			if(window.configApp.prop.prop_enableSound == 0) {
 				enableSound = false;
 			}
-			
+
 			if(window.configApp.prop.prop_enableSound == 0 && typeSound == 'clients') {
 				enableSound = false;
 			}
-			
+
 			if(window.configApp.prop.prop_soundOperator_file == 0 && typeSound == 'operator') {
 				enableSound = false;
 			}
-			
+
 			if(ignore) {
 				enableSound = true;
 			}
-			
+
 			if(numberSound) {
 				if(numberSound == 0) {
 					enableSound = false;
 				}
 			}
 
-			
+
 			if(enableSound) {
 				$("#sound").html('<audio autoplay="autoplay"><source src="sound/'+filename+'.mp3" type="audio/mpeg" /><source src="sound/'+filename+'.ogg" type="audio/ogg" /><embed hidden="true" autostart="true" loop="false" src="sound/'+filename+'.mp3" /></audio>');
 			}
-			
-			
+
+
 		}
 
 
@@ -2162,32 +2162,32 @@ $(document).ready(function() {
 
 		this.closeNotify = function(jid, type) {
 
-		
-			
-	
-			
-		
+
+
+
+
+
 				if(isNodeWebkit) {
 
 					type.forEach(function(item, i, arr) {
-						
+
 						if(typeof self.notifyList[item][jid] != 'undefined') {
 							self.notifyList[item][jid].close(function() {
 								delete self.notifyList[item][jid];
 							});
 						}
 					});
-					
+
 				} else {
-				
+
 					type.forEach(function(item, i, arr) {
-						
+
 						if(typeof self.notifyList[item][jid] != 'undefined') {
 							self.notifyList[item][jid].block.remove();
 							delete self.notifyList[item][jid];
 						}
 					});
-				
+
 					//$('.notifylist').find('.notify[data-jid="'+jid+'"]').remove();
 
 					if(typeof self.generateNotifyTitleTimeoutList[jid]  != 'undefined') {
@@ -2206,7 +2206,7 @@ $(document).ready(function() {
 						item.close();
 					});
 				}
-			
+
 
 		}
 
@@ -2215,7 +2215,7 @@ $(document).ready(function() {
 			var user = self.userList[jid];
 
 
-			
+
 			var showNotify = true;
 			var showMainNotify = true;
 			var showHtmlNotify = true;
@@ -2225,8 +2225,8 @@ $(document).ready(function() {
 			if(user.thread.statusDialog == 'close') {
 				showNotify = false;
 			}
-			
-		
+
+
 			if(jid == self.thread.jid && self.windowStatus == 'show') {
 				showMainNotify = false;
 				showHtmlNotify = false;
@@ -2259,7 +2259,7 @@ $(document).ready(function() {
 						if(isNodeWebkit) {
 							if(typeof self.notifyList.newMessage[jid] == 'undefined') {
 
-			
+
 
 									var notify = sergDesctop.add(
 									{
@@ -2290,7 +2290,7 @@ $(document).ready(function() {
 										notify.on('ignore.click', function() {
 											self.ignoreDialog(jid);
 										});
-								
+
 
 										self.notifyList.newMessage[jid] = notify;
 
@@ -2302,22 +2302,22 @@ $(document).ready(function() {
 							} else {
 								self.notifyList.newMessage[jid].addText(a);
 							}
-							
-							
-							
-							
+
+
+
+
 						} else {
-							
-							
-							
-							
-							
+
+
+
+
+
 							if(typeof self.notifyList.newMessage[jid] == 'undefined') {
-								
+
 								var notify = {
 									block: $('<div class="notify new" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.newDialog+'</div><div class="text_top">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.answer+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
 								}
-								
+
 								$('.notifylist').append(notify.block);
 
 								notify.block.find('.chat').on('click', function() {
@@ -2338,13 +2338,13 @@ $(document).ready(function() {
 								notify.block.find('.ignore').on('click', function() {
 									self.ignoreDialog(jid);
 								});
-								
-								self.notifyList.newMessage[jid] = notify;  
-								
+
+								self.notifyList.newMessage[jid] = notify;
+
 							} else {
-							
+
 								self.notifyList.newMessage[jid].block.find('.text').find('textarea').append("\n\r" + a);
-								
+
 							}
 						}
 					}
@@ -2406,15 +2406,15 @@ $(document).ready(function() {
 							}
 
 						} else {
-						
+
 							if(typeof self.notifyList.message[jid] == 'undefined') {
-								
+
 								var notify = {
 									block: $('<div class="notify" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
 								}
-								
+
 								$('.notifylist').append(notify.block);
-								
+
 								notify.block.find('.chat').on('click', function() {
 									if(!notify.block.find('.fastanswer_block').size()) {
 										self.closeNotify(jid, ['message']);
@@ -2431,9 +2431,9 @@ $(document).ready(function() {
 								notify.block.find('.ignore').on('click', function() {
 									self.closeNotify(jid, ['message']);
 								});
-								
+
 								self.notifyList.message[jid] = notify;
-								
+
 							} else {
 								self.notifyList.message[jid].block.find('.text').find('textarea').append("\n\r"+a);
 							}
@@ -2449,11 +2449,11 @@ $(document).ready(function() {
 				}
 
 
-				
+
 				if(type == 'noIgnore') {
 					if(showMainNotify) {
 						if(isNodeWebkit) {
-						
+
 							if(typeof self.notifyList.noIgnore[jid] == 'undefined') {
 
 								var notify = sergDesctop.add(
@@ -2489,17 +2489,17 @@ $(document).ready(function() {
 							} else {
 								self.notifyList.noIgnore[jid].addText(a);
 							}
-							
+
 						} else {
-						
-						
+
+
 							if(typeof self.notifyList.noIgnore[jid] == 'undefined') {
-								
+
 								var notify = {
 									block: $('<div class="notify noignore" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text">'+window.langClever.lang[window.configApp.local].notify.noIgnore+'</div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button></div></div>')
 								}
 								$('.notifylist').append(notify.block);
-								
+
 								notify.block.find('.chat').on('click', function() {
 									if(!notify.block.find('.fastanswer_block').size()) {
 										self.acceptDialogSend(jid);
@@ -2511,17 +2511,17 @@ $(document).ready(function() {
 										self.actionThread(jid);
 									}
 								});
-								
+
 								notify.block.find('.answer').on('click', function() {
 									self.genereteFastAnswerForm(jid, notify.block);
 								});
-								
+
 								self.notifyList.noIgnore[jid] = notify;
-								
+
 							} else {
-							
+
 								self.notifyList.noIgnore[jid].block.find('.text').find('textarea').append("\n\r" + a );
-								
+
 							}
 						}
 					}
@@ -2535,14 +2535,14 @@ $(document).ready(function() {
 				}
 
 
-				
+
 				if(type == 'redirect_me') {
 					if(showMainNotify) {
 						self.closeNotify(jid, ['redirect']);
-						
+
 						if(isNodeWebkit) {
-							
-							
+
+
 									var notify = sergDesctop.add(
 									{
 										width:500,
@@ -2566,19 +2566,19 @@ $(document).ready(function() {
 									}
 								);
 								self.notifyList.redirect[jid] = notify;
-							
-							
-							
+
+
+
 						} else {
 
 							//if(typeof self.notifyList.redirect[jid] == 'undefined') {
-							
+
 								var notify = {
 									block: $('<div class="notify" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.redirect+'</div><div class="text"><b>'+window.langClever.lang[window.configApp.local].notify.redirectOper+'</b> '+user.name+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.redirectClient+'</b> '+self.userList[a.contact].name+'<br/><br/><div class="commentRedirect"><b>'+window.langClever.lang[window.configApp.local].notify.comment+'</b>:<br/>'+a.comment+'</div></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.accept+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.reject+'</button></div></div>')
 								}
-								
+
 								$('.notifylist').append(notify.block);
-								
+
 								notify.block.find('.chat').on('click', function() {
 									self.giveRedirectMeAnsver(a.contact, jid, 'ok');
 									self.closeNotify(jid, ['redirect']);
@@ -2587,9 +2587,9 @@ $(document).ready(function() {
 									self.giveRedirectMeAnsver(a.contact, jid, 'cancel');
 									self.closeNotify(jid, ['redirect']);
 								});
-								
+
 								self.notifyList.redirect[jid] = notify;
-								
+
 						//}
 
 						}
@@ -2611,8 +2611,8 @@ $(document).ready(function() {
 						self.closeNotify(jid, ['redirect', 'redirectCancel']);
 
 						if(isNodeWebkit) {
-						
-						
+
+
 								var notify = sergDesctop.add(
 									{
 										width:500,
@@ -2631,22 +2631,22 @@ $(document).ready(function() {
 									}
 								);
 								self.notifyList.redirectCancel[jid] = notify;
-								
-								
+
+
 						} else {
 
 							//if(!$('.notifylist').find('.notify[data-jid="'+jid+'"]').size()) {
-								
+
 								var notify = {
 									block: $('<div class="notify" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.redirect+'</div><div class="text"><b>'+window.langClever.lang[window.configApp.local].notify.redirectOper+'</b> '+user.name+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.redirectClient+'</b> '+self.userList[a.contact].name+'<br/><br/><div class="commentRedirect">'+window.langClever.lang[window.configApp.local].notify.resirectReject+'</div></div><div class="btns"><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.close+'</button></div></div>')
 								}
-								
+
 								$('.notifylist').append(notify.block);
-								
+
 								notify.block.find('.ignore').on('click', function() {
 									self.closeNotify(jid, ['redirectCancel']);
 								});
-								
+
 								self.notifyList.redirectCancel[jid] = notify;
 							//}
 						}
@@ -2661,7 +2661,7 @@ $(document).ready(function() {
 				}
 
 
-				
+
 				self.generateSound(jid);
 			}
 		}
@@ -2692,19 +2692,19 @@ $(document).ready(function() {
 
 
 
-		
-		
-	
-		
+
+
+
+
 	this.generateDialogWindow = function(jid, type, attr1, attr2) {
-	
+
 		var user = self.userList[jid];
-	
+
 		//нужно обновить
 		if(type == 'versionUpdate') {
-		
+
 			if(!$('.dialog_window.update').size()){
-			
+
 				var b = $('<div class="dialog_window update">'+
 					'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.versionOld+'</div>'+
 					'<div class="dialog_window_t">'+window.langClever.lang[window.configApp.local].notify.versionOld_text+'</div>'+
@@ -2720,21 +2720,21 @@ $(document).ready(function() {
 					b.remove();
 					self.wall.hide();
 				});
-				
+
 				self.wall.show();
 				$('body').append(b);
-				
+
 			}
-			
+
 		}
-		
-		
-		
+
+
+
 		//предложение закрыть все диалоги, перед уходом в авай
 		if(type == 'closeAllDialogs') {
-			
+
 			if(!$('.dialog_window.closeAll[data="'+jid+'"]').size()){
-			
+
 				var b = $('<div class="dialog_window closeAll" data="'+jid+'">'+
 					'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.goAway+'</div>'+
 					'<div class="dialog_window_t">'+window.langClever.lang[window.configApp.local].notify.goAwayText+'</div>'+
@@ -2745,38 +2745,38 @@ $(document).ready(function() {
 				'</div>');
 
 				b.find('.submit').on('click', function() {
-					
+
 					self.closeAllThread();
 
 					self.setStatus('away');
 					self.user.autoAway = false;
-					
+
 					b.remove();
 					self.wall.hide();
 				});
-				
+
 				b.find('.gray_sv').on('click', function() {
 					b.remove();
 					self.wall.hide();
 				});
-				
+
 				self.wall.show();
 				$('body').append(b);
-			
+
 			}
 
 		}
-		
-		
-		
-		
 
-		
+
+
+
+
+
 		//список операторов для редиректа
 		if(type == 'redirectList') {
-			
+
 			if(!$('.dialog_window.redirectList[data="'+jid+'"]').size()){
-				
+
 				//var redirectDialogAct = false;
 				var to = '';
 				var b = $('<div class="dialog_window redirectList" data="'+jid+'">'+
@@ -2788,7 +2788,7 @@ $(document).ready(function() {
 						'<div class="dialog_window_btn btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.cancel+'</div>'+
 					'</div>'+
 				'</div>');
-				
+
 				for(var key in self.userList) {
 					if(self.userList[key].status == 'on' && $.inArray('operators', self.userList[key].groups) != -1) {
 						b.find('.operator_give_list').append('<div class="operator_give_list_line" data="'+key+'"><div class="operator_give_list_status on"><div class="ico"></div></div><div class="operator_give_list_name">'+self.userList[key].name+'</div></div>');
@@ -2797,7 +2797,7 @@ $(document).ready(function() {
 				if($('.operator_give_list').html()==''){
 					b.find('.operator_give_list').append('<div class="empty">'+window.langClever.lang[window.configApp.local].notify.noOper+'</div>');
 				}
-				
+
 				b.find('.operator_give_list').find('.operator_give_list_line').on('click', function() {
 					if(!$(this).parent().hasClass('disabled')) {
 						$(this).addClass('act');
@@ -2830,7 +2830,7 @@ $(document).ready(function() {
 						}, 1000);
 					}
 				});
-				
+
 				b.find('.gray_sv').on('click', function() {
 					if($(this).hasClass('cancel')) {
 						self.redirectCancel(jid, to);
@@ -2841,24 +2841,24 @@ $(document).ready(function() {
 						self.wall.hide();
 					}
 				});
-				
+
 				self.wall.show();
 				$('body').append(b);
 				self.scrollingTo('top', '.operator_give_list');
-				
-			
+
+
 			}
-	
+
 		}
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		//успешный перевод
-		if(type == 'redirectOk') { 
+		if(type == 'redirectOk') {
 
 				if(typeof self.delayFunc.redirect[jid] != 'undefined') {
 					clearInterval(self.delayFunc.redirect[jid]);
@@ -2868,7 +2868,7 @@ $(document).ready(function() {
 				}
 
 				if(!$('.dialog_window.redirectAnswer[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window redirectAnswer" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.redirect+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.sait+'</b> '+self.filterSite(user.thread.site)+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -2882,15 +2882,15 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 		}
 
-			
-			
+
+
 			//отклоненный перевод
 			if(type == 'redirectCancel') {
 
@@ -2902,7 +2902,7 @@ $(document).ready(function() {
 				}
 
 				if(!$('.dialog_window.redirectAnswer[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window redirectAnswer" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.redirect+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.sait+'</b> '+self.filterSite(user.thread.site)+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -2916,23 +2916,23 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 
 			}
 
 
-			
+
 
 
 			//блокировка
 			if(type == 'block') {
 
 				if(!$('.dialog_window.block[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window block" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.block+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.sait+'</b> '+self.filterSite(user.thread.site)+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -2944,7 +2944,7 @@ $(document).ready(function() {
 					'</div>');
 
 					var trea = b.find('.dialog_window_area').find('textarea');
-					
+
 					trea.on('keyup', function() {
 						if($(this).val() == '') {
 							$(this).addClass('error');
@@ -2952,7 +2952,7 @@ $(document).ready(function() {
 							$(this).removeClass('error');
 						}
 					});
-					
+
 					b.find('.submit').on('click', function() {
 						var t = trea.val();
 						var send = true;
@@ -2972,10 +2972,10 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 
 
@@ -2985,7 +2985,7 @@ $(document).ready(function() {
 			if(type == 'blockOk') {
 
 				if(!$('.dialog_window.blockAnswer[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window blockAnswer" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.block+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.sait+'</b> '+self.filterSite(user.thread.site)+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -2999,10 +2999,10 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 
 			}
@@ -3010,9 +3010,9 @@ $(document).ready(function() {
 
 			//послать историю
 			if(type == 'sendHistory') {
-			
+
 				if(!$('.dialog_window.hystory[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window hystory" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.sendEmail+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -3023,7 +3023,7 @@ $(document).ready(function() {
 							'<div class="dialog_window_btn btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.cancel+'</div>'+
 						'</div>'+
 					'</div>');
-					
+
 					var email = b.find('input[name="email"]');
 					email.on('keyup', function() {
 						if($(this).val() == '') {
@@ -3032,7 +3032,7 @@ $(document).ready(function() {
 							$(this).removeClass('error');
 						}
 					});
-					
+
 					var comment = b.find('textarea[name="comment"]');
 					comment.on('keyup', function() {
 						if($(this).val() == '') {
@@ -3041,8 +3041,8 @@ $(document).ready(function() {
 							$(this).removeClass('error');
 						}
 					});
-					
-					
+
+
 					b.find('.submit').on('click', function() {
 						var e = email.val();
 						var c = comment.val();
@@ -3064,25 +3064,25 @@ $(document).ready(function() {
 							b.remove();
 						}
 					});
-					
+
 					b.find('.gray_sv').on('click', function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 			}
 
-			
+
 			//успешно послал историю
 			if(type == 'sendHistoryOk') {
 
-			
+
 				if(!$('.dialog_window.hystoryAnswer[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window hystoryAnswer" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.sendEmail+'</div>'+
 						'<div class="dialog_window_t"><b>'+window.langClever.lang[window.configApp.local].notify.sait+'</b> '+self.filterSite(user.thread.site)+'<br/><b>'+window.langClever.lang[window.configApp.local].notify.client+'</b> '+user.name+'</div>'+
@@ -3097,10 +3097,10 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 
 			}
@@ -3112,7 +3112,7 @@ $(document).ready(function() {
 			if(type == 'uploadError') {
 
 				if(!$('.dialog_window.error[data="'+jid+'"]').size()){
-			
+
 					var b = $('<div class="dialog_window error" data="'+jid+'">'+
 						'<div class="dialog_window_h">'+window.langClever.lang[window.configApp.local].notify.errorUpload+'</div>'+
 						'<div class="dialog_window_inform">'+attr1+'</div>'+
@@ -3125,32 +3125,32 @@ $(document).ready(function() {
 						b.remove();
 						self.wall.hide();
 					});
-					
+
 					self.wall.show();
 					$('body').append(b);
-				
+
 				}
 
 
 			}
-		
 
-		
 
-	}	
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+	}
+
+
+
+
+
+
+
+
+
+
 
 		this.generateDialogEvent = function(jid, type, attr1, attr2) {
-			
+
 			if(self.thread.jid == jid) {
 				if(type == 'noopen') {
 
@@ -3210,26 +3210,26 @@ $(document).ready(function() {
 
 
 
-		
-		
-		
-		
-		
+
+
+
+
+
 		this.wall = {
 			hide: function() {
 				if($('.wall').size() && !$('.dialog_window').size() && $('.property').hasClass('hide')) {
-					$('.wall').remove();	
+					$('.wall').remove();
 				}
 			},
 			show:  function() {
 				if(!$('.wall').size()) {
-					$('body').append('<div class="wall"></div>');	
+					$('body').append('<div class="wall"></div>');
 				}
 			}
 		}
-		
-	
-		
+
+
+
 		this.fastPhrase = {
 				open: function() {
 					$('.phrase_list').find('.phrase_list_cont').find('.block').html('');
@@ -3242,7 +3242,7 @@ $(document).ready(function() {
 					$('.phrase_list').addClass('hide');
 				},
 				change: function(id) {
-					$('#msgwnd').html(window.configApp.fastPhrase[window.configApp.local][id].text);	
+					$('#msgwnd').html(window.configApp.fastPhrase[window.configApp.local][id].text);
 					$('.content_bottom_dialog').find('.send').removeClass('disabled');
 					self.fastPhrase.close();
 					self.caretAtEnd($('.content_bottom_dialog').find('#msgwnd'));
@@ -3255,14 +3255,14 @@ $(document).ready(function() {
 					var text = textarea.val();
 					var send = true;
 					var id = $('.property').find('.property_phraseList').find('.block').find('.phrase').size() ?  (+$('.property').find('.property_phraseList').find('.block').find('.phrase').last().attr('data') + 1) : 1;
-						
+
 					if(text == '') {
 						send = false;
 						textarea.addClass('error');
 					} else {
-						textarea.removeClass('error');	
+						textarea.removeClass('error');
 					}
-						
+
 					if(send) {
 						textarea.val('');
 						$('.property').find('.property_phraseEnter_submit').addClass('disabled');
@@ -3270,11 +3270,11 @@ $(document).ready(function() {
 					}
 				}
 		};
-		
-		
-		
-		
-		
+
+
+
+
+
 		this.sendHistoryToEmail = function(callback, jid, email, comment, threadId) {
 			var d = {
 				send_history: 1,
@@ -3302,7 +3302,7 @@ $(document).ready(function() {
 
 
 		this.blockClient = function(jid, comment) {
-				
+
 
 				self.socket.emit('message', {type: 'message', data: {
 						message: {
@@ -3329,7 +3329,7 @@ $(document).ready(function() {
 
 
 		this.giveRedirectMeAnsver = function(jid, jidOperator, status) {
-			
+
 
 				self.socket.emit('message', {type: 'message', data: {
 						message: {
@@ -3356,12 +3356,12 @@ $(document).ready(function() {
 
 
 			if(status=='ok') {
-				
+
 				self.upgradeUser(jid, {
 					yes_close: false,
 					cntmessage: 0,
 				});
-				
+
 				self.leftItem(jid);
 
 			}
@@ -3371,7 +3371,7 @@ $(document).ready(function() {
 
 		//попытка передачи диалога
 		this.giveRedirect = function(jid, jidOperator, comment) {
-			
+
 
 			self.socket.emit('message', {type: 'message', data: {
 						message: {
@@ -3421,9 +3421,9 @@ $(document).ready(function() {
 
 
 		this.redirectCancel = function(jid, to) {
-		
+
 			clearTimeout(self.delayFunc.redirect[jid]);
-			
+
 			self.socket.emit('message', {type: 'message', data: {
 						message: {
 							attr: {
@@ -3446,14 +3446,14 @@ $(document).ready(function() {
 					}
 			});
 		}
-		
 
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		this.giveRedirectToUser = function(jid, jidOperator) {
 
 
@@ -3479,14 +3479,14 @@ $(document).ready(function() {
 						}
 					}
 				});
-			
+
 			self.myDialogList.splice(self.myDialogList.indexOf(jid), 1);
 			self.generateDialogWindow(jid, 'redirectOk');
 		}
 
-		
-		
-		
+
+
+
 
 		//наблюдение за печатью
 		this.seewriter = {
@@ -3499,12 +3499,12 @@ $(document).ready(function() {
 					}
 				});
 				self.leftItem(jid);
-				
+
 				if(self.thread.jid == jid) {
 					if(type == 'composing') {
 						$('#data').find('.write').removeClass('paused').addClass('composing').removeClass('notshow');
 					} else if(type == 'paused') {
-						$('#data').find('.write').removeClass('composing').addClass('paused').removeClass('notshow');	
+						$('#data').find('.write').removeClass('composing').addClass('paused').removeClass('notshow');
 					} else if(type == 'active') {
 						$('#data').find('.write').removeClass('paused').removeClass('composing').addClass('notshow');
 					} else if(type == 'inactive') {
@@ -3512,14 +3512,14 @@ $(document).ready(function() {
 					} else if(type == 'gone') {
 						$('#data').find('.write').removeClass('paused').removeClass('composing').addClass('notshow');
 					}
-					
+
 					self.scrollingTo('bottom', '#data_scroll');;
 				}
-				
-				
+
+
 			},
 			writeText: function(jid, text) {
-	
+
 				self.upgradeUser(jid, {
 					write: {
 						text: text
@@ -3532,7 +3532,7 @@ $(document).ready(function() {
 				}
 			},
 			send: function(jid, type) {
-				
+
 				self.upgradeUser(self.user.jid, {
 					write: {
 						status: type,
@@ -3559,14 +3559,14 @@ $(document).ready(function() {
 					}
 				}
 				self.socket.emit('message', {type: 'message', data: data});
-				
-				
+
+
 			}
 		}
 
 
-		
-		
+
+
 
 		this.filterSite = function(url) {
 
@@ -3654,49 +3654,49 @@ $(document).ready(function() {
 
 
 
-		
-		
-		
+
+
+
 		this.setDefaultProp = function() {
-		
-			
-		
+
+
+
 			window.configApp.prop = localStorage.getItem('prop_'+ self.user.jid) ? JSON.parse(localStorage.getItem('prop_'+ self.user.jid)) : ({
 				prop_awayTime: 0,
 				prop_closeThreadChangeStatus: 1,
 				prop_enableSound: 1,
 				prop_soundClient_file: 1,
 				prop_soundOperator_file: 1,
-				
+
 				prop_theme: 1,
 			});
-			
+
 			window.configApp.fastPhrase = localStorage.getItem('fastPhrase_'+ self.user.jid) ? JSON.parse(localStorage.getItem('fastPhrase_'+ self.user.jid)) : (
 					{
 						'ru': [
-							{id:1 , text: window.langClever.lang.ru.property.prop_phrase.def[0]}, 
-							{id:2 , text: window.langClever.lang.ru.property.prop_phrase.def[1]}, 
-							{id:3 , text: window.langClever.lang.ru.property.prop_phrase.def[2]} 
+							{id:1 , text: window.langClever.lang.ru.property.prop_phrase.def[0]},
+							{id:2 , text: window.langClever.lang.ru.property.prop_phrase.def[1]},
+							{id:3 , text: window.langClever.lang.ru.property.prop_phrase.def[2]}
 						],
-						'en': [ 
-							{id:1 , text: window.langClever.lang.en.property.prop_phrase.def[0]}, 
-							{id:2 , text: window.langClever.lang.en.property.prop_phrase.def[1]}, 
-							{id:3 , text: window.langClever.lang.en.property.prop_phrase.def[2]} 
+						'en': [
+							{id:1 , text: window.langClever.lang.en.property.prop_phrase.def[0]},
+							{id:2 , text: window.langClever.lang.en.property.prop_phrase.def[1]},
+							{id:3 , text: window.langClever.lang.en.property.prop_phrase.def[2]}
 						]
 					}
 			);
 
 			self.loadProp();
-			
+
 			self.validators('.property');
-	
-			
+
+
 			$('.property_left').find('li[data="spelling"]').addClass('hide');
-			
+
 			if(!isNodeWebkit) {
 				$('.property_left').find('li[data="autostart"]').addClass('hide');
 				$('.property_left').find('li[data="report"]').addClass('hide');
-			} 
+			}
 
 			$('.top_menu').find('li[data="property"]').click(function() {
 				$('.property').removeClass('hide');
@@ -3716,12 +3716,12 @@ $(document).ready(function() {
 				if(!$(this).hasClass('act')) {
 					$('.property').find('.property_left').find('li').removeClass('act');
 					$(this).addClass('act');
-					
+
 					$('.property').find('.property_right').find('.property_block').addClass('hide');
 					$('.property').find('.property_right').find('.property_block[data="'+ $(this).attr('data') +'"]').removeClass('hide');
 				}
 			});
-			
+
 			$('.property').find('.property_line_update').find('.btn').on('click', function() {
 				var updater = require('./components/updater');
 				//updater.checkAndPrompt(gui.App.manifest, win);
@@ -3736,9 +3736,9 @@ $(document).ready(function() {
 					}
 				});
 			});
-			
-			
-			
+
+
+
 			$('.property').find('textarea[name="phrase_text"]').on('keyup', function(e) {
 				var t = $(this).val();
 				if(t != '') {
@@ -3755,88 +3755,88 @@ $(document).ready(function() {
 					return false;
 				}
 			});
-			
+
 			$('.property').find('.property_phraseEnter_submit').on('click', function() {
 				if(!$(this).hasClass('disabled')) {
 					self.fastPhrase.add();
 				}
 			});
-			
+
 			$(document).on("click", ".property_phraseList .delete", function() {
 				self.fastPhrase.del($(this).parent().attr('data'));
 			});
 
 			self.scrollingTo('top', '.property_phraseList_scroll');
-			
-		
-			
+
+
+
 			$('.property_block[data="about"]').find('.version').find('span[data="version"]').html(version);
-			
+
 			$('.property').find('.property_sv_play').on('click', function() {
 				self.generateSound(null, $(this).parent().find('select option:selected').val(), true);
 			});
-			
-			
-			
-			
-			
-			
-			
-			
+
+
+
+
+
+
+
+
 			$('.property_line_visual').find('.el').on('click', function() {
 				$(this).parent().find('.el').removeClass('act');
 				$(this).addClass('act');
 				$('.property').find('input[name="prop_theme"]').val($(this).attr('data'));
-				
+
 				$('.property_line_visual').find('.el').each(function() {
 					$('body').removeClass('theme_' + $(this).attr('data'));
 				});
 				$('body').addClass('theme_' + $(this).attr('data'));
-				
+
 			});
-	
-			
 
-			
+
+
+
 		}
-		
-		
-		
-		
-		
 
-	
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
 		this.loadProp = function() {
-		
+
 			$('.property').find('select[name="prop_awayTime"]').find('option').removeAttr('selected');
 			$('.property').find('select[name="prop_awayTime"]').find('option[value="'+window.configApp.prop.prop_awayTime+'"]').attr('selected', 'selected');
-			
-			
-		
-			
+
+
+
+
 			if(window.configApp.prop.prop_closeThreadChangeStatus == 1) {
 				$('.property').find('input[name="prop_closeThreadChangeStatus"]').prop('checked', true).attr('checked', 'checked');
 			} else {
 				$('.property').find('input[name="prop_closeThreadChangeStatus"]').prop('checked', false).removeAttr('checked');
 			}
-			
-			
+
+
 			$('.property').find('.property_phraseList').find('.block').html('');
 			for (var key in window.configApp.fastPhrase[window.configApp.local]) {
 				$('.property').find('.property_phraseList').find('.block').append('<div class="phrase" data="'+key+'"><div class="text">'+window.configApp.fastPhrase[window.configApp.local][key].text+'</div><div class="delete"></div></div><div class="clr"></div>');
 			};
-		
+
 			$('.property').find('input[name="prop_lang"]').prop('checked', false).removeAttr('checked');
 			$('.property').find('input[name="prop_lang"][value="'+window.configApp.local+'"]').prop('checked', true).attr('checked', 'checked');
-			
-		
-		
+
+
+
 			if(window.configApp.prop.prop_enableSound == 1) {
 				$('.property').find('input[name="prop_enableSound"]').prop('checked', true).attr('checked', 'checked');
 			} else {
@@ -3845,12 +3845,12 @@ $(document).ready(function() {
 
 			$('.property').find('select[name="prop_soundClient_file"]').find('option').removeAttr('selected');
 			$('.property').find('select[name="prop_soundClient_file"]').find('option[value="'+window.configApp.prop.prop_soundClient_file+'"]').attr('selected', 'selected');
-			
+
 			$('.property').find('select[name="prop_soundOperator_file"]').find('option').removeAttr('selected');
 			$('.property').find('select[name="prop_soundOperator_file"]').find('option[value="'+window.configApp.prop.prop_soundOperator_file+'"]').attr('selected', 'selected');
-			
-			
-			
+
+
+
 			if(window.configApp.desktop.prop_autoStart == 1) {
 				$('.property').find('input[name="prop_autoStart"]').prop('checked', true).attr('checked', 'checked');
 			} else {
@@ -3861,78 +3861,74 @@ $(document).ready(function() {
 			} else {
 				$('.property').find('input[name="prop_autoIn"]').prop('checked', false).removeAttr('checked');
 			}
-			
+
 			if(window.configApp.desktop.prop_sendReport == 1) {
 				$('.property').find('input[name="prop_sendReport"]').prop('checked', true).attr('checked', 'checked');
 			} else {
 				$('.property').find('input[name="prop_sendReport"]').prop('checked', false).removeAttr('checked');
 			}
 
-			
+
 			$('.property_line_visual').find('.el').removeClass('act');
 			$('.property_line_visual').find('.el[data="'+window.configApp.prop.prop_theme+'"]').addClass('act');
 			$('.property_line_visual').find('.el').each(function() {
 				$('body').removeClass('theme_' + $(this).attr('data'));
 			});
 			$('body').addClass('theme_' + window.configApp.prop.prop_theme);
-			
-			
+
+
 		};
-			
+
 
 		this.saveProp = function() {
-			
+
 			var prop = {};
-				
+
 			prop.prop_awayTime = (window.configApp.prop.prop_awayTime = $('.property').find('select[name="prop_awayTime"]').find('option:selected').val());
 			prop.prop_closeThreadChangeStatus = (window.configApp.prop.prop_closeThreadChangeStatus = $('.property').find('input[name="prop_closeThreadChangeStatus"]').prop('checked') ? 1 : 0);
 			prop.prop_enableSound = (window.configApp.prop.prop_enableSound = $('.property').find('input[name="prop_enableSound"]').prop('checked') ? 1 : 0);
 			prop.prop_soundClient_file = (window.configApp.prop.prop_soundClient_file = $('.property').find('select[name="prop_soundClient_file"]').find('option:selected').val());
 			prop.prop_soundOperator_file = (window.configApp.prop.prop_soundOperator_file = $('.property').find('select[name="prop_soundOperator_file"]').find('option:selected').val());
 			prop.prop_theme = (window.configApp.prop.prop_theme = $('.property').find('input[name="prop_theme"]').val());
-			
+
 			localStorage.setItem('prop_'+ self.user.jid, JSON.stringify(prop));
 
-	
 
-	
-	
+
+
+
 			window.configApp.fastPhrase[window.configApp.local] = {};
 			$('.property').find('.property_phraseList').find('.block').find('.phrase').each(function() {
 				window.configApp.fastPhrase[window.configApp.local][$(this).attr('data')] = {id: $(this).attr('data'), text: $(this).find('.text').html()};
 			});
 			localStorage.setItem('fastPhrase_'+ self.user.jid, JSON.stringify(window.configApp.fastPhrase));
-			
-			
+
+
 			var l = $('.property').find('input[name="prop_lang"]:checked').val();
 			if(window.configApp.local != l) {
 				window.configApp.local = l;
-	
+
 				self.loadLocalize();
-				
-				
+
+
 				$('select').selectmenu("destroy");
 				$('input[type="checkbox"]').checkboxradio("destroy");
 				$('input[type="radio"]').checkboxradio("destroy");
-				
+
 				$('select').selectmenu();
 				$('input[type="checkbox"]').checkboxradio();
 				$('input[type="radio"]').checkboxradio();
-				
+
 				localStorage.setItem("locale", window.configApp.local);
 			}
 
-			
-			
+
+
 			var desktop = {};
-			
+
 			desktop.prop_autoStart = (window.configApp.desktop.prop_autoStart = $('.property').find('input[name="prop_autoStart"]').prop('checked') ? 1 : 0);
 			if(isNodeWebkit) {
-				var AutoLaunch = require('auto-launch');
-				var launcher = new AutoLaunch({
-					name: 'Clever16',
-					isHidden: true // hidden on launch - only works on a mac atm
-				});
+			
 				launcher.isEnabled(function(enabled) {
 					if(window.configApp.desktop.prop_autoStart == 1 && !enabled) {
 						launcher.enable(function(error) {
@@ -3951,32 +3947,32 @@ $(document).ready(function() {
 			}
 			desktop.prop_autoIn = (window.configApp.desktop.prop_autoIn = $('.property').find('input[name="prop_autoIn"]').prop('checked') ? 1 : 0);
 			desktop.prop_sendReport = (window.configApp.desktop.prop_sendReport = $('.property').find('input[name="prop_sendReport"]').prop('checked') ? 1 : 0);
-			
+
 			localStorage.setItem('desktop', JSON.stringify(desktop));
-			
-			
-			
+
+
+
 			self.loadProp();
 		};
-		
-		
-		
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 		this.resizeThread = function() {}
 
-		
+
 		this.valudate_auth = function() {
 			var active = true;
 			var b = $('#auth_form_form').find('button[name="submit"]');
@@ -4012,16 +4008,16 @@ $(document).ready(function() {
 		}
 
 
-		
-		
-		
+
+
+
 		this.loadLocalize = function (l) {
 			document.title = window.langClever.lang[window.configApp.local].title;
-			
+
 			$('.auth_form_parent').find('.auth_form_form_f_1').find('.submit').html(window.langClever.lang[window.configApp.local].enter);
 			$('.auth_form_parent').find('.auth_form_form_f_2').find('.auth_form_form_f_2_t').html(window.langClever.lang[window.configApp.local].loadintEnter);
 			$('.auth_form_parent').find('.auth_form_form_f_2').find('.submit').html(window.langClever.lang[window.configApp.local].cancel);
-			
+
 			$('.user_info').find('.extended').find('span[data="begin-text"]').html(window.langClever.lang[window.configApp.local].user_info.begin);
 			$('.user_info').find('.extended').find('span[data="source-text"]').html(window.langClever.lang[window.configApp.local].user_info.source);
 			$('.user_info').find('.extended').find('span[data="location-text"]').html(window.langClever.lang[window.configApp.local].user_info.location);
@@ -4031,8 +4027,8 @@ $(document).ready(function() {
 			$('.user_info').find('.extended').find('span[data="visits-text"]').html(window.langClever.lang[window.configApp.local].user_info.visits);
 			$('.user_info').find('.extended').find('span[data="dialogs-text"]').html(window.langClever.lang[window.configApp.local].user_info.dialogs);
 			$('.user_info').find('.extended').find('span[data="scan_pages-text"]').html(window.langClever.lang[window.configApp.local].user_info.scan_pages);
-			
-			
+
+
 			$('.top_menu').find('li[data="transfer"]').html(window.langClever.lang[window.configApp.local].top_menu.transfer);
 			$('.top_menu').find('li[data="block"]').html(window.langClever.lang[window.configApp.local].top_menu.block);
 			$('.top_menu').find('li[data="send_email"]').html(window.langClever.lang[window.configApp.local].top_menu.send_email);
@@ -4040,15 +4036,15 @@ $(document).ready(function() {
 			$('.top_menu').find('li[data="clients"]').html(window.langClever.lang[window.configApp.local].top_menu.clients);
 			$('.top_menu').find('li[data="property"]').html(window.langClever.lang[window.configApp.local].top_menu.property);
 			$('.top_menu').find('li[data="exit"]').html(window.langClever.lang[window.configApp.local].top_menu.exit);
-			
-			
+
+
 			$('.content_info').html(window.langClever.lang[window.configApp.local].content_info);
-			
+
 			$('.show_history').find('span').html(window.langClever.lang[window.configApp.local].history);
-			
+
 			$('#msgwnd').attr('placeholder', window.langClever.lang[window.configApp.local].msgwnd_placeholder);
-	
-			
+
+
 			$('.property').find('.property_left').find('li[data="status"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.status);
 			$('.property').find('.property_left').find('li[data="phrases"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.phrases);
 			$('.property').find('.property_left').find('li[data="lang"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.lang);
@@ -4058,19 +4054,19 @@ $(document).ready(function() {
 			$('.property').find('.property_left').find('li[data="visual"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.visual);
 			$('.property').find('.property_left').find('li[data="report"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.report);
 			$('.property').find('.property_left').find('li[data="about"]').find('span').html(window.langClever.lang[window.configApp.local].property.menu.about);
-			
-			
+
+
 			$('.property').find('.property_right').find('.property_sv_l').html(window.langClever.lang[window.configApp.local].property.prop_status.text);
 			$('.property').find('.property_right').find('select[name="prop_awayTime"]').find('option[value="0"]').html(window.langClever.lang[window.configApp.local].property.prop_status.never);
 			$('.property').find('.property_right').find('label[for="prop_closeThreadChangeStatus"]').html(window.langClever.lang[window.configApp.local].property.prop_status.closetext);
-			
+
 			$('.property').find('.property_right').find('textarea[name="phrase_text"]').attr('placeholder', window.langClever.lang[window.configApp.local].property.prop_phrase.placeholder);
-			
-			
+
+
 			$('.property').find('.property_right').find('label[for="prop_lang_rus"]').html(window.langClever.lang[window.configApp.local].property.prop_lang.prop_lang_rus);
 			$('.property').find('.property_right').find('label[for="prop_lang_en"]').html(window.langClever.lang[window.configApp.local].property.prop_lang.prop_lang_en);
-		
-			
+
+
 			$('.property').find('.property_right').find('label[for="prop_enableSound"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.enable);
 			$('.property').find('.property_right').find('.property_line_file_sound').find('.property_sv_text[data="clients"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.textForClient);
 			$('.property').find('.property_right').find('.property_line_file_sound').find('.property_sv_text[data="operators"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.textForOperator);
@@ -4080,25 +4076,25 @@ $(document).ready(function() {
 			$('.property').find('.property_right').find('select[name="prop_soundOperator_file"]').find('option[value="1"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.noty1);
 			$('.property').find('.property_right').find('select[name="prop_soundClient_file"]').find('option[value="2"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.noty2);
 			$('.property').find('.property_right').find('select[name="prop_soundOperator_file"]').find('option[value="2"]').html(window.langClever.lang[window.configApp.local].property.prop_sound.noty2);
-			
+
 			$('.property').find('.property_right').find('label[for="prop_autoStart"]').html(window.langClever.lang[window.configApp.local].property.prop_autostart.prop_autoStart);
 			$('.property').find('.property_right').find('label[for="prop_autoIn"]').html(window.langClever.lang[window.configApp.local].property.prop_autostart.prop_autoIn);
-			
+
 			$('.property').find('.property_right').find('label[for="prop_sendReport"]').html(window.langClever.lang[window.configApp.local].property.prop_report.prop_sendReport);
 			$('.property').find('.property_right').find('.property_block[data="report"]').find('.property_line_checkbox_info').html(window.langClever.lang[window.configApp.local].property.prop_report.text);
-			
+
 			$('.property').find('.property_right').find('.property_block[data="about"]').find('span[data="text"]').html(window.langClever.lang[window.configApp.local].property.prop_about.text);
-			
+
 			$('.property').find('.property_bottom').find('.submit').html(window.langClever.lang[window.configApp.local].save);
 			$('.property').find('.property_bottom').find('.gray_sv').html(window.langClever.lang[window.configApp.local].cancel);
-			
-			
-		}
-		
-		
 
-		
-		
+
+		}
+
+
+
+
+
 		this.cloneObject = function (obj) {
 			var clone = {};
 			for(var i in obj) {
@@ -4149,7 +4145,7 @@ $(document).ready(function() {
 			//Создаем объек FormData
 			var data = new FormData();
 
-			
+
 			data.append('HTTP_TO', self.user.jid);
 			data.append('HTTP_THREADID', self.userList[self.thread.jid].thread.threadId);
 			data.append('HTTP_USERID', self.thread.jid);
@@ -4188,11 +4184,11 @@ $(document).ready(function() {
 				}
 			});
 		};
-		
-		
-		
-		
-		
+
+
+
+
+
 		self.validators = function (where) {
 			$(where).find(".validatertext").keypress(function(e) {
 				var verified = (e.which == 8 || e.which == undefined || e.which == 0 || e.which == 13) ? null : String.fromCharCode(e.which).match(validatertext);
@@ -4206,7 +4202,7 @@ $(document).ready(function() {
 					e.preventDefault();
 				}
 			});
-			
+
 			$(where).find(".validaterchisla").keypress(function(e) {
 				var verified = (e.which == 8 || e.which == undefined || e.which == 0) ? null : String.fromCharCode(e.which).match(validaterchisla);
 				if (verified) {
@@ -4215,43 +4211,43 @@ $(document).ready(function() {
 			});
 
 			//$('.timepicker').timepicker();
-			
+
 			$(where).find('.select').selectmenu();
-			
+
 			/*$.widget( "custom.iconselectmenu", $.ui.selectmenu, {
 			  _renderItem: function( ul, item ) {
 				var li = $( "<li>", { text: item.label } );
-		 
+
 				if ( item.disabled ) {
 				  li.addClass( "ui-state-disabled" );
 				}
-		 
+
 				$( "<span>", {
 				  style: item.element.attr( "data-style" ),
 				  "class": "ui-icon " + item.element.attr( "data-class" )
 				})
 				  .appendTo( li );
-		 
+
 				return li.appendTo( ul );
 			  }
 			});*/
 			//$(where).find(".select_icon").iconselectmenu().iconselectmenu("menuWidget").addClass("ui-menu-icons");
-			
+
 			$(where).find(".checklist").find('input').checkboxradio();
 			$(where).find(".checkbox").find('input').checkboxradio();
-			
+
 			$(where).find('input').on('focus', function() {
 				$(this).addClass('focus');
 			}).on('blur', function() {
 				$(this).removeClass('focus');
 			});
-			
+
 			$(where).find('textarea').on('focus', function() {
 				$(this).addClass('focus');
 			}).on('blur', function() {
 				$(this).removeClass('focus');
 			});
-			
+
 			/*
 			$(where).find('.inform_icon').on('mouseenter', function() {
 				$(this).parent().find('.inform_text').addClass('act');
@@ -4259,11 +4255,11 @@ $(document).ready(function() {
 				$(this).parent().find('.inform_text').removeClass('act');
 			});
 			*/
-			
-			
-		}	
-		
-	
+
+
+		}
+
+
 		self.caretAtEnd = function(el) {
 			el.focus();
 			if (typeof window.getSelection != "undefined"
@@ -4281,7 +4277,7 @@ $(document).ready(function() {
 				textRange.select();
 			}
 		}
-		
+
 
 		this.reconvert_link = function(text) {
 			if(isNodeWebkit) {
@@ -4291,24 +4287,24 @@ $(document).ready(function() {
 			}
 		}
 
-		
-		
-		
+
+
+
 		this.mainInterval = setInterval(function() {
 			var t = Date.now() - self.lastActive;
 			if(window.configApp.prop.prop_awayTime != 0) {
 				if(t/1000/60 > window.configApp.prop.prop_awayTime) {
 					self.setStatus('away', true);
-					self.user.autoAway = true;		
+					self.user.autoAway = true;
 				}
 			}
-		}, 1000);	
-		
-		
-		
-		
-		
-		
+		}, 1000);
+
+
+
+
+
+
 		//генерация номера сообщения
 		this.messageId = function() {
 
@@ -4320,9 +4316,9 @@ $(document).ready(function() {
 			return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 			//return Date.now() + '-' + Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
 		}
-		
+
 		$('a[target=_blank]').on('click', function(){
-		   
+
 		   return false;
 		});
 

@@ -7,6 +7,212 @@ if (isNodeWebkit) {
 	var win = gui.Window.get();
 }
 
+
+
+/* 
+//Cobrowse
+if (isNodeWebkit) {
+	var winOpt = {
+		width: 1280, 
+		height: 700, 
+		x: 0,
+		y: 0,
+		always_on_top: true,
+	};
+	var link = "http://scloud.ru/";
+	gui.Window.open(link, winOpt, function(win) {
+		win.on('loaded', function(){
+			
+			
+			win.on('new-win-policy', function(frame, url, policy) {
+				policy.ignore();
+			});
+			
+			var coBrowseEl = {};
+			
+			var s = document.createElement("style");
+				s.type = "text/css";
+				var e = ".reset {animation : none;animation-delay : 0;animation-direction : normal;animation-duration : 0;animation-fill-mode : none;animation-iteration-count : 1;animation-name : none;animation-play-state : running;animation-timing-function : ease;backface-visibility : visible;background : 0;background-attachment : scroll;background-clip : border-box;background-color : transparent;background-image : none;background-origin : padding-box;background-position : 0 0;background-position-x : 0;background-position-y : 0;background-repeat : repeat;background-size : auto auto;border : 0;border-style : none;border-width : medium;border-color : inherit;border-bottom : 0;border-bottom-color : inherit;border-bottom-left-radius : 0;border-bottom-right-radius : 0;border-bottom-style : none;border-bottom-width : medium;border-collapse : separate;border-image : none;border-left : 0;border-left-color : inherit;border-left-style : none;border-left-width : medium;border-radius : 0;border-right : 0;border-right-color : inherit;border-right-style : none;border-right-width : medium;border-spacing : 0;border-top : 0;border-top-color : inherit;border-top-left-radius : 0;border-top-right-radius : 0;border-top-style : none;border-top-width : medium;bottom : auto;box-shadow : none;box-sizing : content-box;caption-side : top;clear : none;clip : auto;color : inherit;columns : auto;column-count : auto;column-fill : balance;column-gap : normal;column-rule : medium none currentColor;column-rule-color : currentColor;column-rule-style : none;column-rule-width : none;column-span : 1;column-width : auto;content : normal;counter-increment : none;counter-reset : none;cursor : auto;direction : ltr;display : inline;empty-cells : show;float : none;font : normal;font-family : inherit;font-size : medium;font-style : normal;font-variant : normal;font-weight : normal;height : auto;hyphens : none;left : auto;letter-spacing : normal;line-height : normal;list-style : none;list-style-image : none;list-style-position : outside;list-style-type : disc;margin : 0;margin-bottom : 0;margin-left : 0;margin-right : 0;margin-top : 0;max-height : none;max-width : none;min-height : 0;min-width : 0;opacity : 1;orphans : 0;outline : 0;outline-color : invert;outline-style : none;outline-width : medium;overflow : visible;overflow-x : visible;overflow-y : visible;padding : 0;padding-bottom : 0;padding-left : 0;padding-right : 0;padding-top : 0;page-break-after : auto;page-break-before : auto;page-break-inside : auto;perspective : none;perspective-origin : 50% 50%;position : static;right : auto;tab-size : 8;table-layout : auto;text-align : inherit;text-align-last : auto;text-decoration : none;text-decoration-color : inherit;text-decoration-line : none;text-decoration-style : solid;text-indent : 0;text-shadow : none;text-transform : none;top : auto;transform : none;transform-style : flat;transition : none;transition-delay : 0s;transition-duration : 0s;transition-property : none;transition-timing-function : ease;unicode-bidi : normal;vertical-align : baseline;visibility : visible;white-space : normal;widows : 0;width : auto;word-spacing : normal;z-index : auto;}" +
+					    '.cobrouse_select {position:absolute;z-index:100500;border:2px solid #79b41c;opacity:0.3;background:#79b41c;pointer-events: none;}'+
+						'.cobrouse_select_block {position:absolute;z-index:100501;background:#1A1A1A;padding:10px 15px;height:70px;width:250px;border-radius:5px;}'+
+						'.cobrouse_select_block.hide {display:none;}'+
+						'.cobrouse_select_block textarea {height:30px;font-size:12px;line-height:14px;resize:none;width:100%;text-indent:10px;display:block;border-radius:5px;padding:2px 0;}'+
+						'.cobrouse_select_block .cobrouse_select_block_btns {float:right;padding:5px 0 0 0;}'+
+						'.cobrouse_select_block .cobrouse_select_block_submit {font-size:14px;line-height:20px;padding:5px 10px;background:#669933;margin:0 0 0 5px;float:left;border-radius:5px;color:#FFF;}'+
+						'.cobrouse_select_block .cobrouse_select_block_cancel {font-size:14px;line-height:20px;padding:5px 10px;background:#dbdbdb;margin:0 0 0 5px;float:left;border-radius:5px;color:#404040;}'+
+						'.cobrouse_select_enable {cursor:pointer;font-size:14px;line-height:20px;box-shadow:0 0 5px rgba(.4);padding:5px 10px;background:rgba(0,0,0,.4);position:fixed;top:35px;left:50%;width:200px;margin:0 0 0 -100px;text-align:center;border-radius:5px;color:#FFF;z-index:100505;}'+
+						'.cobrouse_select_enable.hide {display:none;}'+
+						'.cobrouse_select_disable {cursor:pointer;font-size:14px;line-height:20px;box-shadow:0 0 5px rgba(.4);padding:5px 10px;background:rgba(0,0,0,.4);position:fixed;top:35px;left:50%;width:200px;margin:0 0 0 -100px;text-align:center;border-radius:5px;color:#FFF;z-index:100505;}'+
+						'.cobrouse_select_disable.hide {display:none;}'+
+						'.cobrouse_select_exit {cursor:pointer;font-size:14px;line-height:20px;box-shadow:0 0 5px rgba(.4);padding:5px 10px;background:rgba(0,0,0,.4);position:fixed;top:35px;right:10px;width:100px;text-align:center;border-radius:5px;color:#FFF;z-index:100505;pointer-events: visible;}'+
+				'';
+				s.styleSheet ? s.styleSheet.cssText = e : "" == s.innerText ? s.innerText = e : s.innerHTML = e;
+				win.window.document.body.appendChild(s);
+				
+
+			
+	
+			$(win.window.document).find('html').css({'overflow': 'hidden'});
+			$(win.window.document).find('body').append('<div class="cobrouse_select_enable reset">Подсветить элемент</div>');
+			$(win.window.document).find('body').append('<div class="cobrouse_select_disable hide reset">Отменить</div>');
+			$(win.window.document).find('body').append('<div class="cobrouse_select_exit reset">Закрыть</div>');
+			$(win.window.document).find('body').append('<div class="cobrouse_select reset"></div>');
+			$(win.window.document).find('body').append('<div class="cobrouse_select_block reset hide"><textarea placeholder="Введите текст комментария"></textarea><div class="cobrouse_select_block_btns"><div class="cobrouse_select_block_submit">Отправить</div><div class="cobrouse_select_block_cancel">Отменить</div></div></div>');
+			
+			
+			
+			
+			
+		
+			
+			$(win.window.document).find('.cobrouse_select_exit').on('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				win.close(true);
+			});
+			
+			$(win.window.document).find('.cobrouse_select_enable').on('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				$(win.window.document).find('.cobrouse_select_disable').removeClass('hide');
+				$(win.window.document).find('.cobrouse_select_enable').addClass('hide');
+				
+			});
+			
+			$(win.window.document).find('.cobrouse_select_disable').on('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				$(win.window.document).find('.cobrouse_select_enable').removeClass('hide');
+				$(win.window.document).find('.cobrouse_select_disable').addClass('hide');
+			});
+			
+			
+			$(win.window.document).on('mousemove', function(e) {
+				if($(win.window.document).find('.cobrouse_select_enable').hasClass('hide')) {
+					if(!$(win.window.document).find('body').find('.cobrouse_select').hasClass('act')) {
+						var el = $(this)[0].elementFromPoint(e.pageX, e.pageY);
+						if(!$(el).hasClass('cobrouse_select_disable') && !$(el).hasClass('cobrouse_select_exit')) {
+							$(win.window.document).find('body').find('.cobrouse_select').css({
+								'top': $(el).offset().top,
+								'left': $(el).offset().left,
+								'height': (parseInt($(el).height()) + parseInt($(el).css('padding-top')) + parseInt($(el).css('padding-bottom'))),
+								'width': (parseInt($(el).width()) + parseInt($(el).css('padding-left')) + parseInt($(el).css('padding-right'))),
+							});
+						} else {
+							$(win.window.document).find('body').find('.cobrouse_select').css({
+								'top': -10000000,
+								'left': -10000000,
+								'height': 0,
+								'width': 0,
+							});
+						}
+					}
+				}
+			});
+			
+			
+			$(win.window.document).on('click', function(e) {
+				//e.stopPropagation();
+				e.preventDefault();
+
+				if(!$(win.window.document).find('body').find('.cobrouse_select').hasClass('act')) { 
+						
+						//e.preventDefault();
+						
+						var el = $(win.window.document)[0].elementFromPoint(e.pageX, e.pageY);
+							
+						coBrowseEl = win.window.document.elementFromPoint(e.pageX, e.pageY);
+						
+						
+						
+						
+						var t = parseInt($(el).offset().top);
+						var l = parseInt($(el).offset().left);
+						var h = (parseInt($(el).height()) + parseInt($(el).css('padding-top')) + parseInt($(el).css('padding-bottom')));
+						var w = (parseInt($(el).width()) + parseInt($(el).css('padding-left')) + parseInt($(el).css('padding-right')));
+						$(win.window.document).find('body').find('.cobrouse_select').css({
+							'top': t,
+							'left': l,
+							'height': h,
+							'width': w,
+						});
+						
+						
+						
+						
+						var tB = t - 100;
+						if(tB < 0) {
+							tB = t + h + 10;
+						}
+						var wB = parseInt($(win.window.document).find('body').find('.cobrouse_select_block').width()) + parseInt($(win.window.document).find('body').find('.cobrouse_select_block').css('padding-left'))+ parseInt($(win.window.document).find('body').find('.cobrouse_select_block').css('padding-right'));
+						var windowW = parseInt($(win.window.document).find('body').width());
+						var lB = l + w/2 - wB/2;
+						if( (lB + wB) > windowW ) {
+							lB = windowW - wB;
+						}
+						if(lB < 0) {
+							lB = 0;
+						}
+							
+						$(win.window.document).find('body').find('.cobrouse_select_block').css({
+							'top': tB + 'px',
+							'left': lB + 'px'
+						});
+						
+						$(win.window.document).find('body').find('.cobrouse_select').addClass('act');
+						$(win.window.document).find('body').find('.cobrouse_select_block').removeClass('hide');
+					}
+					
+				
+				
+			});
+			
+			
+			$(win.window.document).find('.cobrouse_select_block_cancel').on('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+				$(win.window.document).find('body').find('.cobrouse_select').removeClass('act');
+				$(win.window.document).find('body').find('.cobrouse_select_block').addClass('hide');
+			});
+			
+			$(win.window.document).find('.cobrouse_select_block_submit').on('click', function(e) {
+				e.stopPropagation();
+				e.preventDefault();
+
+				var find = true;
+				var findStr = '';
+				var n = '';
+				while(find) {
+					if(coBrowseEl.tagName.toLowerCase()  != 'body') {
+						if($(coBrowseEl.parentNode).children(coBrowseEl.tagName).length > 1) {
+							n = ':eq('+$(coBrowseEl.parentNode).children(coBrowseEl.tagName).index(coBrowseEl)+')';
+						} else {
+							n = '';
+						}
+						findStr = '> ' + coBrowseEl.tagName.toLowerCase() + n + (findStr ? ' ' + findStr : '');
+						coBrowseEl = coBrowseEl.parentNode;
+					} else {
+						find = false;
+						findStr = coBrowseEl.tagName.toLowerCase() + (findStr ? ' ' + findStr : '');
+					}
+				}
+				
+				console.log(findStr);
+
+				
+				$(win.window.document).find('body').find('.cobrouse_select').removeClass('act');
+				$(win.window.document).find('body').find('.cobrouse_select_block').addClass('hide');
+			});
+			
+			
+			
+	
+		});
+	});
+}
+*/
+
+
 $(document).ready(function() {
 
 	//localStorage.setItem("test", JSON.stringify({ru: this.ruPhrases,en: this.enPhrases,version: this.version}));
@@ -52,6 +258,7 @@ $(document).ready(function() {
         this.jid = false;
 		//хмпп домен
 		this.domen = 'cleversite.ru';
+		this.server = 'cleversite.ru';
 		//тайтл документа
 		this.titleDocument = document.title;
 		this.generateNotifyTitleTimeout;
@@ -75,7 +282,7 @@ $(document).ready(function() {
 		this.roster = [];
 
 
-		if(location.port == 3001) {
+		if(MODE == 'development') {
 			this.socket = io('https://nodejs01.cleversite.ru:3001/');
 		} else {
 			this.socket = io('https://nodejs01.cleversite.ru/');
@@ -85,17 +292,15 @@ $(document).ready(function() {
 
 		//список смайлов
 		this.smiles = {
-			SM1: ['=)', '<img data="SM1" class="smile" src="/images/smiles/1.png" />'],
-			SM2: ['=(', '<img data="SM2" class="smile" src="/images/smiles/2.png" />'],
-			SM3: ['=*(', '<img data="SM3" class="smile" src="/images/smiles/3.png" />'],
-			SM4: [';)', '<img data="SM4" class="smile" src="/images/smiles/4.png" />'],
-			SM5: [':-@', '<img data="SM5" class="smile" src="/images/smiles/5.png" />'],
-			SM6: [':-D', '<img data="SM6" class="smile" src="/images/smiles/6.png" />'],
-			SM7: [':-[', '<img data="SM7" class="smile" src="/images/smiles/7.png" />'],
-			SM8: ['=-O', '<img data="SM8" class="smile" src="/images/smiles/8.png" />']
+			SM1: ['=)', '<img data="SM1" class="smile" src="./images/smiles/1.png" />'],
+			SM2: ['=(', '<img data="SM2" class="smile" src="./images/smiles/2.png" />'],
+			SM3: ['=*(', '<img data="SM3" class="smile" src="./images/smiles/3.png" />'],
+			SM4: [';)', '<img data="SM4" class="smile" src="./images/smiles/4.png" />'],
+			SM5: [':-@', '<img data="SM5" class="smile" src="./images/smiles/5.png" />'],
+			SM6: [':-D', '<img data="SM6" class="smile" src="./images/smiles/6.png" />'],
+			SM7: [':-[', '<img data="SM7" class="smile" src="./images/smiles/7.png" />'],
+			SM8: ['=-O', '<img data="SM8" class="smile" src="./images/smiles/8.png" />']
 		};
-
-
 
 
 
@@ -104,6 +309,27 @@ $(document).ready(function() {
 
 
 
+			if(isNodeWebkit) {
+				$('.top_bar').find('.turn').on('click', function() {
+					win.minimize();
+				});
+				$('.top_bar').find('.full').on('click', function() {
+					if($(this).hasClass('max')) {
+						$(this).removeClass('max');
+						$(this).addClass('min');
+						win.restore();
+					} else if($(this).hasClass('min')) {
+						$(this).removeClass('min');
+						$(this).addClass('max');
+						win.maximize();
+					}
+				});
+				$('.top_bar').find('.close').on('click', function() {
+					win.close();
+				});
+			}
+			
+		
 			/*self.resizeThread();
 			$(window).resize(function() {
 				self.resizeThread();
@@ -172,14 +398,14 @@ $(document).ready(function() {
 
 
 			
-			
+			/*
 			new Medium({
 				element: document.getElementById('msgwnd'),
 				mode: Medium.richMode,
 				attributes: null,
 				tags: null
 			});
-			
+			*/
 
 
 
@@ -262,9 +488,9 @@ $(document).ready(function() {
 
 				//localStorage.setItem('user', JSON.stringify({login: '', password: ''}));
 
-				if(isNodeWebkit) {
+				/*if(isNodeWebkit) {
 					win.close();
-				}
+				}*/
 
 				event.preventDefault();
 			});
@@ -303,6 +529,28 @@ $(document).ready(function() {
 					self.generateDialogWindow(self.thread.jid, 'redirectList');
 				}
 			});
+			
+			/*
+			$('.top_menu').find('li[data="cobrowe"]').on('click', function() {
+				if(!$(this).hasClass('disabled')) {
+					self.generateCobrowse(self.thread.jid);
+				}
+			});
+			
+			
+			this.generateCobrowse = function(jid) {
+				$('.cobrowe').removeClass('hide');
+				$('.cobrowe').find('.frame').html('<iframe class="cobrowse" allowcrossdomainxhr="allowCrossDomainXHR" src="'+self.userList[jid].thread.site+'"></iframe>');
+			}
+			
+			*/
+			
+			
+			
+			
+			
+			
+			
 
 			$('.top_menu').find('li[data="block"]').on('click', function() {
 				if(!$(this).hasClass('disabled')) {
@@ -1224,7 +1472,7 @@ $(document).ready(function() {
 
 		this.upgradeList = function(roster) {
 
-
+			
 
 				if (Object.keys(roster).length != 0) {
 					self.roster = roster;
@@ -1291,6 +1539,8 @@ $(document).ready(function() {
 												});
 
 											}
+											
+											
 											self.leftItem(roster[key].jid);
 										}
 
@@ -1331,6 +1581,7 @@ $(document).ready(function() {
 							//self.resizeThread();
 
 			}
+			
         };
 
 
@@ -1492,6 +1743,11 @@ $(document).ready(function() {
 
 				if(block == 'operators' || (block == 'clients' && user.thread.statusDialog == 'open' && user.subscription == 'both')) {
 
+				
+				
+				
+				
+				
 				if(!$('.left_list_line[jid="'+jid+'"]').size()) {
 
 					$('.content_left_block[data="'+block+'"]').append('<div class="left_list_line" jid="'+jid+'">'+
@@ -1517,7 +1773,7 @@ $(document).ready(function() {
 
 					self.delayFunc.removeLeftItem[jid] != 'undefined' ? clearTimeout(self.delayFunc.removeLeftItem[jid]) : '';
 
-				} else {
+				} 
 
 					//так же, если при передачи открыт список, там тоже надо статус менять
 					if(user.status == 'on') {
@@ -1530,10 +1786,6 @@ $(document).ready(function() {
 						$('.left_list_line[jid="'+jid+'"]').find('.status').addClass('away').removeClass('on off');
 						$('.dialog_window').find('.operator_give_list').find('.operator_give_list_line[data="'+jid+'"]').find('operator_give_list_status').addClass('away').removeClass('on off');
 					}
-
-
-
-
 
 
 					if(!user.yes_close) {
@@ -1566,7 +1818,7 @@ $(document).ready(function() {
 					}
 
 
-				}
+				
 
 			}
 		}
@@ -1677,7 +1929,7 @@ $(document).ready(function() {
 
 			$.ajax({
 				type: "POST",
-				url: "https://cleversite.ru/cleversite/system/send_data.php",
+				url: "https://"+self.server+"/cleversite/system/send_data.php",
 				data: {from: self.user.jid, xmlns: 'cleversite:data:dialogs', localTime: self.date(null, true), id: Date.now()},
 				dataType: 'xml',
 				success: function(data){
@@ -1777,7 +2029,7 @@ $(document).ready(function() {
 			if(dialog_id) {d.dialog_id = dialog_id;};
 			$.ajax({
 				type: "POST",
-				url: "https://cleversite.ru/cleversite/system/history_send.php",
+				url: "https://"+self.server+"/cleversite/system/history_send.php",
 				data: d,
 				dataType: 'xml',
 				success: function(data){
@@ -1808,7 +2060,7 @@ $(document).ready(function() {
 			if(dialog_id) {d.dialog_id = dialog_id;};
 			$.ajax({
 				type: "POST",
-				url: "https://cleversite.ru/cleversite/system/history_send.php",
+				url: "https://"+self.server+"u/cleversite/system/history_send.php",
 				data: d,
 				dataType: 'xml',
 				success: function(data){
@@ -2264,7 +2516,7 @@ $(document).ready(function() {
 										width:500,
 										height:260,
 										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
-											'<div class="notify new" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.newDialog+'</div><div class="text_top">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">'+window.langClever.lang[window.configApp.local].notify.answer+'</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>'+
+											'<div class="notify new" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.newDialog+'</div><div class="text_top">'+user.name+'</div><div class="text"><textarea spellcheck="true">'+a+'</textarea></div><div class="btns"><button class="chat btn submit" onclick="window.emit(\'chat.click\')">'+window.langClever.lang[window.configApp.local].notify.answer+'</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>'+
 										'</div>'
 									},
 									function() {
@@ -2313,7 +2565,7 @@ $(document).ready(function() {
 							if(typeof self.notifyList.newMessage[jid] == 'undefined') {
 
 								var notify = {
-									block: $('<div class="notify new" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.newDialog+'</div><div class="text_top">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.answer+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
+									block: $('<div class="notify new" data-jid="'+jid+'"><div class="name">'+window.langClever.lang[window.configApp.local].notify.newDialog+'</div><div class="text_top">'+user.name+'</div><div class="text"><textarea spellcheck="true">'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.answer+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
 								}
 
 								$('.notifylist').append(notify.block);
@@ -2371,7 +2623,7 @@ $(document).ready(function() {
 										width:500,
 										height:235,
 										htmlBody: '<div id="notification" class="notifylist notifyDesctop">'+
-											'<div class="notify" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button onclick="window.emit(\'chat.click\')" class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>'+
+											'<div class="notify" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text"><textarea spellcheck="true">'+a+'</textarea></div><div class="btns"><button onclick="window.emit(\'chat.click\')" class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv" onclick="window.emit(\'answer.click\')">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel" onclick="window.emit(\'ignore.click\')">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>'+
 										'</div>'
 									},
 									function() {
@@ -2408,7 +2660,7 @@ $(document).ready(function() {
 							if(typeof self.notifyList.message[jid] == 'undefined') {
 
 								var notify = {
-									block: $('<div class="notify" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text"><textarea>'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
+									block: $('<div class="notify" data-jid="'+jid+'"><div class="name">'+user.name+'</div><div class="text"><textarea spellcheck="true">'+a+'</textarea></div><div class="btns"><button class="chat btn submit">'+window.langClever.lang[window.configApp.local].notify.chat+'</button><button class="answer btn gray_sv">'+window.langClever.lang[window.configApp.local].notify.answerFast+'</button><button class="ignore btn cancel">'+window.langClever.lang[window.configApp.local].notify.ignore+'</button></div></div>')
 								}
 
 								$('.notifylist').append(notify.block);
@@ -3283,7 +3535,7 @@ $(document).ready(function() {
 			}
 			$.ajax({
 				type: "GET",
-				url: "https://cleversite.ru/cleversite/bitrix_sender_senderdefenderser.php",
+				url: "https://"+self.server+"/cleversite/bitrix_sender_senderdefenderser.php",
 				data: d,
 				dataType: 'xml',
 				success: function(data){
@@ -3813,7 +4065,7 @@ $(document).ready(function() {
 		this.loadProp = function() {
 
 			$('.property').find('select[name="prop_awayTime"]').find('option').removeAttr('selected');
-			$('.property').find('select[name="prop_awayTime"]').find('option[value="'+window.configApp.prop.prop_awayTime+'"]').attr('selected', 'selected');
+			$('.property').find('select[name="prop_awayTime"]').find('option[value="'+window.configApp.prop.prop_awayTime+'"]').attr('selected', 'selected').parent().val(window.configApp.prop.prop_awayTime);;
 
 
 
@@ -3840,12 +4092,13 @@ $(document).ready(function() {
 			} else {
 				$('.property').find('input[name="prop_enableSound"]').prop('checked', false).removeAttr('checked');
 			}
-
+			
+			
 			$('.property').find('select[name="prop_soundClient_file"]').find('option').removeAttr('selected');
-			$('.property').find('select[name="prop_soundClient_file"]').find('option[value="'+window.configApp.prop.prop_soundClient_file+'"]').attr('selected', 'selected');
+			$('.property').find('select[name="prop_soundClient_file"]').find('option[value="'+window.configApp.prop.prop_soundClient_file+'"]').attr('selected', 'selected').parent().val(window.configApp.prop.prop_soundClient_file);
 
 			$('.property').find('select[name="prop_soundOperator_file"]').find('option').removeAttr('selected');
-			$('.property').find('select[name="prop_soundOperator_file"]').find('option[value="'+window.configApp.prop.prop_soundOperator_file+'"]').attr('selected', 'selected');
+			$('.property').find('select[name="prop_soundOperator_file"]').find('option[value="'+window.configApp.prop.prop_soundOperator_file+'"]').attr('selected', 'selected').parent().val(window.configApp.prop.prop_soundOperator_file);
 
 
 
@@ -3885,8 +4138,8 @@ $(document).ready(function() {
 			prop.prop_awayTime = (window.configApp.prop.prop_awayTime = $('.property').find('select[name="prop_awayTime"]').find('option:selected').val());
 			prop.prop_closeThreadChangeStatus = (window.configApp.prop.prop_closeThreadChangeStatus = $('.property').find('input[name="prop_closeThreadChangeStatus"]').prop('checked') ? 1 : 0);
 			prop.prop_enableSound = (window.configApp.prop.prop_enableSound = $('.property').find('input[name="prop_enableSound"]').prop('checked') ? 1 : 0);
-			prop.prop_soundClient_file = (window.configApp.prop.prop_soundClient_file = $('.property').find('select[name="prop_soundClient_file"]').find('option:selected').val());
-			prop.prop_soundOperator_file = (window.configApp.prop.prop_soundOperator_file = $('.property').find('select[name="prop_soundOperator_file"]').find('option:selected').val());
+			prop.prop_soundClient_file = (window.configApp.prop.prop_soundClient_file = +$('.property').find('select[name="prop_soundClient_file"]').find('option:selected').val());
+			prop.prop_soundOperator_file = (window.configApp.prop.prop_soundOperator_file = +$('.property').find('select[name="prop_soundOperator_file"]').find('option:selected').val());
 			prop.prop_theme = (window.configApp.prop.prop_theme = $('.property').find('input[name="prop_theme"]').val());
 
 			localStorage.setItem('prop_'+ self.user.jid, JSON.stringify(prop));
@@ -4011,7 +4264,8 @@ $(document).ready(function() {
 
 		this.loadLocalize = function (l) {
 			document.title = window.langClever.lang[window.configApp.local].title;
-
+			$('.top_bar').find('.title').html(window.langClever.lang[window.configApp.local].title);
+			
 			$('.auth_form_parent').find('.auth_form_form_f_1').find('.submit').html(window.langClever.lang[window.configApp.local].enter);
 			$('.auth_form_parent').find('.auth_form_form_f_2').find('.auth_form_form_f_2_t').html(window.langClever.lang[window.configApp.local].loadintEnter);
 			$('.auth_form_parent').find('.auth_form_form_f_2').find('.submit').html(window.langClever.lang[window.configApp.local].cancel);
@@ -4154,7 +4408,7 @@ $(document).ready(function() {
 
 			//отсылаем с попощью Ajax
 			$.ajax({
-				url: 'https://cleversite.ru/cleversite/upload_file.php',
+				url: "https://"+self.server+"/cleversite/upload_file.php",
 				data: data,
 				cache: false,
 				contentType: false,

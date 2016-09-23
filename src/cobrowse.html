@@ -1,0 +1,132 @@
+<html style="height:100%">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <style type="text/css">
+        html, body {
+            overflow: hidden;
+            margin: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="../../compiled/style.css"/>
+    <script src="../../loader.js?1" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        var log = function () {
+            var args = Array.prototype.slice.call(arguments);
+            args.unshift('co_browser.html:');
+            app.share.log.apply(this, args);
+        };
+        window.onerror = function (msg, url, line) {
+            log("Error: " + msg + "\nfile: " + url + "\nline #: " + line);
+            return true;
+        };
+        
+        document.title = data.title;
+
+        var isNodeWebkit = (/^file:/.test(window.location.protocol)) ? true : false;
+
+        if (isNodeWebkit) {
+            var gui = require('nw.gui');
+        }
+        window.config = app.config;
+        if (config.dev_tools_co_browser && isNodeWebkit) {
+            require('nw.gui').Window.get().showDevTools();
+        }
+        if(app.mode == 'development') {
+            initDevelopLess('../../');
+        }
+
+        window.onload = function(){
+            document.querySelector('#loading').style.display = 'block';
+            if (isNodeWebkit) {
+                document.documentElement.className = 'nw';
+            } else {
+                document.documentElement.className = 'web';
+            }
+            window.l8n = new app.share.L8n(window);
+            l8n.translate();
+
+            var iframe = window.iframe = document.createElement('iframe');
+            window.pageIframe = iframe;
+            iframe.setAttribute('allowCrossDomainXHR', 'allowCrossDomainXHR');
+            iframe.setAttribute('src', data.url);
+            iframe.setAttribute('id', 'frame');
+            iframe.setAttribute('style', 'overflow:hidden;height:100%;width:100%;visibility:hidden;border:0;');
+            iframe.setAttribute('height', '100%');
+            iframe.setAttribute('width', '100%');
+
+            var inited = false;
+            iframe.onload = function () {
+                log('iframe loaded');
+
+                var int_id = setInterval(function(){
+                    if(typeof iframe.contentWindow.jivo_api != 'undefined') {
+                        log('widget ready');
+                        clearInterval(int_id);
+                        iframe.contentWindow.postMessage({
+                            name: 'in_node_webkit',
+                            langpack: {
+                                'cb_highlight': app.l8n('cb_highlight'),
+                                'cb_cancel': app.l8n('cb_cancel'),
+                                'cb_highlight_desc': app.l8n('cb_highlight_desc'),
+                                'cb_enterComment': app.l8n('cb_enterComment'),
+                                'cb_send': app.l8n('cb_send'),
+                                'cb_attention': app.l8n('cb_attention'),
+                                'cb_error': app.l8n('cb_error'),
+                                'cb_loading': app.l8n('cb_loading'),
+                                'cb_loadError': app.l8n('cb_loadError')
+                            }
+                        }, data.url);
+                        if(!inited) {
+                            log('creating CoBrowserView');
+                            var view = new app.share.CoBrowserView({
+                                el: document.body,
+                                url: data.url,
+                                session_id: data.session_id}, window);
+                            inited = true;
+                        }
+                    }
+                },500)
+
+            }
+            iframe.onError = function (error) {
+                log('iframe error', error.err);
+            };
+            document.body.appendChild(iframe);
+            if (typeof window._onReady == 'function') {
+                window._onReady();
+            }
+        };
+
+        function reloadLocale() {
+            l8n.translate();
+        }
+    </script>
+</head>
+
+<html style="height:100%; overflow: hidden">
+<body id="cobrowser-window" style="height:100%">
+	
+<div id="buttonContainer">
+    <div id="loading" class="background" style="display: none" l8n-html="cb_loading">Страница загружается...</div>
+    <button id="selectionStart" class="background" style="display: none;">
+        <div l8n-html="cb_highlight">Подсветить область</div>
+    </button>
+    <button id="selectionInited" class="background" style="display:none;">
+        <div>
+            <div id="selectionStop" class="background" l8n-html="cb_cancel">Отменить</div>
+            <span l8n-html="cb_highlight_desc">Выберете область для<br/> подсветки посетителю</span>
+        </div>
+    </button>
+    <button id="close-iframe" class="background" style="display:none">
+        <div l8n-html="lblExit">Закрыть</div>
+    </button>
+</div>
+
+
+
+
+</body>
+</html>

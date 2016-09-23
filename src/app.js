@@ -1,11 +1,20 @@
 
 
+
+
+
 window.MODE = 'development';
+
+//location.port == 3001
+
 var isNodeWebkit = ((/^file:/.test(window.location.protocol)) || (/^chrome-extension:/.test(window.location.protocol))) ? true : false;
 if (isNodeWebkit) {
     global.isNodeWebkit = isNodeWebkit;
     window.gui = require('nw.gui');
 
+	document.body.className = 'desctop' + (document.body.className ? ' '+document.body.className : '');
+	
+	
 	function getCurrentApplicationPath() {
 		if (global.process.platform === 'darwin') {
 			return global.process.execPath.split('.app/Content')[0] + '.app';
@@ -17,6 +26,9 @@ if (isNodeWebkit) {
     gui.App.clearCache();
     gui.Screen.Init();
 }
+
+
+
 
 
 
@@ -108,11 +120,10 @@ if(isNodeWebkit) {
 
 
 var d = require('domain').create();
-d.on('error', (er) => {
+d.on('error', function(er){
 	console.log('error, but oh well', er.message);
 });
-d.run(() => {
-
+d.run(function(){
 
 
 	var gui = require('nw.gui');
@@ -276,85 +287,7 @@ var menus = {
 
     // keep the object in memory
     win.tray = tray;
-  },
-
-
-
-  createContextMenu: function(win, window, document, targetElement) {
-    var menu = new gui.Menu();
-
-    if (targetElement.tagName.toLowerCase() == 'input') {
-      menu.append(new gui.MenuItem({
-        label: "Вырезать",
-        click: function() {
-          clipboard.set(targetElement.value);
-          targetElement.value = '';
-        }
-      }));
-
-      menu.append(new gui.MenuItem({
-        label: "Копировать",
-        click: function() {
-          clipboard.set(targetElement.value);
-        }
-      }));
-
-      menu.append(new gui.MenuItem({
-        label: "Вставить",
-        click: function() {
-          targetElement.value = clipboard.get();
-        }
-      }));
-    } else if (targetElement.tagName.toLowerCase() == 'a') {
-      menu.append(new gui.MenuItem({
-        label: "Копировать ссылку",
-        click: function() {
-          clipboard.set(targetElement.href);
-        }
-      }));
-    } else {
-      var selection = window.getSelection().toString();
-      if (selection.length > 0) {
-        menu.append(new gui.MenuItem({
-          label: "Копировать",
-          click: function() {
-            clipboard.set(selection);
-          }
-        }));
-      }
-    }
-
-/*
-    menu.append(new gui.MenuItem({
-      label: "Launch Dev Tools",
-      click: function() {
-          win.showDevTools();
-      }
-    }));
-
-*/
-
-
-    return menu;
-  },
-
-
-  injectContextMenu: function(win, window, document) {
-    /*document.body.addEventListener('contextmenu', function(event) {
-
-		event.preventDefault();
-		var m = this.createContextMenu(win, window, document, event.target);
-		if(m.items.length != 0) {
-			m.popup(event.x, event.y);
-		}
-		return false;
-
-    }.bind(this));*/
-	
   }
-
-
-
 
 };
 
@@ -515,14 +448,57 @@ var menus = {
 
 
 	// Add a context menu
-	//menus.injectContextMenu(win, window, document);
-	document.addEventListener("contextmenu", function(e) {
-		e.preventDefault();
-		var m = menus.createContextMenu(win, window, document, e.target);
-		if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target.isContentEditable) {
-			m.popup(e.x, e.y);
+	var gui = require("nw.gui");
+  
+	var menu = new gui.Menu;
+	  
+	  menu.append(new gui.MenuItem({
+		label: "Вырезать",
+		click: function() {
+		  document.execCommand("cut");
 		}
-	});
+	  }));
+	  
+	  menu.append(new gui.MenuItem({
+		label: "Копировать",
+		click: function() {
+		  document.execCommand("copy");
+		}
+	  }));
+	  
+	  menu.append(new gui.MenuItem({
+		label: "Вставить",
+		click: function() {
+		  document.execCommand("paste");
+		}
+	  }));
+	  
+	/*
+	menu.append(new gui.MenuItem({
+      label: "Launch Dev Tools",
+      click: function() {
+          win.showDevTools();
+      }
+    }));
+	*/
+	  
+	  document.addEventListener("contextmenu", function(e) {
+		e.preventDefault();
+		if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target.isContentEditable) {
+		  menu.popup(e.x, e.y);
+		}
+	  });
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 

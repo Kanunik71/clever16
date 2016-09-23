@@ -5,7 +5,7 @@
   "version": "0.1.2",
   "app-id": "com.aluxian.clever16",
   "author": "Serg <s.kanunnikov@it-tula.ru>",
-  "chromium-args": "--disable-setuid-sandbox --enable-spell-checking",
+  "chromium-args": "--disable-setuid-sandbox --enable-spell-checking --enable-logging",
   "window": {
     "icon": "favicon.png",
     "kiosk": false,
@@ -15,7 +15,7 @@
 	
 	"min_width": 980,
     "min_height": 700,
-	
+
     "visible": true,
     "title": "Пульт оператора",
     "mac_icon": "favicon.png",
@@ -23,9 +23,10 @@
     "exe_icon": "favicon.png",
     "always-on-top": false,
     "fullscreen": false,
-    "frame": true,
+    "frame": false,
+
     "show_in_taskbar": true,
-    "transparent": false,
+    "transparent": true,
     "kiosk_emulation": false,
     "as_desktop": false,
     "toolbar": true

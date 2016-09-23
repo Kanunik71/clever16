@@ -15,7 +15,17 @@
 <body>
 	
 	
-
+	
+	<div class="top_bar width">
+		<div class="title"></div>
+		
+		<div class="btns">
+			<div class="turn"></div>
+			<div class="full min"></div>
+			<div class="close"></div>
+		</div>
+	</div>
+	
 	
 	
 	<div class="preloader">
@@ -111,7 +121,9 @@
 						<li class="disabled" data="send_email">Send email</li>
 						<li class="" data="operators">Operators</li>
 						<li class="" data="clients">Clients</li>
+						<li class="" data="visitors">Visitors</li>
 						<li class="sep"></li>
+						<!--<li data="cobrowe">Cobrowse</li>-->
 						<li data="property">Property</li>
 						<li data="exit">Exit</li>
 					</ul>
@@ -150,7 +162,7 @@
 						<div class="content_bottom_textarea">
 							<div class="fast_phrase">/..</div>
 							
-							<div id="msgwnd" contenteditable="true" placeholder="Write your message" tabindex="0" maxlength="1000" rows="4"></div>
+							<div id="msgwnd" contenteditable="true" spellcheck="true" placeholder="Write your message" tabindex="0" maxlength="1000" rows="4"></div>
 
 							<div class="btns">
 								<div class="file disabled"></div>
@@ -250,7 +262,7 @@
 						
 						<div class="property_phraseEnter">
 							<div class="property_phraseEnter_textarea">
-								<textarea name="phrase_text" placeholder="Enter a flash message , and then click Add"></textarea>
+								<textarea name="phrase_text" spellcheck="true" placeholder="Enter a flash message , and then click Add"></textarea>
 							</div>
 							<div class="property_phraseEnter_submit disabled">
 							
@@ -340,11 +352,11 @@
 							<div class="property_line_visual_name">Тема оформления</div>
 							<div class="list">
 								<div class="el clr" data="1">
-									<div class="pic"><img src="/images/theme/theme_1.jpg" alt="" /></div>
+									<div class="pic"><img src="./images/theme/theme_1.jpg" alt="" /></div>
 									<div class="name">Светлая</div>
 								</div>
 								<div class="el clr" data="2">
-									<div class="pic"><img src="/images/theme/theme_2.jpg" alt="" /></div>
+									<div class="pic"><img src="./images/theme/theme_2.jpg" alt="" /></div>
 									<div class="name">Темная</div>
 								</div>
 							</div>
@@ -391,6 +403,10 @@
 
 
 
+	<div class="cobrowse hide">
+		<div class="btns"></div>
+		<div class="frame"></div>
+	</div>
 
 
 
@@ -400,6 +416,8 @@
   
   
 
+  
+  
   
   
   
